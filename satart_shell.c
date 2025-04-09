@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/09 18:44:10 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/09 19:52:55 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	handle_input_syntax(t_string *st_string)
 
 	head = NULL;
 	st_string->strcon = handler_string(st_string->line);
-	// if ()// check if this error ?
+	// if ()// check if this error 
 	if (!st_string->strcon)
 		return (0);
 	ft_spliter(&head, st_string->strcon);
