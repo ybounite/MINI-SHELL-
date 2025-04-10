@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 07:46:24 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/09 18:32:52 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:40:55 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,15 @@ void	ft_error_quotes(char quotes)
 	printf("minishell: parse error near `%c\'\n", quotes);
 	data_struc()->is_error = 1;
 }
+
 int	skip_strqoutes(char *str, int *inedx, char quotes)
 {
-	int counter;
+	int	counter;
 
 	counter = 0;
 	while (str[*inedx] && str[*inedx] != quotes)
 	{
+		// if (str[*inedx] == '\\' && str[*inedx + 1] == quotes)
 		(*inedx)++;
 		counter++;
 	}
@@ -42,8 +44,8 @@ int	lenqoutes(char *str, int *i)
 	char	quotes;
 	int		counter;
 	int		start;
+
 	counter = 0;
-	
 	if (*i - 1 > 0 && find_space(str[*i - 1]))
 		counter++;
 	quotes = str[(*i)++];
@@ -53,19 +55,19 @@ int	lenqoutes(char *str, int *i)
 	return (counter);
 }
 
-int lenoperator(char *str, int *i)
+int	lenoperator(char *str, int *i)
 {
-	int counter;
-	char operator;
+	int		counter;
+	char	operator;
 
 	counter = 0;
 	operator = str[*i];//save operator
 	while (str[*i] && str[*i] == operator)
 	{
-		if (operator == '>' && str[*i + 1] == '<')
-			return (ft_error_quotes(operator), -1);
-		else if (operator == '<' && str[*i + 1] == '>')
-			return (printf(": parse error near `\n'\n"), 0);
+		if (str[*i + 1] && operator == '>' && str[*i + 1] == '<')
+			return (ft_error_quotes(operator), -1337);
+		else if (str[*i + 1] && operator == '<' && str[*i + 1] == '>')
+			return (printf("minishell : parse error near `\\n'\n"), -1337);
 		counter++;
 		(*i)++;
 		if (counter >= 3)
@@ -91,7 +93,8 @@ int	ft_lenword(char *str)
 			len += lenoperator(str, &i);
 		else
 		{
-			while (str[i] && !is_operator(str[i]) && !isquotes(str[i]) && !find_space(str[i]))
+			while (str[i] && !is_operator(str[i])
+				&& !isquotes(str[i]) && !find_space(str[i]))
 			{
 				if (i - 1 > 0 && find_space(str[i - 1]))
 					len++;
@@ -100,7 +103,7 @@ int	ft_lenword(char *str)
 			}
 		}
 		if (len < 0)
-			break;
+			break ;
 	}
 	return (len);
 }

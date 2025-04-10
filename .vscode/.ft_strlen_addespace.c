@@ -8,7 +8,7 @@
 
 bool	find_space(char c);
 
-bool is_operator(char c)
+bool	is_operator(char c)
 {
 	return (c == '&' || c == '|' || c == '>' || c == '<');
 }
@@ -67,6 +67,7 @@ int	skip_operator(char *str, int *index, char operator)
 	}
 	return (count_operator);
 }
+
 int	ft_lenword(char *str)
 {
 	int (len), (i);

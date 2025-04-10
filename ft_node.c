@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:45:11 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/09 09:56:03 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/10 08:59:33 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_env_lst	*ft_newnode(char *cmd, en_status_type state)
 		return (NULL);
 	new->value = cmd;
 	new->type = state;
+	new->cat = 0;
 	new->next = NULL;
 	return (new);
 }

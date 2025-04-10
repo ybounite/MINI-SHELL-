@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   satart_shell.c                                     :+:      :+:    :+:   */
+/*   start_shell.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/09 19:52:55 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:48:02 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int	handle_input_syntax(t_string *st_string)
 		return (0);
 	ft_spliter(&head, st_string->strcon);
 	print_lst_tokens(head);
+	free_list(head);
 	return 1;
 }
 
@@ -93,8 +94,9 @@ void	start_shell_session(t_string st_string)
 	{
 		st_string.line = get_line();
 		handle_input_syntax(&st_string);
-		free(st_string.line);
-		st_string.line = NULL;
 		// exectoction();
+		free(st_string.line);
+		free(st_string.strcon);
+		st_string.line = NULL;
 	}
 }

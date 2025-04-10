@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:48:04 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/09 15:14:24 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/10 18:34:16 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	handler_operator(t_env_lst **list, char *str, int *i, en_status_type state)
 	char *ptr;
 
 	index = 0;
-	ptr = malloc(3);
+	ptr = malloc(3 * sizeof(char));
 	if (!ptr)
 		return ;
 	while (str[*i] && str[*i] != SPACE)
@@ -114,7 +114,24 @@ void	handler_operator(t_env_lst **list, char *str, int *i, en_status_type state)
 	ptr[index] = '\0';
 	ft_add_newtoken(list, ptr, state);
 }
-// void	handler_redirection()
+
+void	handler_parenthesis(t_env_lst **list, char *str, int *i, en_status_type state)
+{
+	int		index;
+	char	charcter;
+	char	*ptr;
+
+	charcter = str[*i];
+	index = 0;
+	ptr = malloc(lentword(str, *i) + 1);
+	while (str[*i] && str[*i] != ')')
+		ptr[index++] = str[(*i)++];
+	ptr[index++] = ')';
+	ptr[index] = '\0';
+	(*i)++;
+	ft_add_newtoken(list, ptr, state);
+}
+
 void	ft_spliter(t_env_lst **list, char *line)
 {
 	en_status_type	stats;
@@ -130,9 +147,10 @@ void	ft_spliter(t_env_lst **list, char *line)
 			handler_words(list, line, &i, stats);
 		else if (stats == SINGLE_QUOTE || stats == DOUBLE_QUOTE)
 			handler_qoutes(list, line, &i, stats);
-		else if (stats == OR || stats == PIPE || stats == AND || stats == REDIRECTION)
+		else if (stats == OR || stats == PIPE || stats == AND
+				|| stats == REDIRECTION)
 			handler_operator(list, line, &i, stats);
-		// else if (stats == REDIRECTION)
-		// 	handler_redirection();
+		else if (stats == PARENTHESIS)
+			handler_parenthesis(list, line, &i, stats);
 	}
 }

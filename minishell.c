@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:45:08 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/09 16:47:39 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:33:27 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@ struct s_string	*data_struc(void)
 
 	return (&data_struc);
 }
-int	main()
+
+int	main(void)
 {
 	t_string	st_string;
 
+	assign_signals_handler();
 	start_shell_session(st_string);
 }

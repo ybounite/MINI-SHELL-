@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 13:49:16 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/09 08:55:20 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/10 11:52:18 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,11 @@ typedef struct s_exec_cmd
 
 struct s_string		*data_struc(void);
 //mian.c
+// ft_free.c
+void	free_list(t_env_lst *head);
+// 
+void	assign_signals_handler();
+void	handler(int signum);
 /* -------------------------------------------------------------------------- */
 /*                       FILE 	=	ft_lestnew.c                           	  */
 /* -------------------------------------------------------------------------- */

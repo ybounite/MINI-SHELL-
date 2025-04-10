@@ -5,7 +5,10 @@ CFLAGSE = -Wall -Wextra -Werror -g
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-SRC = minishell.c satart_shell.c gitline.c ft_utlis.c ft_lenstr.c ft_spliter.c ft_node.c 
+SRC = minishell.c start_shell.c \
+gitline.c ft_utlis.c ft_lenstr.c \
+ft_spliter.c ft_node.c ft_free.c \
+manage_signal.c
 
 OBJ = $(SRC:.c=.o)
 
