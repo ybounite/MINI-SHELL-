@@ -1,9 +1,0 @@
-{
-	"files.associations": {
-		"libft.h": "c",
-		"chrono": "c",
-		"variant": "c",
-		"sstream": "c",
-		"minishell.h": "c"
-	}
-}
