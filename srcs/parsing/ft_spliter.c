@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:48:04 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/17 14:35:00 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/04/18 15:42:49 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ en_status_type	find_type_state(char c)
 	// 	return (ASTERISK);
 }
 
-int lenofwords_qoutes(char *str, int start, char qoute)
+int	lenofwords_qoutes(char *str, int start, char qoute)
 {
 	int	len;
 
@@ -45,7 +45,8 @@ int lenofwords_qoutes(char *str, int start, char qoute)
 	return (len);
 }
 
-void	handler_qoutes(t_env_lst **list, char *str, int *i, en_status_type state)
+void	handler_qoutes(t_env_lst **list, char *str, int *i,
+		en_status_type state)
 {
 	char	qoutes;
 	char	*ptr;
@@ -55,8 +56,7 @@ void	handler_qoutes(t_env_lst **list, char *str, int *i, en_status_type state)
 	qoutes = str[(*i)++];
 	ptr = malloc(lenofwords_qoutes(str, *i, qoutes) + 1);
 	while (str[*i] && str[*i] != qoutes)
-	{
-		if (str[*i] == '\\')
+	{zzzz
 			(*i)++;
 		ptr[index++] = str[(*i)++];
 	}
@@ -67,7 +67,7 @@ void	handler_qoutes(t_env_lst **list, char *str, int *i, en_status_type state)
 
 int	lentword(char *str, int start)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while (str[start] && str[start] != SPACE)
@@ -80,11 +80,12 @@ int	lentword(char *str, int start)
 
 void	handler_words(t_env_lst **list, char *str, int *i, en_status_type state)
 {
-	int			index;
-	char		*ptr;
+	int		index;
+	char	*ptr;
+	int		len;
 
 	index = 0;
-	int len = lentword(str, *i);
+	len = lentword(str, *i);
 	if (len == 0)
 		return ;
 	ptr = malloc(lentword(str, *i) + 1);
@@ -100,10 +101,11 @@ void	handler_words(t_env_lst **list, char *str, int *i, en_status_type state)
 	ft_add_newtoken(list, ptr, state);
 }
 
-void	handler_operator(t_env_lst **list, char *str, int *i, en_status_type state)
+void	handler_operator(t_env_lst **list, char *str, int *i,
+		en_status_type state)
 {
-	int	index;
-	char *ptr;
+	int		index;
+	char	*ptr;
 
 	index = 0;
 	ptr = malloc(3 * sizeof(char));
@@ -115,7 +117,8 @@ void	handler_operator(t_env_lst **list, char *str, int *i, en_status_type state)
 	ft_add_newtoken(list, ptr, state);
 }
 
-void	handler_parenthesis(t_env_lst **list, char *str, int *i, en_status_type state)
+void	handler_parenthesis(t_env_lst **list, char *str, int *i,
+		en_status_type state)
 {
 	int		index;
 	char	charcter;
@@ -131,13 +134,18 @@ void	handler_parenthesis(t_env_lst **list, char *str, int *i, en_status_type sta
 	(*i)++;
 	ft_add_newtoken(list, ptr, state);
 }
-
+// edite here
 void	ft_spliter(t_env_lst **list, char *line)
 {
 	en_status_type	stats;
 	int				i;
 
 	i = 0;
+	if (!line || !*line)
+	{
+		printf("ft_spliter: Empty line\n");
+		return ;
+	}
 	while (line[i])
 	{
 		while (line[i] && line[i] == SPACE)
@@ -148,9 +156,11 @@ void	ft_spliter(t_env_lst **list, char *line)
 		else if (stats == SINGLE_QUOTE || stats == DOUBLE_QUOTE)
 			handler_qoutes(list, line, &i, stats);
 		else if (stats == OR || stats == PIPE || stats == AND
-				|| stats == REDIRECTION)
+			|| stats == REDIRECTION)
 			handler_operator(list, line, &i, stats);
 		else if (stats == PARENTHESIS)
 			handler_parenthesis(list, line, &i, stats);
+		if (!*list)
+			printf("ft_spliter: No tokens added\n");
 	}
 }

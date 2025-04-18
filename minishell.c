@@ -6,11 +6,11 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:45:08 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/17 14:37:02 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/04/18 15:38:55 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "includes/minishell.h"
 
 struct s_string	*data_struc(void)
 {

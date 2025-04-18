@@ -25,7 +25,7 @@ SRCS = $(SRC_DIR)/signals.c \
 	   
 
 # Parsing source files
-SRC_PARS = $(PARSING_DIR)/minishell.c \
+SRC_PARS = minishell.c \
 		   $(PARSING_DIR)/gitline.c \
 		   $(PARSING_DIR)/ft_utlis.c \
 		   $(PARSING_DIR)/ft_lenstr.c \
