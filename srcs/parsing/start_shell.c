@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/18 15:42:51 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/04/19 13:07:02 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int	handle_input_syntax(t_string *st_string)
 		printf("Error: Failed to process input string.\n");
 		return (0);
 	}
+	// printf("%s\n", st_string->strcon);
 	ft_spliter(&head, st_string->strcon);
 	if (!head)
 	{
@@ -96,7 +97,7 @@ int	handle_input_syntax(t_string *st_string)
 		return (0);
 	}
 	st_string->head = head;
-	print_lst_tokens(head); // Debug print
+	// print_lst_tokens(head); // Debug print
 	execute_command(st_string);
 	free_list(head);
 	return (1);
