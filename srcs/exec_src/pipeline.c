@@ -47,7 +47,7 @@ static char	*find_path(char *cmd, char **envp)
 	return (NULL);
 }
 
-static int	is_builtin(char *cmd)
+int	is_builtin(char *cmd)
 {
 	if (!cmd)
 		return (0);
@@ -56,7 +56,7 @@ static int	is_builtin(char *cmd)
 		|| !ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "exit"));
 }
 
-static void	execute_builtin(char **args, t_string *st_string)
+void	execute_builtin(char **args, t_string *st_string)
 {
 	if (!ft_strcmp(args[0], "echo"))
 		builtin_echo(args);
@@ -101,7 +101,6 @@ static void	handle_child_process(char **args, int prev_fd, int *pipe_fd,
 		cmd_path = find_path(args[0], st_string->g_envp);
 		if (!cmd_path)
 		{
-			// Try executing it directly if it might be a path
 			if (args[0][0] == '/' || args[0][0] == '.')
 			{
 				if (access(args[0], X_OK) == 0)
@@ -154,7 +153,6 @@ void	execute_pipeline(t_string *st_string)
 		args = git_array(&list);
 		if (!args)
 			break ;
-		// Check if there's a next command in the pipeline
 		if (list && list->type == PIPE)
 		{
 			if (pipe(pipe_fd) == -1)
@@ -163,10 +161,10 @@ void	execute_pipeline(t_string *st_string)
 				ft_free_split(args);
 				return ;
 			}
-			if(!list->next)
+			if (!list->next)
 			{
 				perror("minishell: parse error near `|'\n");
-				break;
+				break ;
 			}
 			list = list->next;
 		}

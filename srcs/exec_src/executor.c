@@ -1,5 +1,4 @@
 #include "../../includes/minishell.h"
-#include "../libraries/libft/libft.h"
 
 int	lstsize(t_env_lst *lst)
 {
@@ -45,5 +44,42 @@ char	**git_array(t_env_lst **list)
 
 void	execute_command(t_string *st_string)
 {
+	t_env_lst	*list;
+	char		**args;
+
+	if (!st_string->head)
+		return ;
+	list = st_string->head;
+	args = git_array(&list);
+	if (!args || !args[0])
+	{
+		if (args)
+			ft_free_split(args);
+		return ;
+	}
+	if (!has_pipe(st_string->head))
+	{
+		if (is_builtin(args[0]))
+		{
+			execute_builtin(args, st_string);
+			ft_free_split(args);
+			return ;
+		}
+	}
+	ft_free_split(args);
 	execute_pipeline(st_string);
+}
+
+int	has_pipe(t_env_lst *list)
+{
+	t_env_lst	*current;
+
+	current = list;
+	while (current)
+	{
+		if (current->type == PIPE)
+			return (1);
+		current = current->next;
+	}
+	return (0);
 }

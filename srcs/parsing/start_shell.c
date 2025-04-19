@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_shell.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/18 17:03:31 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/18 15:42:51 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	strhandler_quotes(char *ptr, char *str, int *i, int *index)
 {
 	char	quots;
 
-	if (*i - 1 > 0 && find_space(str[(*i) - 1]))
+	if (i - 1 > 0 && find_space(str[(*i) - 1]))
 		ptr[(*index)++] = SPACE;
 	quots = str[*i];
 	ptr[(*index)++] = str[(*i)++];
@@ -89,7 +89,6 @@ int	handle_input_syntax(t_string *st_string)
 		printf("Error: Failed to process input string.\n");
 		return (0);
 	}
-	printf("%s\n", st_string->strcon);
 	ft_spliter(&head, st_string->strcon);
 	if (!head)
 	{
@@ -98,7 +97,7 @@ int	handle_input_syntax(t_string *st_string)
 	}
 	st_string->head = head;
 	print_lst_tokens(head); // Debug print
-	// execute_command(st_string);
+	execute_command(st_string);
 	free_list(head);
 	return (1);
 }

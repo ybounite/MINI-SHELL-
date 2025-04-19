@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_spliter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:48:04 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/18 17:08:00 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/18 17:07:35 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,6 @@ int	lenofwords_qoutes(char *str, int start, char qoute)
 		len++;
 		start++;
 	}
-	if (str[start] && str[++start] != SPACE)
-	{
-		while (str[start] && str[start] != SPACE)
-		{
-			len++;
-			start++;
-		}
-	}
 	return (len);
 }
 
@@ -64,12 +56,10 @@ void	handler_qoutes(t_env_lst **list, char *str, int *i,
 	qoutes = str[(*i)++];
 	ptr = malloc(lenofwords_qoutes(str, *i, qoutes) + 1);
 	while (str[*i] && str[*i] != qoutes)
-		ptr[index++] = str[(*i)++];
-	(*i)++;
-	while (str[*i] && str[*i] != SPACE)
 	{
 		ptr[index++] = str[(*i)++];
 	}
+	(*i)++;
 	ptr[index] = '\0';
 	ft_add_newtoken(list, ptr, state);
 }
@@ -102,8 +92,8 @@ void	handler_words(t_env_lst **list, char *str, int *i, en_status_type state)
 		return ;
 	while (str[*i] && str[*i] != SPACE)
 	{
-		// while (str[*i] && (str[*i] == '"' || str[*i] == '\''))
-		// 	(*i)++;
+		if (str[*i] == '\\')
+			(*i)++;
 		ptr[index++] = str[(*i)++];
 	}
 	ptr[index] = '\0';
@@ -150,7 +140,7 @@ void	ft_spliter(t_env_lst **list, char *line)
 	int				i;
 
 	i = 0;
-	if (!line)
+	if (!line || !*line)
 	{
 		printf("ft_spliter: Empty line\n");
 		return ;
@@ -167,8 +157,8 @@ void	ft_spliter(t_env_lst **list, char *line)
 		else if (stats == OR || stats == PIPE || stats == AND
 			|| stats == REDIRECTION)
 			handler_operator(list, line, &i, stats);
-		// else if (stats == PARENTHESIS)
-		// 	handler_parenthesis(list, line, &i, stats);
+		else if (stats == PARENTHESIS)
+			handler_parenthesis(list, line, &i, stats);
 		if (!*list)
 			printf("ft_spliter: No tokens added\n");
 	}

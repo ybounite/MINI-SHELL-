@@ -121,7 +121,7 @@ int								ft_lenword(char *str);
 /* -------------------------------------------------------------------------- */
 void							ft_spliter(t_env_lst **list, char *line);
 /* -------------------------------------------------------------------------- */
-/*                       FILE 	=	ft_node.c      				                 */
+/*                       FILE 	=	ft_node.c      					              */
 /* -------------------------------------------------------------------------- */
 t_env_lst						*ft_newnode(char *cmd, en_status_type state);
 void							lstadd_back(t_env_lst **head, t_env_lst *new);
@@ -143,7 +143,12 @@ void							builtin_export(char **args,
 									t_string *st_string);
 int								is_valid_key(char *s);
 void							execute_pipeline(t_string *st_string);
-// 
-char	**git_array(t_env_lst **list);
+
+int								is_builtin(char *cmd);
+void							execute_builtin(char **args,
+									t_string *st_string);
+int								has_pipe(t_env_lst *list);
+//
+char							**git_array(t_env_lst **list);
 
 #endif
