@@ -30,6 +30,10 @@ typedef enum
 	AND,               // &&
 	PARENTHESIS,       //()
 	REDIRECTION,       // >> << < >
+	INPUT_REDIRECTION,    // < for input redirection
+    OUTPUT_REDIRECTION,   // > for output redirection
+    APPEND_REDIRECTION,   // >> for append output redirection
+    HERE_DOCUMENT,
 	BUILTINS,          // echo -n cd pwd export unset env exit
 	DOUBLE_QUOTE = 34, // "
 	SINGLE_QUOTE = 39, // '
@@ -128,6 +132,9 @@ t_env_lst						*ft_newnode(char *cmd, en_status_type state);
 void							lstadd_back(t_env_lst **head, t_env_lst *new);
 void							ft_add_newtoken(t_env_lst **head, char *token,
 									en_status_type state);
+en_status_type	find_states(char *str);
+
+
 void							print_lst_tokens(t_env_lst *head);
 void							builtin_env(t_string *st_string);
 void							setup_signals(void);

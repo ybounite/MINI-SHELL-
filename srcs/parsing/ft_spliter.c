@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:48:04 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/19 15:21:06 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/19 18:54:33 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,18 @@ void	handler_words(t_env_lst **list, char *str, int *i, en_status_type state)
 	ft_add_newtoken(list, ptr, state);
 }
 
+en_status_type	find_states(char *str)
+{
+	if (!ft_strcmp(str, ">>"))
+		return (APPEND_REDIRECTION);
+	else if (!ft_strcmp(str, "<<"))
+		return (HERE_DOCUMENT);
+	else if (!ft_strcmp(str, "<"))
+		return (INPUT_REDIRECTION);
+	else
+		return (OUTPUT_REDIRECTION);
+}
+
 void	handler_operator(t_env_lst **list, char *str, int *i,
 		en_status_type state)
 {
@@ -130,6 +142,8 @@ void	handler_operator(t_env_lst **list, char *str, int *i,
 	while (str[*i] && str[*i] != SPACE)
 		ptr[index++] = str[(*i)++];
 	ptr[index] = '\0';
+	if (state == REDIRECTION)
+		state = find_states(ptr);
 	ft_add_newtoken(list, ptr, state);
 }
 

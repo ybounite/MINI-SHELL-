@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:45:08 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/18 15:38:55 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/04/19 17:03:34 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ struct s_string	*data_struc(void)
 
 	return (&data_struc);
 }
+
 static char	**duplicate_envp(char **envp)
 {
 	int		i;
@@ -46,6 +47,7 @@ static char	**duplicate_envp(char **envp)
 	new_envp[i] = NULL;
 	return (new_envp);
 }
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_string	st_string;
@@ -54,10 +56,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	st_string.g_envp = duplicate_envp(envp);
 	if (!st_string.g_envp)
-	{
-		perror("Failed to initialize environment");
-		return (1);
-	}
+		return (perror("Failed to initialize environment"), 1);
 	assign_signals_handler();
 	start_shell_session(st_string);
 	ft_free_split(st_string.g_envp);

@@ -42,7 +42,7 @@ OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
 CC = cc
 RM = rm -rf
-CFLAGS = -g
+CFLAGS = -g #-Wall -Wextra -Werror 
 INCLUDES = -I$(INC_DIR) -I$(LIBFT_DIR)
 
 all: $(OBJ_DIR) $(LIBFT) $(NAME)
