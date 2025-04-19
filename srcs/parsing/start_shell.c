@@ -16,7 +16,7 @@ void	strhandler_quotes(char *ptr, char *str, int *i, int *index)
 {
 	char	quots;
 
-	if (i - 1 > 0 && find_space(str[(*i) - 1]))
+	if (*i - 1 > 0 && find_space(str[(*i) - 1]))
 		ptr[(*index)++] = SPACE;
 	quots = str[*i];
 	ptr[(*index)++] = str[(*i)++];
