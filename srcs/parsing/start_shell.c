@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_shell.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/19 13:07:02 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/04/19 15:22:12 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,18 @@ void	strhandler_quotes(char *ptr, char *str, int *i, int *index)
 {
 	char	quots;
 
-	if (i - 1 > 0 && find_space(str[(*i) - 1]))
+	if (*i - 1 > 0 && find_space(str[(*i) - 1]))
 		ptr[(*index)++] = SPACE;
-	quots = str[*i];
+	if (isemtyqoutes(str, *i) && str[2])
+	{
+		(*i) += 2;
+		return ;
+	}
+	quots = str[(*i)];
 	ptr[(*index)++] = str[(*i)++];
 	while (str[*i] && str[*i] != quots)
 		ptr[(*index)++] = str[(*i)++];
+	// (*i)++;
 	ptr[(*index)++] = str[(*i)++];
 }
 // edite here
@@ -89,7 +95,7 @@ int	handle_input_syntax(t_string *st_string)
 		printf("Error: Failed to process input string.\n");
 		return (0);
 	}
-	// printf("%s\n", st_string->strcon);
+	printf("%s\n", st_string->strcon);
 	ft_spliter(&head, st_string->strcon);
 	if (!head)
 	{
@@ -97,7 +103,7 @@ int	handle_input_syntax(t_string *st_string)
 		return (0);
 	}
 	st_string->head = head;
-	// print_lst_tokens(head); // Debug print
+	print_lst_tokens(head); // Debug print
 	execute_command(st_string);
 	free_list(head);
 	return (1);
@@ -109,7 +115,6 @@ void	start_shell_session(t_string st_string)
 	{
 		st_string.line = get_line();
 		handle_input_syntax(&st_string);
-		// exectoction();
 		free(st_string.line);
 		free(st_string.strcon);
 		st_string.line = NULL;

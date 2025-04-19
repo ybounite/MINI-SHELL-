@@ -11,13 +11,13 @@ SRCSB = ft_lstmap_bonus.c ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_b
 	ft_lstdelone_bonus.c ft_lstclear_bonus.c ft_lstiter_bonus.c 
 
 NAME = libft.a
-
+RM = rm -f
 OBJECT = $(SRCS:.c=.o)
 
 OBJECTB = $(SRCSB:.c=.o)
 
 %.o : %.c
-	$(CC) $(CFLAGS) -c $^ -o $@
+	@$(CC) $(CFLAGS) -c $^ -o $@
 
 all : $(NAME)
 
@@ -28,10 +28,10 @@ bonus : $(NAME) $(OBJECTB)
 	@ar rcs $(NAME) $(OBJECTB) $(OBJECT)
 
 fclean : clean
-	rm -f $(NAME)
+	@$(RM) $(NAME)
 
 clean :
-	rm -f $(OBJECTB) $(OBJECT)
+	@$(RM) $(OBJECTB) $(OBJECT)
 
 re: fclean all
 

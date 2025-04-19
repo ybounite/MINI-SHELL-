@@ -107,6 +107,7 @@ char							*get_line(void);
 bool							is_operator(char c);
 bool							find_space(char c);
 bool							isquotes(char c);
+bool							isemtyqoutes(char *str, int i);
 void							ft_skip_whitespace(char *str, int *index);
 
 /* -------------------------------------------------------------------------- */

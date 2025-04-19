@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utlis.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 20:01:49 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/17 14:35:00 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/04/19 13:18:30 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,19 @@ void	ft_skip_whitespace(char *str, int *index)
 {
 	while (str[*index] && find_space(str[*index]))
 		(*index)++;
+}
+
+bool	isemtyqoutes(char *str, int i)
+{
+	char	qouts;
+	int		len;
+
+	len = 0;
+	qouts = str[i++];
+	while (str[i] && str[i] != qouts)
+	{
+		i++;
+		len++;
+	}
+	return (len == 0);
 }

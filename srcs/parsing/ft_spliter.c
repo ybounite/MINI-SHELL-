@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_spliter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:48:04 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/19 13:07:12 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/04/19 15:21:06 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,20 @@ void	handler_qoutes(t_env_lst **list, char *str, int *i,
 	index = 0;
 	qoutes = str[(*i)++];
 	ptr = malloc(lenofwords_qoutes(str, *i, qoutes) + 1);
-	while (str[*i] && str[*i] != qoutes)
-		ptr[index++] = str[(*i)++];
-	(*i)++;
 	while (str[*i] && str[*i] != SPACE)
 	{
-		ptr[index++] = str[(*i)++];
+		if (isquotes(str[*i]))
+			qoutes = str[(*i)++];
+		while (str[*i] && str[*i] != qoutes)
+			ptr[index++] = str[(*i)++];
+		(*i)++;
 	}
+	// while (str[*i] && str[*i] != SPACE)
+	// {
+	// 	if (str[*i] != '\'' || str[*i] != '\"')
+	// 		ptr[index++] = str[*i];
+	// 	(*i)++;
+	// }
 	ptr[index] = '\0';
 	ft_add_newtoken(list, ptr, state);
 }
@@ -151,10 +158,7 @@ void	ft_spliter(t_env_lst **list, char *line)
 
 	i = 0;
 	if (!line)
-	{
-		printf("ft_spliter: Empty line\n");
 		return ;
-	}
 	while (line[i])
 	{
 		while (line[i] && line[i] == SPACE)
