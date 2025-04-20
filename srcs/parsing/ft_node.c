@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:45:11 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/17 14:35:00 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/04/20 16:24:25 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	ft_add_newtoken(t_env_lst **head, char *token, en_status_type state)
 	new = ft_newnode(token, state);
 	if (!new)
 		return ;
-	if (!head || !*head)
-		printf("head is Emty \n");
+	// if (!head || !*head)
+	// 	printf("head is Emty \n");
 	lstadd_back(head, new);
 }

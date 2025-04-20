@@ -90,7 +90,8 @@ static void	handle_child_process(char **args, int prev_fd, int *pipe_fd,
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
 	}
-	// Execute the command
+	if (redirections(args) < 0)
+		exit(1);
 	if (is_builtin(args[0]))
 	{
 		execute_builtin(args, st_string);
@@ -185,7 +186,7 @@ void	execute_pipeline(t_string *st_string)
 		else
 		{
 			parent_pipe_fd = NULL;
-			if (list) // If there are more commands after this one
+			if (list)
 				parent_pipe_fd = pipe_fd;
 			handle_parent_process(&prev_fd, parent_pipe_fd, pid);
 			ft_free_split(args);

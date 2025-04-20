@@ -25,15 +25,15 @@
 
 typedef enum
 {
-	CMD,               // command
-	OR,                // ||
-	AND,               // &&
-	PARENTHESIS,       //()
-	REDIRECTION,       // >> << < >
-	INPUT_REDIRECTION,    // < for input redirection
-    OUTPUT_REDIRECTION,   // > for output redirection
-    APPEND_REDIRECTION,   // >> for append output redirection
-    HERE_DOCUMENT,
+	CMD,                // command
+	OR,                 // ||
+	AND,                // &&
+	PARENTHESIS,        //()
+	REDIRECTION,        // >> << < >
+	INPUT_REDIRECTION,  // < for input redirection
+	OUTPUT_REDIRECTION, // > for output redirection
+	APPEND_REDIRECTION, // >> for append output redirection
+	HERE_DOCUMENT,
 	BUILTINS,          // echo -n cd pwd export unset env exit
 	DOUBLE_QUOTE = 34, // "
 	SINGLE_QUOTE = 39, // '
@@ -126,14 +126,13 @@ int								ft_lenword(char *str);
 /* -------------------------------------------------------------------------- */
 void							ft_spliter(t_env_lst **list, char *line);
 /* -------------------------------------------------------------------------- */
-/*                       FILE 	=	ft_node.c      					              */
+/*                       FILE 	=	ft_node.c      							        */
 /* -------------------------------------------------------------------------- */
 t_env_lst						*ft_newnode(char *cmd, en_status_type state);
 void							lstadd_back(t_env_lst **head, t_env_lst *new);
 void							ft_add_newtoken(t_env_lst **head, char *token,
 									en_status_type state);
-en_status_type	find_states(char *str);
-
+en_status_type					find_states(char *str);
 
 void							print_lst_tokens(t_env_lst *head);
 void							builtin_env(t_string *st_string);
@@ -158,5 +157,8 @@ void							execute_builtin(char **args,
 int								has_pipe(t_env_lst *list);
 //
 char							**git_array(t_env_lst **list);
+int								redirections(char **args);
+int								handle_output_redirection(char **args, int *i);
+
 
 #endif

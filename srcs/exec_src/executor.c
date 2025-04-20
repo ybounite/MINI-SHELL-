@@ -46,7 +46,11 @@ void	execute_command(t_string *st_string)
 {
 	t_env_lst	*list;
 	char		**args;
+	int			saved_stdout;
+	int			saved_stdin;
 
+	saved_stdout = -1;
+	saved_stdin = -1;
 	if (!st_string->head)
 		return ;
 	list = st_string->head;
@@ -61,7 +65,20 @@ void	execute_command(t_string *st_string)
 	{
 		if (is_builtin(args[0]))
 		{
-			execute_builtin(args, st_string);
+			saved_stdout = dup(STDOUT_FILENO);
+			saved_stdin = dup(STDIN_FILENO);
+			if (redirections(args) >= 0)
+				execute_builtin(args, st_string);
+			if (saved_stdout != -1)
+			{
+				dup2(saved_stdout, STDOUT_FILENO);
+				close(saved_stdout);
+			}
+			if (saved_stdin != -1)
+			{
+				dup2(saved_stdin, STDIN_FILENO);
+				close(saved_stdin);
+			}
 			ft_free_split(args);
 			return ;
 		}

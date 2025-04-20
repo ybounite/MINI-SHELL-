@@ -15,6 +15,7 @@ SRCS = $(SRC_DIR)/signals.c \
        $(SRC_DIR)/utilis.c \
        $(EXEC_DIR)/executor.c \
        $(EXEC_DIR)/pipeline.c \
+       $(EXEC_DIR)/redirections.c \
        $(BUILTIN_DIR)/cd.c \
        $(BUILTIN_DIR)/echo.c \
        $(BUILTIN_DIR)/pwd.c \
