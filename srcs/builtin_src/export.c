@@ -107,10 +107,32 @@ static char	*extract_key(char *arg, int *key_len)
 
 static char	*create_entry(char *arg, int key_len)
 {
+	char	*value;
+	int		value_len;
+	char	*key_part;
+	char	*value_part;
+	char	*result;
+
 	if (arg[key_len] == '\0')
 		return (ft_strjoin(arg, "="));
-	else
-		return (ft_strdup(arg));
+	else if (arg[key_len] == '=')
+	{
+		// Handle the value part possibly containing quotes
+		value = arg + key_len + 1;
+		value_len = ft_strlen(value);
+		// If value is quoted, remove the quotes
+		if (value_len >= 2 && value[0] == '"' && value[value_len - 1] == '"')
+		{
+			// Create a new string: key= + value_without_quotes
+			key_part = ft_substr(arg, 0, key_len + 1);
+			value_part = ft_substr(value, 1, value_len - 2);
+			result = ft_strjoin(key_part, value_part);
+			free(key_part);
+			free(value_part);
+			return (result);
+		}
+	}
+	return (ft_strdup(arg));
 }
 
 static int	update_existing_entry(char *key, int key_len, char *entry,

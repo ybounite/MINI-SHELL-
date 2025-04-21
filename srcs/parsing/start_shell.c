@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/20 16:23:54 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/04/21 19:08:41 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	handle_input_syntax(t_string *st_string)
 		return (0);
 	}
 	st_string->head = head;
-	// print_lst_tokens(head); // Debug print
+	print_lst_tokens(head); // Debug print
 	execute_command(st_string);
 	free_list(head);
 	return (1);
