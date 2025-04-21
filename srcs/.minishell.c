@@ -40,7 +40,7 @@ int	main(int argc, char **argv, char **envp)
     st_string.g_envp = duplicate_envp(envp);
     if (!st_string.g_envp)
     {
-        perror("Failed to initialize environment");
+        ("Failed to initialize environment");
         return (1);
     }
     setup_signals();

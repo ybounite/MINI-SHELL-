@@ -41,7 +41,7 @@ SRCS += $(SRC_PARS)
 # Object files (replacing the directory path with OBJ_DIR)
 OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
-CC = cc
+CC = cc -Wall -Wextra -Werror
 RM = rm -rf
 CFLAGS = -g #-Wall -Wextra -Werror 
 INCLUDES = -I$(INC_DIR) -I$(LIBFT_DIR)
@@ -70,7 +70,7 @@ $(NAME): $(OBJS) $(LIBFT)
 clean:
 	@$(RM) $(OBJ_DIR)
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) clean
-	@$(RM) $(NAME)
+	# @$(RM) $(NAME)
 	@echo "\033[1;34m✔\033[0m Clean completed."
 
 fclean: clean

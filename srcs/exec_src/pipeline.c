@@ -6,6 +6,7 @@ static char	*find_path(char *cmd, char **envp)
 	char	*path_env;
 	char	*full_path;
 	int		i;
+	(void)envp;
 
 	// Don't search PATH for commands that contain /
 	if (ft_strchr(cmd, '/'))
@@ -59,7 +60,7 @@ int	is_builtin(char *cmd)
 void	execute_builtin(char **args, t_string *st_string)
 {
 	if (!ft_strcmp(args[0], "echo"))
-		builtin_echo(args);
+		builtin_echo(args, st_string);
 	else if (!ft_strcmp(args[0], "cd"))
 		builtin_cd(args, st_string);
 	else if (!ft_strcmp(args[0], "pwd"))
@@ -78,6 +79,7 @@ static void	handle_child_process(char **args, int prev_fd, int *pipe_fd,
 		t_string *st_string)
 {
 	char	*cmd_path;
+	char	*env_value;
 
 	if (prev_fd != -1)
 	{
@@ -92,6 +94,18 @@ static void	handle_child_process(char **args, int prev_fd, int *pipe_fd,
 	}
 	if (redirections(args) < 0)
 		exit(1);
+	if (args[0] && args[0][0] == '$')
+	{
+		env_value = get_env_value(args[0], st_string);
+		if (!env_value || env_value[0] == '\0')
+		{
+			free(env_value);
+			ft_free_split(args);
+			exit(127);
+		}
+		free(args[0]);
+		args[0] = env_value;
+	}
 	if (is_builtin(args[0]))
 	{
 		execute_builtin(args, st_string);
@@ -116,7 +130,9 @@ static void	handle_child_process(char **args, int prev_fd, int *pipe_fd,
 		}
 		execve(cmd_path, args, st_string->g_envp);
 		free(cmd_path);
-		perror("execve");
+		// perror("execve");
+		strerror(errno);
+		printf("%s: %s\n", args[0], strerror(errno));
 		ft_free_split(args);
 		exit(1);
 	}
