@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_shell.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/21 19:08:41 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/04/22 19:03:19 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	strhandler_quotes(char *ptr, char *str, int *i, int *index)
 	ptr[(*index)++] = str[(*i)++];
 	while (str[*i] && str[*i] != quots)
 		ptr[(*index)++] = str[(*i)++];
-	// (*i)++;
 	ptr[(*index)++] = str[(*i)++];
 }
 // edite here
@@ -35,8 +34,6 @@ void	strhandler_operator(char *ptr, char *str, int *i, int *index)
 {
 	char	operator;
 
-	if (!str || !ptr || !i || !index || !str[*i]) // Validate inputs
-		return ;
 	ptr[(*index)++] = SPACE;
 	operator= str[*i];
 	while (str[*i] && str[*i] == operator)
@@ -98,10 +95,7 @@ int	handle_input_syntax(t_string *st_string)
 	// printf("%s\n", st_string->strcon);
 	ft_spliter(&head, st_string->strcon);
 	if (!head)
-	{
-		printf("Error: No tokens generated.\n");
 		return (0);
-	}
 	st_string->head = head;
 	print_lst_tokens(head); // Debug print
 	execute_command(st_string);
@@ -111,7 +105,7 @@ int	handle_input_syntax(t_string *st_string)
 
 void	start_shell_session(t_string st_string)
 {
-	while (1)
+	while (true)
 	{
 		st_string.line = get_line();
 		handle_input_syntax(&st_string);

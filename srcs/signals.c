@@ -12,5 +12,5 @@ void	sigint_handler(int sig)
 void	setup_signals(void)
 {
 	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, SIG_IGN); // Ctrl+
+	signal(SIGQUIT, SIG_IGN);
 }

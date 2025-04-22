@@ -47,6 +47,7 @@ typedef enum
 	HERE_DOCUMENT,      // <<
 	BUILTINS,           // builtin commands
 	DOUBLE_QUOTE = 34,  // "
+	DOLLAR = 36, // $
 	SINGLE_QUOTE = 39,  // '
 	ASTERISK = 42,      // *
 	PIPE = 124,         // |
@@ -64,17 +65,17 @@ typedef struct s_environement_list
 /* Main shell data structure */
 typedef struct s_string
 {
-	char *line;          // Input command line
-	char *strcon;        // Processed command line
-	char **command;      // Command arguments
-	bool is_error;       // Error flag
-	bool is_pipe;        // Contains pipe operator
-	bool is_redirection; // Contains redirection
-	bool is_builtin;     // Is a builtin command
-	bool is_parenthesis; // Contains parentheses
-	bool is_heredoc;     // Contains heredoc
-	int exit_status;     // Command exit status
-	char **g_envp;       // Environment variables
+	char	*line;          // Input command line
+	char	*strcon;        // Processed command line
+	char	**command;      // Command arguments
+	bool	dis_error;       // Error flag
+	bool	is_pipe;        // Contains pipe operator
+	bool	is_redirection; // Contains redirection
+	bool	is_builtin;     // Is a builtin command
+	bool	is_parenthesis; // Contains parentheses
+	bool	is_heredoc;     // Contains heredoc
+	int		exit_status;     // Command exit status
+	char	**g_envp;       // Environment variables
 	t_env_lst *head;     // Token list head
 }								t_string;
 
@@ -154,6 +155,9 @@ void							execute_builtin(char **args,
 int								has_pipe(t_env_lst *list);
 char							**git_array(t_env_lst **list);
 
+
+void							heandler_dollar(t_env_lst **list, char *str, int *i,
+									en_status_type state);
 /* ************************************************************************** */
 /*                              REDIRECTION HANDLING                           */
 /* ************************************************************************** */

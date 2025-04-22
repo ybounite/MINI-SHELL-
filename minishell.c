@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:45:08 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/19 17:03:34 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/22 18:46:28 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,5 @@ int	main(int argc, char **argv, char **envp)
 	assign_signals_handler();
 	start_shell_session(st_string);
 	ft_free_split(st_string.g_envp);
+	return (0);
 }

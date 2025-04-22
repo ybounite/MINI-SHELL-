@@ -130,7 +130,7 @@ static void	handle_child_process(char **args, int prev_fd, int *pipe_fd,
 		}
 		execve(cmd_path, args, st_string->g_envp);
 		free(cmd_path);
-		// perror("execve");
+		perror("execve");
 		strerror(errno);
 		printf("%s: %s\n", args[0], strerror(errno));
 		ft_free_split(args);

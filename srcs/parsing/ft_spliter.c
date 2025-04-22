@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:48:04 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/19 18:54:33 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/22 18:20:02 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ en_status_type	find_type_state(char c)
 		return (REDIRECTION);
 	else if (c == '(' || c == ')')
 		return (PARENTHESIS);
+	else if (c == '$')
+		return (DOLLAR);
 	else
 		return (CMD);
-	// else if (c == '*')
-	// 	return (ASTERISK);
 }
 
 int	lenofwords_qoutes(char *str, int start, char qoute)
@@ -63,6 +63,13 @@ void	handler_qoutes(t_env_lst **list, char *str, int *i,
 	index = 0;
 	qoutes = str[(*i)++];
 	ptr = malloc(lenofwords_qoutes(str, *i, qoutes) + 1);
+	if (qoutes == DOUBLE_QUOTE && str[*i] == DOLLAR)
+	{
+		index = *i;
+		heandler_dollar(list, str, &index, DOLLAR);
+		*i = index;
+		return ;
+	}
 	while (str[*i] && str[*i] != SPACE)
 	{
 		if (isquotes(str[*i]))
@@ -71,12 +78,6 @@ void	handler_qoutes(t_env_lst **list, char *str, int *i,
 			ptr[index++] = str[(*i)++];
 		(*i)++;
 	}
-	// while (str[*i] && str[*i] != SPACE)
-	// {
-	// 	if (str[*i] != '\'' || str[*i] != '\"')
-	// 		ptr[index++] = str[*i];
-	// 	(*i)++;
-	// }
 	ptr[index] = '\0';
 	ft_add_newtoken(list, ptr, state);
 }
@@ -86,7 +87,22 @@ int	lentword(char *str, int start)
 	int	len;
 
 	len = 0;
-	while (str[start] && str[start] != SPACE)
+	while (str[start] && str[start] != SPACE && str[start] != '=')
+	{
+		start++;
+		len++;
+	}
+	return (++len);
+}
+
+int	lendollar(char *str, int start)
+{
+	int len;
+
+	len = 0;
+	if (str[start] == '?')
+		return (1);
+	while (str[start] && (ft_isalnum(str[start]) || str[start] == '_'))// $""
 	{
 		start++;
 		len++;
@@ -104,15 +120,13 @@ void	handler_words(t_env_lst **list, char *str, int *i, en_status_type state)
 	len = lentword(str, *i);
 	if (len == 0)
 		return ;
-	ptr = malloc(lentword(str, *i) + 1);
+	ptr = malloc((len + 1) * sizeof(char));
 	if (!ptr)
 		return ;
-	while (str[*i] && str[*i] != SPACE)
-	{
-		// while (str[*i] && (str[*i] == '"' || str[*i] == '\''))
-		// 	(*i)++;
+	while (str[*i] && str[*i] != SPACE && str[*i] != '=')
 		ptr[index++] = str[(*i)++];
-	}
+	if (str[*i] && str[*i] != SPACE)
+		ptr[index++] = str[(*i)++];
 	ptr[index] = '\0';
 	ft_add_newtoken(list, ptr, state);
 }
@@ -164,6 +178,24 @@ void	handler_parenthesis(t_env_lst **list, char *str, int *i,
 	(*i)++;
 	ft_add_newtoken(list, ptr, state);
 }
+
+void	heandler_dollar(t_env_lst **list, char *str, int *i,
+		en_status_type state)
+{
+	char	*ptr;
+	int		index;
+	int		len;
+
+	index = 0;
+	len = lendollar(str, ++(*i));
+	ptr = malloc((len + 1) * sizeof(char));
+	if (!ptr)
+		return ;
+	while (index < len && str[*i])
+		ptr[index++] = str[(*i)++];
+	ptr[index] = '\0';
+	ft_add_newtoken(list, ptr, state);
+}
 // edite here
 void	ft_spliter(t_env_lst **list, char *line)
 {
@@ -185,6 +217,8 @@ void	ft_spliter(t_env_lst **list, char *line)
 		else if (stats == OR || stats == PIPE || stats == AND
 			|| stats == REDIRECTION)
 			handler_operator(list, line, &i, stats);
+		else if (stats == DOLLAR)
+			heandler_dollar(list, line, &i, stats);
 		// else if (stats == PARENTHESIS)
 		// 	handler_parenthesis(list, line, &i, stats);
 		if (!*list)
