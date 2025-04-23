@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
+/*   Updated: 2025/04/23 09:11:42 by ybounite         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -68,7 +80,7 @@ typedef struct s_string
 	char	*line;          // Input command line
 	char	*strcon;        // Processed command line
 	char	**command;      // Command arguments
-	bool	dis_error;       // Error flag
+	bool	is_error;       // Error flag
 	bool	is_pipe;        // Contains pipe operator
 	bool	is_redirection; // Contains redirection
 	bool	is_builtin;     // Is a builtin command
@@ -82,12 +94,12 @@ typedef struct s_string
 /* Command execution structure */
 typedef struct s_exec_cmd
 {
-	char *full_path;  // Full command path
-	char *path;       // Command path
-	char **dirs;      // Directory paths
-	pid_t pid;        // Process ID
-	char *cmd_path;   // Command path
-	char **cmd_flags; // Command flags
+	char	*full_path;  // Full command path
+	char	*path;       // Command path
+	char	**dirs;      // Directory paths
+	pid_t	pid;        // Process ID
+	char	*cmd_path;   // Command path
+	char	**cmd_flags; // Command flags
 }								t_exec_cmd;
 
 /* ************************************************************************** */

@@ -70,12 +70,11 @@ $(NAME): $(OBJS) $(LIBFT)
 clean:
 	@$(RM) $(OBJ_DIR)
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) clean
-	# @$(RM) $(NAME)
-	@echo "\033[1;34m✔\033[0m Clean completed."
+	@echo "\033[32m✔\033[0m Clean completed."
 
 fclean: clean
 	@$(RM) $(NAME)
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) fclean
-	@echo "\033[1;31m✔\033[0m Full clean completed."
+	@echo "\033[32m✔\033[0m Full clean completed."
 
 re: fclean all

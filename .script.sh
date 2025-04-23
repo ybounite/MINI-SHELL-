@@ -30,5 +30,5 @@ for i in {1..3}; do
     done
 done
 
-printf "$LINE_UP$CLEAR_LINE$GREEN$BOLD✔$RESET Compilation finished successfully!$WHITE$BOLD\n"
+printf "$LINE_UP$CLEAR_LINE$GREEN$BOLD✔ Compilation finished successfully!$WHITE$BOLD$RESET\n"
 
