@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/22 19:03:19 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/24 21:04:14 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,23 +47,19 @@ void	strhandler_operator(char *ptr, char *str, int *i, int *index)
 
 void	handlerword(char *ptr, char *line, int *index, int *i)
 {
-	if (*i - 1 > 0 && find_space(line[*i - 1]))
+	if (line[*i] && *i - 1 > 0 && find_space(line[*i - 1]))
 		ptr[(*index)++] = SPACE;
-	ptr[(*index)++] = line[(*i)++];
+	if (line[*i])
+		ptr[(*index)++] = line[(*i)++];
 }
 
-char	*handler_string(char *line)
+char	*handler_string(char *line, int size)
 {
 	char	*ptr;
 	int		index;
 	int		i;
-	int		size;
 
-	i = 0;
-	index = 0;
-	size = ft_lenword(line);
-	if (size < 0)
-		return (NULL);
+	(1) && (i = 0), (index = 0);
 	ptr = malloc(size + 1 * sizeof(char));
 	if (!ptr)
 		return (NULL);
@@ -86,18 +82,19 @@ int	handle_input_syntax(t_string *st_string)
 	t_env_lst	*head;
 
 	head = NULL;
-	st_string->strcon = handler_string(st_string->line);
+	data_struc()->is_error = 0;
+	st_string->size = ft_lenword(st_string->line);
+	if (data_struc()->is_error || st_string->size <= 0)
+		return (printf("Error in size : %d\n", st_string->size), 0);
+	st_string->strcon = handler_string(st_string->line, st_string->size);
 	if (!st_string->strcon)
-	{
-		printf("Error: Failed to process input string.\n");
-		return (0);
-	}
-	// printf("%s\n", st_string->strcon);
-	ft_spliter(&head, st_string->strcon);
+		return (printf("Error: Failed to process input string.\n"), 0);
+	// printf("size : => %zu\n", ft_strlen(st_string->strcon));
+	ft_spliter(&head, st_string->strcon);// problem in spliter 'qoutes'
 	if (!head)
 		return (0);
 	st_string->head = head;
-	print_lst_tokens(head); // Debug print
+	print_lst_tokens(st_string->head); // Debug print
 	execute_command(st_string);
 	free_list(head);
 	return (1);
@@ -112,5 +109,6 @@ void	start_shell_session(t_string st_string)
 		free(st_string.line);
 		free(st_string.strcon);
 		st_string.line = NULL;
+		st_string.strcon = NULL;
 	}
 }

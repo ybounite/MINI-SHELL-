@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gitline.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:41:09 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/17 14:35:00 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/04/24 20:23:32 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*get_line()
 	line = readline(MINISPELL);
 	if (!line)
 	{
-		printf("exit\n");//
+		printf("exit\n");
 		rl_clear_history();
 		exit(0);
 	}

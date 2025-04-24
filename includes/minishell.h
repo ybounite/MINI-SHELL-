@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/23 09:11:42 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/24 14:37:25 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_string
 {
 	char	*line;          // Input command line
 	char	*strcon;        // Processed command line
+	int		size;
 	char	**command;      // Command arguments
 	bool	is_error;       // Error flag
 	bool	is_pipe;        // Contains pipe operator
@@ -140,7 +141,7 @@ int								is_valid_key(char *s);
 /* ************************************************************************** */
 /* Lexical Analysis */
 char							*get_line(void);
-char							*handler_string(char *line);
+char							*handler_string(char *line, int size);
 void							ft_spliter(t_env_lst **list, char *line);
 en_status_type					find_type_state(char c);
 en_status_type					find_states(char *str);
