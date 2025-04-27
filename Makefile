@@ -4,6 +4,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 # Directories
 SRC_DIR = srcs
+MEMORY_DIR = $(SRC_DIR)/memory
 BUILTIN_DIR = $(SRC_DIR)/builtin_src
 EXEC_DIR = $(SRC_DIR)/exec_src
 PARSING_DIR = $(SRC_DIR)/parsing
@@ -11,8 +12,7 @@ OBJ_DIR = obj
 INC_DIR = includes
 
 # Source files
-SRCS = $(SRC_DIR)/signals.c \
-       $(SRC_DIR)/utilis.c \
+SRCS = $(SRC_DIR)/utilis.c \
        $(EXEC_DIR)/executor.c \
        $(EXEC_DIR)/pipeline.c \
        $(EXEC_DIR)/redirections.c \
@@ -23,7 +23,9 @@ SRCS = $(SRC_DIR)/signals.c \
        $(BUILTIN_DIR)/env.c \
        $(BUILTIN_DIR)/unset.c \
        $(BUILTIN_DIR)/export.c
-	   
+
+SRC_MEM = $(MEMORY_DIR)/allocate_data.c
+
 # Parsing source files
 SRC_PARS = $(PARSING_DIR)/minishell.c \
            $(PARSING_DIR)/lexer_handler_qoutes.c \
@@ -42,6 +44,7 @@ SRC_PARS = $(PARSING_DIR)/minishell.c \
 
 # Combine all source files
 SRCS += $(SRC_PARS)
+SRCS += $(SRC_MEM)
 
 # Object files (replacing the directory path with OBJ_DIR)
 OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
@@ -59,6 +62,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)/builtin_src
 	@mkdir -p $(OBJ_DIR)/exec_src
 	@mkdir -p $(OBJ_DIR)/parsing
+	@mkdir -p $(OBJ_DIR)/memory
 
 $(LIBFT):
 	@make --no-print-directory -C $(LIBFT_DIR)
