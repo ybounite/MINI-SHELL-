@@ -6,13 +6,13 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:45:11 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/24 20:59:37 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/27 17:04:47 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_env_lst	*ft_newnode(char *cmd, en_status_type state)
+t_env_lst	*ft_newnode(char *cmd, en_status state)
 {
 	t_env_lst *new;
 
@@ -53,7 +53,7 @@ void print_lst_tokens(t_env_lst *head)
 	}
 }
 
-void	ft_add_newtoken(t_env_lst **head, char *token, en_status_type state)
+void	ft_add_newtoken(t_env_lst **head, char *token, en_status state)
 {
 	t_env_lst	*new;
 	new = ft_newnode(token, state);
