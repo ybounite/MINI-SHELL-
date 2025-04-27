@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 07:46:24 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/24 16:04:33 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/27 11:15:49 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,24 @@ int	lenoperator(char *str, int *i)
 		counter++;
 	return (counter);
 }
+// bool	check_error(char *str)
+// {
+// 	int	i;
 
+// 	i = 0;
+// 	while (str)
+// 	{
+
+// 		str++;
+// 	}
+	
+// }
 int	ft_lenword(char *str)
 {
 	int	(quote_len), (len), (i);
 	(1) && (len = 0), (i = 0);
+	// if (check_error(str))
+	// 	return (-1);
 	while (str[i])
 	{
 		ft_skip_whitespace(str, &i);

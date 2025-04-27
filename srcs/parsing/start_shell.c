@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/24 21:04:14 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/27 16:33:24 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,17 +85,17 @@ int	handle_input_syntax(t_string *st_string)
 	data_struc()->is_error = 0;
 	st_string->size = ft_lenword(st_string->line);
 	if (data_struc()->is_error || st_string->size <= 0)
-		return (printf("Error in size : %d\n", st_string->size), 0);
+		return (0);
 	st_string->strcon = handler_string(st_string->line, st_string->size);
+	// printf("%s\n", st_string->strcon);
 	if (!st_string->strcon)
-		return (printf("Error: Failed to process input string.\n"), 0);
-	// printf("size : => %zu\n", ft_strlen(st_string->strcon));
+		return (0);
 	ft_spliter(&head, st_string->strcon);// problem in spliter 'qoutes'
 	if (!head)
 		return (0);
 	st_string->head = head;
 	print_lst_tokens(st_string->head); // Debug print
-	execute_command(st_string);
+	execute_command(st_string);// error valgrid
 	free_list(head);
 	return (1);
 }

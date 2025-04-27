@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:45:08 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/24 20:20:28 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/27 16:37:10 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,6 @@ int	main(int argc, char **argv, char **envp)
 	st_string.g_envp = duplicate_envp(envp);
 	assign_signals_handler();
 	start_shell_session(st_string);
-	int i = 0;
-	while (st_string.g_envp[i])
-	{
-		free(st_string.g_envp[i]);
-		i++;
-	}
-	free(st_string.g_envp[i]);
-	// ft_free_split(st_string.g_envp);
+	ft_free_split(st_string.g_envp);
 	return (0);
 }
