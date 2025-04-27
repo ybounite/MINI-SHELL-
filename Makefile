@@ -26,10 +26,15 @@ SRCS = $(SRC_DIR)/signals.c \
 	   
 # Parsing source files
 SRC_PARS = $(PARSING_DIR)/minishell.c \
+           $(PARSING_DIR)/lexer_handler_qoutes.c \
+           $(PARSING_DIR)/lexer_handlers_operator.c \
+           $(PARSING_DIR)/lexer_handlers_word.c \
+           $(PARSING_DIR)/lexer_dollar_handlers.c \
            $(PARSING_DIR)/gitline.c \
            $(PARSING_DIR)/ft_utlis.c \
            $(PARSING_DIR)/ft_lenstr.c \
            $(PARSING_DIR)/ft_spliter.c \
+           $(PARSING_DIR)/token_type_utils.c \
            $(PARSING_DIR)/ft_node.c \
            $(PARSING_DIR)/ft_free.c \
            $(PARSING_DIR)/manage_signal.c \
