@@ -6,15 +6,15 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:41:09 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/24 20:23:32 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/27 16:26:38 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*get_line()
+char	*get_line(void)
 {
-	char *line;
+	char	*line;
 
 	line = readline(MINISPELL);
 	if (!line)
