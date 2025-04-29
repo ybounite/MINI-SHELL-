@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/29 10:29:58 by bamezoua          #+#    #+#             */
+/*   Updated: 2025/04/29 10:31:32 by bamezoua         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int	is_n_flag(char *s)
@@ -16,34 +28,34 @@ char	*get_env_value(char *var_name, t_string *st_string)
 {
 	int		i;
 	int		len;
+	char	*name;
 
 	if (!var_name || !st_string || !st_string->g_envp)
 		return (ft_strdup(""));
-	
 	if (var_name[0] == '$')
-		var_name++;
-	len = ft_strlen(var_name);
+		name = var_name + 1;
+	else
+		name = var_name;
+	len = ft_strlen(name);
 	if (len == 0)
 		return (ft_strdup(""));
-		
 	i = 0;
 	while (st_string->g_envp[i])
 	{
-		if (ft_strncmp(st_string->g_envp[i], var_name, len) == 0
+		if (ft_strncmp(st_string->g_envp[i], name, len) == 0
 			&& st_string->g_envp[i][len] == '=')
 		{
 			return (ft_strdup(st_string->g_envp[i] + len + 1));
 		}
 		i++;
 	}
-	
 	return (ft_strdup(""));
 }
 
 void	builtin_echo(char **args, t_string *st_string)
 {
-	int		i;
-	int		n_flag;
+	int	i;
+	int	n_flag;
 
 	i = 1;
 	n_flag = 0;
@@ -56,8 +68,6 @@ void	builtin_echo(char **args, t_string *st_string)
 	while (args[i])
 	{
 		printf("%s", args[i]);
-		// if (args[i + 1])
-		// 	printf(" ");
 		i++;
 	}
 	if (!n_flag)

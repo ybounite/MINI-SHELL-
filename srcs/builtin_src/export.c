@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/29 10:33:03 by bamezoua          #+#    #+#             */
+/*   Updated: 2025/04/29 10:44:49 by bamezoua         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 static int	env_len(t_string *st_string)
@@ -13,9 +25,11 @@ static int	env_len(t_string *st_string)
 static void	sort_env(char **env)
 {
 	char	*tmp;
+	size_t	len_i;
+	size_t	len_j;
+	int		i;
+	int		j;
 
-	int i, j;
-	size_t len_i, len_j;
 	i = 0;
 	while (env[i])
 	{
@@ -51,8 +65,9 @@ static void	sort_env(char **env)
 static char	**create_env_copy(t_string *st_string)
 {
 	char	**copy;
+	int		i;
+	int		size;
 
-	int i, size;
 	size = env_len(st_string);
 	copy = malloc(sizeof(char *) * (size + 1));
 	if (!copy)
@@ -115,16 +130,13 @@ static char	*create_entry(char *arg, int key_len)
 	char	*result;
 
 	if (arg[key_len] == '\0')
-		return (ft_strjoin(arg, "="));
+		return (ft_strdup(arg));
 	else if (arg[key_len] == '=')
 	{
-		// Handle the value part possibly containing quotes
 		value = arg + key_len + 1;
 		value_len = ft_strlen(value);
-		// If value is quoted, remove the quotes
 		if (value_len >= 2 && value[0] == '"' && value[value_len - 1] == '"')
 		{
-			// Create a new string: key= + value_without_quotes
 			key_part = ft_substr(arg, 0, key_len + 1);
 			value_part = ft_substr(value, 1, value_len - 2);
 			result = ft_strjoin(key_part, value_part);
@@ -149,6 +161,7 @@ static int	update_existing_entry(char *key, int key_len, char *entry,
 		{
 			free(st_string->g_envp[i]);
 			st_string->g_envp[i] = entry;
+			data_struc()->g_envp = st_string->g_envp;
 			return (1);
 		}
 		i++;
@@ -179,6 +192,7 @@ static void	add_new_entry(char *entry, t_string *st_string)
 	new_env[len + 1] = NULL;
 	free(st_string->g_envp);
 	st_string->g_envp = new_env;
+	data_struc()->g_envp = new_env;
 }
 
 static void	add_or_update(char *arg, t_string *st_string)
@@ -209,7 +223,7 @@ static void	add_or_update(char *arg, t_string *st_string)
 
 void	builtin_export(char **args, t_string *st_string)
 {
-	int i;
+	int	i;
 
 	if (!args[1])
 	{

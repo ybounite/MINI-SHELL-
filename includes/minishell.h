@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/27 18:40:50 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/29 10:02:43 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 /*                                   INCLUDES                                */
 /* ************************************************************************* */
 # include "../libraries/libft/libft.h"
+# include <dirent.h>
+# include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
 # include <readline/history.h>
@@ -29,7 +31,6 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include <errno.h>
 
 /* ************************************************************************* */
 /*                                   DEFINES                                 */
@@ -48,19 +49,19 @@
 /* Token types for lexical analysis */
 typedef enum en_type
 {
-	CMD,// command
-	REDIRECTION,// generic redirection
-	INPUT_REDIRECTION,// <
-	OUTPUT_REDIRECTION,// >
+	CMD,                // command
+	REDIRECTION,        // generic redirection
+	INPUT_REDIRECTION,  // <
+	OUTPUT_REDIRECTION, // >
 	APPEND_REDIRECTION, // >>
-	HERE_DOCUMENT,// <<
-	BUILTINS, // builtin commands
-	DOUBLE_QUOTE = 34,// "
-	DOLLAR = 36, // $
-	SINGLE_QUOTE = 39,// '
-	ASTERISK = 42, // *
-	PIPE = 124, // |
-}							en_status;
+	HERE_DOCUMENT,      // <<
+	BUILTINS,           // builtin commands
+	DOUBLE_QUOTE = 34,  // "
+	DOLLAR = 36,        // $
+	SINGLE_QUOTE = 39,  // '
+	ASTERISK = 42,      // *
+	PIPE = 124,         // |
+}								en_status;
 
 /* Linked list structure for token stream */
 typedef struct s_environement_list
@@ -69,25 +70,25 @@ typedef struct s_environement_list
 	bool						cat;
 	char						*value;
 	struct s_environement_list	*next;
-}							t_env_lst;
+}								t_env_lst;
 
 /* Main shell data structure */
 typedef struct s_string
 {
-	char	*line;
-	char	*strcon;
-	int		size;
-	char	**command;
-	bool	is_error;
-	bool	is_pipe;
-	bool	is_redirection;
-	bool	is_builtin;
-	bool	is_parenthesis;
-	bool	is_heredoc;
-	int		exit_status;
-	char	**g_envp;
-	t_env_lst *head;
-}							t_string;
+	char						*line;
+	char						*strcon;
+	int							size;
+	char						**command;
+	bool						is_error;
+	bool						is_pipe;
+	bool						is_redirection;
+	bool						is_builtin;
+	bool						is_parenthesis;
+	bool						is_heredoc;
+	int							exit_status;
+	char						**g_envp;
+	t_env_lst					*head;
+}								t_string;
 
 /* Command execution structure */
 /*typedef struct s_exec_cmd
@@ -104,37 +105,37 @@ typedef struct s_string
 /*                              GLOBAL FUNCTIONS                              */
 /* -------------------------------------------------------------------------- */
 
-struct s_string				*data_struc(void);
+struct s_string					*data_struc(void);
 
 /* -------------------------------------------------------------------------- */
 /*                              MEMORY MANAGEMENT                             */
 /* -------------------------------------------------------------------------- */
-void						free_list(t_env_lst *head);
-void						ft_free_split(char **split);
+void							free_list(t_env_lst *head);
+void							ft_free_split(char **split);
 
 /* -------------------------------------------------------------------------- */
 /*                                SIGNAL HANDLING                             */
 /* -------------------------------------------------------------------------- */
 
-void						assign_signals_handler(void);
-void						setup_signals(void);
-void						handler(int signum);
+void							assign_signals_handler(void);
+void							setup_signals(void);
+void							handler(int signum);
 
 /* -------------------------------------------------------------------------- */
 /*                                STRING UTILITIES                            */
 /* -------------------------------------------------------------------------- */
 
-char						*ft_strjoin_free(char *s1, char *s2);
-int							ft_strcmp(const char *s1, const char *s2);
-bool						is_operator(char c);
-bool						find_space(char c);
-bool						isquotes(char c);
-bool						isemtyqoutes(char *str, int i);
-void						ft_skip_whitespace(char *str, int *index);
-int							skip_strqoutes(char *str, int *inedx,
-								char quotes);
-int							ft_lenword(char *str);
-int							is_valid_key(char *s);
+char							*ft_strjoin_free(char *s1, char *s2);
+int								ft_strcmp(const char *s1, const char *s2);
+bool							is_operator(char c);
+bool							find_space(char c);
+bool							isquotes(char c);
+bool							isemtyqoutes(char *str, int i);
+void							ft_skip_whitespace(char *str, int *index);
+int								skip_strqoutes(char *str, int *inedx,
+									char quotes);
+int								ft_lenword(char *str);
+int								is_valid_key(char *s);
 
 /* -------------------------------------------------------------------------- */
 /*                               PARSER FUNCTIONS                             */
@@ -144,87 +145,89 @@ int							is_valid_key(char *s);
 /* -------------------------------------------------------------------------- */
 /*                               allocate_data.c                              */
 /* -------------------------------------------------------------------------- */
-void						*ft_malloc(size_t size, short option);
-void						memory_released(t_list **head);
+void							*ft_malloc(size_t size, short option);
+void							memory_released(t_list **head);
 
 /* -------------------------------------------------------------------------- */
 /*                              get_line.c                                    */
 /* -------------------------------------------------------------------------- */
-char						*get_line(void);
+char							*get_line(void);
 
-
-char						*handler_string(char *line, int size);
-void						ft_spliter(t_env_lst **list, char *line);
+char							*handler_string(char *line, int size);
+void							ft_spliter(t_env_lst **list, char *line);
 
 /* -------------------------------------------------------------------------- */
 /*                              token_type_utils.c                            */
 /* -------------------------------------------------------------------------- */
-en_status					get_redirection_type_from_str(char *str);
-en_status					get_token_type_from_char(char c);
+en_status						get_redirection_type_from_str(char *str);
+en_status						get_token_type_from_char(char c);
 
 /* Token Management */
-t_env_lst					*ft_newnode(char *cmd, en_status state);
-void						lstadd_back(t_env_lst **head, t_env_lst *new);
-void						ft_add_newtoken(t_env_lst **head, char *token,
-								en_status state);
-void						print_lst_tokens(t_env_lst *head);
+t_env_lst						*ft_newnode(char *cmd, en_status state);
+void							lstadd_back(t_env_lst **head, t_env_lst *new);
+void							ft_add_newtoken(t_env_lst **head, char *token,
+									en_status state);
+void							print_lst_tokens(t_env_lst *head);
 
 /* Command Processing */
-int							handle_input_syntax(t_string *st_string);
-void						start_shell_session(t_string input);
+int								handle_input_syntax(t_string *st_string);
+void							start_shell_session(t_string input);
 
 /* -------------------------------------------------------------------------- */
 /*                              llexer_handlers_word.c                        */
 /* -------------------------------------------------------------------------- */
-int							lentword(char *str, int start);
-void						handler_words(t_env_lst **list, char *str, int *i,
-								en_status state);
+int								lentword(char *str, int start);
+void							handler_words(t_env_lst **list, char *str,
+									int *i, en_status state);
 
 /* -------------------------------------------------------------------------- */
 /*                              lexer_handler_qoutes.c                        */
 /* -------------------------------------------------------------------------- */
-void	handler_operator(t_env_lst **list, char *str, int *i, en_status state);
+void							handler_operator(t_env_lst **list, char *str,
+									int *i, en_status state);
 
 /* -------------------------------------------------------------------------- */
 /*                              lexer_handler_qoutes.c                        */
 /* -------------------------------------------------------------------------- */
-int							lenofwords_qoutes(char *str, int start);
-void						handler_qoutes(t_env_lst **list, char *str, int *i,
-								en_status state);
-
+int								lenofwords_qoutes(char *str, int start);
+void							handler_qoutes(t_env_lst **list, char *str,
+									int *i, en_status state);
 
 /* -------------------------------------------------------------------------- */
 /*                               EXECUTOR FUNCTIONS                           */
 /* -------------------------------------------------------------------------- */
-void						execute_command(t_string *st_string);
-void						execute_pipeline(t_string *st_string);
-int							is_builtin(char *cmd);
-void						execute_builtin(char **args,
-								t_string *st_string);
-int							has_pipe(t_env_lst *list);
-char						**git_array(t_env_lst **list);
+void							execute_command(t_string *st_string);
+void							execute_pipeline(t_string *st_string);
+int								is_builtin(char *cmd);
+void							execute_builtin(char **args,
+									t_string *st_string);
+int								has_pipe(t_env_lst *list);
+char							**git_array(t_env_lst **list);
 
-
-void						heandler_dollar(t_env_lst **list, char *str, int *i,
-								en_status state);
+void							heandler_dollar(t_env_lst **list, char *str,
+									int *i, en_status state);
 /* -------------------------------------------------------------------------- */
 /*                              REDIRECTION HANDLING                          */
 /* -------------------------------------------------------------------------- */
-int							redirections(char **args);
-int							handle_output_redirection(char **args, int *i);
-char						*get_env_value(char *var_name,
-								t_string *st_string);
+int								redirections(char **args);
+int								handle_output_redirection(char **args, int *i);
+char							*get_env_value(char *var_name,
+									t_string *st_string);
 
 /* ************************************************************************** */
 /*                               BUILTIN COMMANDS                              */
 /* ************************************************************************** */
-void						builtin_echo(char **args, t_string *st_string);
-void						builtin_cd(char **args, t_string *st_string);
-void						builtin_pwd(void);
-void						builtin_exit(char **args);
-void						builtin_unset(char **args, t_string *st_string);
-void						builtin_export(char **args,
-								t_string *st_string);
-void						builtin_env(t_string *st_string);
+void							builtin_echo(char **args, t_string *st_string);
+void							builtin_cd(char **args, t_string *st_string);
+void							builtin_pwd(void);
+void							builtin_exit(char **args);
+void							builtin_unset(char **args, t_string *st_string);
+void							builtin_export(char **args,
+									t_string *st_string);
+void							builtin_env(t_string *st_string);
+
+void							handle_child_process(char **args, int prev_fd,
+									int *pipe_fd, t_string *st_string);
+char							*find_path(char *cmd, char **envp);
 
 #endif

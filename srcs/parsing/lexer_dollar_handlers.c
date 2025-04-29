@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_dollar_handlers.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:23:31 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/29 08:45:40 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/29 09:47:07 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,29 +26,35 @@ int	lendollar(char *str, int start)
 	}
 	return (len);
 }
-char	*handler_expasion(char *var_name)
+char *handler_expasion(char *var_name)
 {
-	int		i;
-	int		len;
+    int     i;
+    int     len;
+    char    *exit_status_str;
 
-	if (!var_name || !data_struc()->g_envp)
-		return (ft_strdup(""));
-	if (var_name[0] == '$')
-		var_name++;
-	len = ft_strlen(var_name);
-	if (len == 0)
-		return (ft_strdup(""));
-	i = 0;
-	while (data_struc()->g_envp[i])
-	{
-		if (ft_strncmp(data_struc()->g_envp[i], var_name, len) == 0
-			&& data_struc()->g_envp[i][len] == '=')
-		{
-			return (ft_strdup(data_struc()->g_envp[i] + len + 1));
-		}
-		i++;
-	}
-	return (ft_strdup(""));
+    if (!var_name || !data_struc()->g_envp)
+        return (ft_strdup(""));
+    if (var_name[0] == '$')
+        var_name++;
+    if (ft_strcmp(var_name, "?") == 0)
+    {
+        exit_status_str = ft_itoa(data_struc()->exit_status);
+        return (exit_status_str);
+    }
+    len = ft_strlen(var_name);
+    if (len == 0)
+        return (ft_strdup(""));
+    i = 0;
+    while (data_struc()->g_envp[i])
+    {
+        if (ft_strncmp(data_struc()->g_envp[i], var_name, len) == 0
+            && data_struc()->g_envp[i][len] == '=')
+        {
+            return (ft_strdup(data_struc()->g_envp[i] + len + 1));
+        }
+        i++;
+    }
+    return (ft_strdup(""));
 }
 
 void	heandler_dollar(t_env_lst **list, char *str, int *i, en_status state)

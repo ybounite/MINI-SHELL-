@@ -1,25 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 10:29:26 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/04/29 10:29:28 by bamezoua         ###   ########.fr       */
+/*   Created: 2025/04/29 10:36:53 by bamezoua          #+#    #+#             */
+/*   Updated: 2025/04/29 10:36:55 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	builtin_env(t_string *st_string)
+int	has_pipe(t_env_lst *list)
 {
-	int	i;
+	t_env_lst	*current;
 
-	i = 0;
-	while (st_string->g_envp[i])
+	current = list;
+	while (current)
 	{
-		printf("%s\n", st_string->g_envp[i]);
-		i++;
+		if (current->type == PIPE)
+			return (1);
+		current = current->next;
 	}
+	return (0);
+}
+
+int	lstsize(t_env_lst *lst)
+{
+	int	count;
+
+	count = 0;
+	while (lst)
+	{
+		count++;
+		lst = lst->next;
+	}
+	return (count);
 }

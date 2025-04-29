@@ -1,24 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/29 10:38:04 by bamezoua          #+#    #+#             */
+/*   Updated: 2025/04/29 10:38:39 by bamezoua         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
-
-int	lstsize(t_env_lst *lst)
-{
-	int	count;
-
-	count = 0;
-	while (lst)
-	{
-		count++;
-		lst = lst->next;
-	}
-	return (count);
-}
 
 char	**git_array(t_env_lst **list)
 {
 	char		**args;
 	t_env_lst	*current;
+	int			i;
+	int			count;
 
-	int i, count = 0;
+	count = 0;
 	current = *list;
 	if (current->type == PIPE)
 		return (perror("minishell: parse error near `|'\n"), NULL);
@@ -42,15 +43,35 @@ char	**git_array(t_env_lst **list)
 	return (args);
 }
 
+static void	handle_builtin_execution(char **args, t_string *st_string,
+		int saved_stdout, int saved_stdin)
+{
+	if (redirections(args) >= 0)
+		execute_builtin(args, st_string);
+	if (saved_stdout != -1)
+	{
+		dup2(saved_stdout, STDOUT_FILENO);
+		close(saved_stdout);
+	}
+	if (saved_stdin != -1)
+	{
+		dup2(saved_stdin, STDIN_FILENO);
+		close(saved_stdin);
+	}
+	ft_free_split(args);
+}
+
 void	execute_command(t_string *st_string)
 {
 	t_env_lst	*list;
 	char		**args;
 	int			saved_stdout;
 	int			saved_stdin;
+	int			status;
 
 	saved_stdout = -1;
 	saved_stdin = -1;
+	status = 0;
 	if (!st_string->head)
 		return ;
 	list = st_string->head;
@@ -61,42 +82,13 @@ void	execute_command(t_string *st_string)
 			ft_free_split(args);
 		return ;
 	}
-	if (!has_pipe(st_string->head))
+	if (!has_pipe(st_string->head) && is_builtin(args[0]))
 	{
-		if (is_builtin(args[0]))
-		{
-			saved_stdout = dup(STDOUT_FILENO);
-			saved_stdin = dup(STDIN_FILENO);
-			if (redirections(args) >= 0)
-				execute_builtin(args, st_string);
-			if (saved_stdout != -1)
-			{
-				dup2(saved_stdout, STDOUT_FILENO);
-				close(saved_stdout);
-			}
-			if (saved_stdin != -1)
-			{
-				dup2(saved_stdin, STDIN_FILENO);
-				close(saved_stdin);
-			}
-			ft_free_split(args);
-			return ;
-		}
+		saved_stdout = dup(STDOUT_FILENO);
+		saved_stdin = dup(STDIN_FILENO);
+		handle_builtin_execution(args, st_string, saved_stdout, saved_stdin);
+		return ;
 	}
 	ft_free_split(args);
 	execute_pipeline(st_string);
-}
-
-int	has_pipe(t_env_lst *list)
-{
-	t_env_lst	*current;
-
-	current = list;
-	while (current)
-	{
-		if (current->type == PIPE)
-			return (1);
-		current = current->next;
-	}
-	return (0);
 }

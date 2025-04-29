@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirections.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/29 10:35:37 by bamezoua          #+#    #+#             */
+/*   Updated: 2025/04/29 10:41:17 by bamezoua         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 static int	handle_input_redirection(char *filename)
@@ -6,8 +18,8 @@ static int	handle_input_redirection(char *filename)
 
 	if (!filename)
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n",
-			2);
+		ft_putstr_fd("minishell: syntax error near unexpected \
+				token `newline'\n", 2);
 		return (-1);
 	}
 	fd = open(filename, O_RDONLY);
@@ -39,8 +51,8 @@ int	handle_output_redirection(char **args, int *i)
 	filename = args[*i + 1];
 	if (!filename)
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n",
-			2);
+		ft_putstr_fd("minishell: syntax error near unexpected \
+			token `newline'\n", 2);
 		return (-1);
 	}
 	if (append)
@@ -65,42 +77,41 @@ int	handle_output_redirection(char **args, int *i)
 	return (0);
 }
 
-int handle_heredoc_redirection(char *delimiter)
+int	handle_heredoc_redirection(char *delimiter)
 {
-    char    *line;
-    int     pipe_fd[2];
-    int     saved_stdin;
+	char	*line;
+	int		pipe_fd[2];
+	int		saved_stdin;
 
-    if (!delimiter)
-        return (0);
-    saved_stdin = dup(STDIN_FILENO);
-    if (saved_stdin == -1)
-        return (0);
-    if (pipe(pipe_fd) == -1)
-    {
-        close(saved_stdin);
-        perror("pipe");
-        return (0);
-    }
-    signal(SIGINT, SIG_DFL);
-    while (1)
-    {
-        line = readline("> ");
-        if (!line || ft_strcmp(line, delimiter) == 0)
-        {
-            free(line);
-            break;
-        }
-        write(pipe_fd[1], line, ft_strlen(line));
-        write(pipe_fd[1], "\n", 1);
-        free(line);
-    }
-    
-    close(pipe_fd[1]);
-    dup2(pipe_fd[0], STDIN_FILENO);
-    close(pipe_fd[0]);
-    assign_signals_handler();
-    return (1);
+	if (!delimiter)
+		return (0);
+	saved_stdin = dup(STDIN_FILENO);
+	if (saved_stdin == -1)
+		return (0);
+	if (pipe(pipe_fd) == -1)
+	{
+		close(saved_stdin);
+		perror("pipe");
+		return (0);
+	}
+	signal(SIGINT, SIG_DFL);
+	while (1)
+	{
+		line = readline("> ");
+		if (!line || ft_strcmp(line, delimiter) == 0)
+		{
+			free(line);
+			break ;
+		}
+		write(pipe_fd[1], line, ft_strlen(line));
+		write(pipe_fd[1], "\n", 1);
+		free(line);
+	}
+	close(pipe_fd[1]);
+	dup2(pipe_fd[0], STDIN_FILENO);
+	close(pipe_fd[0]);
+	assign_signals_handler();
+	return (1);
 }
 
 int	redirections(char **args)

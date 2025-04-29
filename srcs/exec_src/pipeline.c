@@ -1,148 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipeline.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/29 10:36:06 by bamezoua          #+#    #+#             */
+/*   Updated: 2025/04/29 10:36:08 by bamezoua         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-static char *find_path(char *cmd, char **envp)
-{
-	char **paths;
-	char *path_env;
-	char *full_path;
-	int i;
-	(void)envp;
-
-	// Don't search PATH for commands that contain /
-	if (ft_strchr(cmd, '/'))
-	{
-		if (access(cmd, F_OK | X_OK) == 0)
-			return (ft_strdup(cmd));
-		return (NULL);
-	}
-	path_env = getenv("PATH");
-	if (!path_env)
-		return (NULL);
-	paths = ft_split(path_env, ':');
-	if (!paths)
-		return (NULL);
-	i = 0;
-	while (paths[i])
-	{
-		full_path = ft_strjoin(paths[i], "/");
-		full_path = ft_strjoin_free(full_path, cmd);
-		if (access(full_path, F_OK) == 0)
-		{
-			if (access(full_path, X_OK) == 0)
-			{
-				ft_free_split(paths);
-				return (full_path);
-			}
-			else
-			{
-				printf("%s: Permission denied\n", cmd);
-				free(full_path);
-				ft_free_split(paths);
-				return (NULL);
-			}
-		}
-		free(full_path);
-		i++;
-	}
-	ft_free_split(paths);
-	return (NULL);
-}
-
-int is_builtin(char *cmd)
-{
-	if (!cmd)
-		return (0);
-	return (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd") || !ft_strcmp(cmd, "pwd") || !ft_strcmp(cmd, "export") || !ft_strcmp(cmd, "unset") || !ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "exit"));
-}
-
-void execute_builtin(char **args, t_string *st_string)
-{
-	if (!ft_strcmp(args[0], "echo"))
-		builtin_echo(args, st_string);
-	else if (!ft_strcmp(args[0], "cd"))
-		builtin_cd(args, st_string);
-	else if (!ft_strcmp(args[0], "pwd"))
-		builtin_pwd();
-	else if (!ft_strcmp(args[0], "export"))
-		builtin_export(args, st_string);
-	else if (!ft_strcmp(args[0], "unset"))
-		builtin_unset(args, st_string);
-	else if (!ft_strcmp(args[0], "env"))
-		builtin_env(st_string);
-	else if (!ft_strcmp(args[0], "exit"))
-		builtin_exit(args);
-}
-
-static void handle_child_process(char **args, int prev_fd, int *pipe_fd,
-								 t_string *st_string)
-{
-	char *cmd_path;
-	char *env_value;
-
-	if (prev_fd != -1)
-	{
-		dup2(prev_fd, STDIN_FILENO);
-		close(prev_fd);
-	}
-	if (pipe_fd)
-	{
-		dup2(pipe_fd[1], STDOUT_FILENO);
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
-	}
-	if (redirections(args) < 0)
-		exit(1);
-	if (args[0] && args[0][0] == '$')
-	{
-		env_value = get_env_value(args[0], st_string);
-		if (!env_value || env_value[0] == '\0')
-		{
-			free(env_value);
-			ft_free_split(args);
-			exit(127);
-		}
-		free(args[0]);
-		args[0] = env_value;
-	}
-	if (is_builtin(args[0]))
-	{
-		execute_builtin(args, st_string);
-		exit(0);
-	}
-	else
-	{
-		cmd_path = find_path(args[0], st_string->g_envp);
-		if (!cmd_path)
-		{
-			if (args[0][0] == '/' || args[0][0] == '.')
-			{
-				if (access(args[0], X_OK) == 0)
-				{
-					execve(args[0], args, st_string->g_envp);
-					perror("execve");
-				}
-			}
-			printf("%s: command not found\n", args[0]);
-			ft_free_split(args);
-			exit(127);
-		}
-		if (execve(cmd_path, args, st_string->g_envp))
-		{
-			printf("%s: Is a directory\n",cmd_path);
-			exit(126);
-		}
-		else
-		{
-
-			free(cmd_path);
-			printf("%s: %s\n", args[0], strerror(errno));
-			ft_free_split(args);
-			exit(127);
-		}
-	}
-}
-
-static void handle_parent_process(int *prev_fd, int *pipe_fd, pid_t pid)
+static void	handle_parent_process(int *prev_fd, int *pipe_fd, pid_t pid,
+		int *status)
 {
 	if (pipe_fd)
 		close(pipe_fd[1]);
@@ -152,66 +23,105 @@ static void handle_parent_process(int *prev_fd, int *pipe_fd, pid_t pid)
 		*prev_fd = pipe_fd[0];
 	else
 		*prev_fd = -1;
-	waitpid(pid, NULL, 0);
+	waitpid(pid, status, 0);
 }
 
-void execute_pipeline(t_string *st_string)
+static int	setup_pipe(int pipe_fd[2], t_env_lst *list, char **args)
 {
-	int pipe_fd[2];
-	int prev_fd;
-	pid_t pid;
-	char **args;
-	int *child_pipe_fd;
-	int *parent_pipe_fd;
-	t_env_lst *list;
+	if (pipe(pipe_fd) == -1)
+	{
+		perror("pipe");
+		ft_free_split(args);
+		return (0);
+	}
+	if (!list->next)
+	{
+		perror("minishell: parse error near `|'\n");
+		return (0);
+	}
+	return (1);
+}
+
+static int	create_process(pid_t *pid, char **args)
+{
+	*pid = fork();
+	if (*pid == -1)
+	{
+		perror("fork");
+		ft_free_split(args);
+		return (0);
+	}
+	return (1);
+}
+
+static void	update_exit_status(int status)
+{
+	if (WIFEXITED(status))
+		data_struc()->exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		data_struc()->exit_status = 128 + WTERMSIG(status);
+	else
+		data_struc()->exit_status = 1;
+}
+
+static void	process_command(t_string *st_string, t_env_lst **list, int *prev_fd,
+		int *status)
+{
+	char	**args;
+	pid_t	pid;
+	int		pipe_fd[2];
+	int		*child_pipe_fd;
+	int		*parent_pipe_fd;
+
+	args = git_array(list);
+	if (!args)
+		return ;
+	if (*list && (*list)->type == PIPE)
+	{
+		if (!setup_pipe(pipe_fd, *list, args))
+		{
+			ft_free_split(args);
+			return ;
+		}
+		*list = (*list)->next;
+	}
+	if (!create_process(&pid, args))
+		return ;
+	if (pid == 0)
+	{
+		child_pipe_fd = NULL;
+		if (*list)
+			child_pipe_fd = pipe_fd;
+		handle_child_process(args, *prev_fd, child_pipe_fd, st_string);
+	}
+	else
+	{
+		parent_pipe_fd = NULL;
+		if (*list)
+			parent_pipe_fd = pipe_fd;
+		handle_parent_process(prev_fd, parent_pipe_fd, pid, status);
+		ft_free_split(args);
+	}
+}
+
+void	execute_pipeline(t_string *st_string)
+{
+	int			prev_fd;
+	t_env_lst	*list;
+	int			status;
 
 	prev_fd = -1;
+	status = 0;
 	if (!st_string->head)
-		return;
+		return ;
 	list = st_string->head;
 	while (list)
 	{
-		args = git_array(&list);
-		if (!args)
-			break;
-		if (list && list->type == PIPE)
-		{
-			if (pipe(pipe_fd) == -1)
-			{
-				perror("pipe");
-				ft_free_split(args);
-				return;
-			}
-			if (!list->next)
-			{
-				perror("minishell: parse error near `|'\n");
-				break;
-			}
-			list = list->next;
-		}
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("fork");
-			ft_free_split(args);
-			return;
-		}
-		if (pid == 0)
-		{
-			child_pipe_fd = NULL;
-			if (list) // If there are more commands after this one
-				child_pipe_fd = pipe_fd;
-			handle_child_process(args, prev_fd, child_pipe_fd, st_string);
-		}
-		else
-		{
-			parent_pipe_fd = NULL;
-			if (list)
-				parent_pipe_fd = pipe_fd;
-			handle_parent_process(&prev_fd, parent_pipe_fd, pid);
-			ft_free_split(args);
-		}
+		process_command(st_string, &list, &prev_fd, &status);
+		if (!list)
+			break ;
 	}
 	if (prev_fd != -1)
 		close(prev_fd);
+	update_exit_status(status);
 }

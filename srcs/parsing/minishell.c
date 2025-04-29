@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:45:08 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/28 16:48:46 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/29 09:44:26 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,16 @@ char	**duplicate_envp(char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_string	st_string;
+    t_string	st_string;
 
-	(void)argc;
-	(void)argv;
-	ft_bzero(&st_string, sizeof(st_string));
-	st_string.g_envp = duplicate_envp(envp);
-	data_struc()->g_envp = st_string.g_envp;
-	assign_signals_handler();
-	start_shell_session(st_string);
-	ft_free_split(st_string.g_envp);
-	return (0);
+    (void)argc;
+    (void)argv;
+    ft_bzero(&st_string, sizeof(st_string));
+    st_string.g_envp = duplicate_envp(envp);
+    data_struc()->g_envp = st_string.g_envp;
+    data_struc()->exit_status = 0; 
+    assign_signals_handler();
+    start_shell_session(st_string);
+    ft_free_split(st_string.g_envp);
+    return (0);
 }

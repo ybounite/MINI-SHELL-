@@ -14,7 +14,11 @@ INC_DIR = includes
 # Source files
 SRCS = $(SRC_DIR)/utilis.c \
        $(EXEC_DIR)/executor.c \
+       $(EXEC_DIR)/child_process.c \
+       $(EXEC_DIR)/builtin_exec.c \
        $(EXEC_DIR)/pipeline.c \
+       $(EXEC_DIR)/find_path.c \
+       $(EXEC_DIR)/utils.c \
        $(EXEC_DIR)/redirections.c \
        $(BUILTIN_DIR)/cd.c \
        $(BUILTIN_DIR)/echo.c \
