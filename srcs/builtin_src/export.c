@@ -64,6 +64,7 @@ static char	**create_env_copy(t_string *st_string)
 		i++;
 	}
 	copy[i] = NULL;
+	data_struc()->g_envp = copy;
 	return (copy);
 }
 

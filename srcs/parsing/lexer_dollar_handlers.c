@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:23:31 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/27 16:24:51 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/29 08:45:40 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,30 @@ int	lendollar(char *str, int start)
 	}
 	return (len);
 }
+char	*handler_expasion(char *var_name)
+{
+	int		i;
+	int		len;
 
+	if (!var_name || !data_struc()->g_envp)
+		return (ft_strdup(""));
+	if (var_name[0] == '$')
+		var_name++;
+	len = ft_strlen(var_name);
+	if (len == 0)
+		return (ft_strdup(""));
+	i = 0;
+	while (data_struc()->g_envp[i])
+	{
+		if (ft_strncmp(data_struc()->g_envp[i], var_name, len) == 0
+			&& data_struc()->g_envp[i][len] == '=')
+		{
+			return (ft_strdup(data_struc()->g_envp[i] + len + 1));
+		}
+		i++;
+	}
+	return (ft_strdup(""));
+}
 
 void	heandler_dollar(t_env_lst **list, char *str, int *i, en_status state)
 {
@@ -48,5 +71,6 @@ void	heandler_dollar(t_env_lst **list, char *str, int *i, en_status state)
 	ptr[index] = '\0';
 	if (isquotes(str[*i]))
 		(*i)++;
-	ft_add_newtoken(list, ptr, state);
+	ft_add_newtoken(list, handler_expasion(ptr), state);
+	free(ptr);
 }

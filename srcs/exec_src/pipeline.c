@@ -1,11 +1,11 @@
 #include "../../includes/minishell.h"
 
-static char	*find_path(char *cmd, char **envp)
+static char *find_path(char *cmd, char **envp)
 {
-	char	**paths;
-	char	*path_env;
-	char	*full_path;
-	int		i;
+	char **paths;
+	char *path_env;
+	char *full_path;
+	int i;
 	(void)envp;
 
 	// Don't search PATH for commands that contain /
@@ -48,16 +48,14 @@ static char	*find_path(char *cmd, char **envp)
 	return (NULL);
 }
 
-int	is_builtin(char *cmd)
+int is_builtin(char *cmd)
 {
 	if (!cmd)
 		return (0);
-	return (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd") || !ft_strcmp(cmd,
-			"pwd") || !ft_strcmp(cmd, "export") || !ft_strcmp(cmd, "unset")
-		|| !ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "exit"));
+	return (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd") || !ft_strcmp(cmd, "pwd") || !ft_strcmp(cmd, "export") || !ft_strcmp(cmd, "unset") || !ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "exit"));
 }
 
-void	execute_builtin(char **args, t_string *st_string)
+void execute_builtin(char **args, t_string *st_string)
 {
 	if (!ft_strcmp(args[0], "echo"))
 		builtin_echo(args, st_string);
@@ -75,11 +73,11 @@ void	execute_builtin(char **args, t_string *st_string)
 		builtin_exit(args);
 }
 
-static void	handle_child_process(char **args, int prev_fd, int *pipe_fd,
-		t_string *st_string)
+static void handle_child_process(char **args, int prev_fd, int *pipe_fd,
+								 t_string *st_string)
 {
-	char	*cmd_path;
-	char	*env_value;
+	char *cmd_path;
+	char *env_value;
 
 	if (prev_fd != -1)
 	{
@@ -128,17 +126,23 @@ static void	handle_child_process(char **args, int prev_fd, int *pipe_fd,
 			ft_free_split(args);
 			exit(127);
 		}
-		execve(cmd_path, args, st_string->g_envp);
-		free(cmd_path);
-		perror("execve");
-		strerror(errno);
-		printf("%s: %s\n", args[0], strerror(errno));
-		ft_free_split(args);
-		exit(1);
+		if (execve(cmd_path, args, st_string->g_envp))
+		{
+			printf("%s: Is a directory\n",cmd_path);
+			exit(126);
+		}
+		else
+		{
+
+			free(cmd_path);
+			printf("%s: %s\n", args[0], strerror(errno));
+			ft_free_split(args);
+			exit(127);
+		}
 	}
 }
 
-static void	handle_parent_process(int *prev_fd, int *pipe_fd, pid_t pid)
+static void handle_parent_process(int *prev_fd, int *pipe_fd, pid_t pid)
 {
 	if (pipe_fd)
 		close(pipe_fd[1]);
@@ -151,37 +155,37 @@ static void	handle_parent_process(int *prev_fd, int *pipe_fd, pid_t pid)
 	waitpid(pid, NULL, 0);
 }
 
-void	execute_pipeline(t_string *st_string)
+void execute_pipeline(t_string *st_string)
 {
-	int			pipe_fd[2];
-	int			prev_fd;
-	pid_t		pid;
-	char		**args;
-	int			*child_pipe_fd;
-	int			*parent_pipe_fd;
-	t_env_lst	*list;
+	int pipe_fd[2];
+	int prev_fd;
+	pid_t pid;
+	char **args;
+	int *child_pipe_fd;
+	int *parent_pipe_fd;
+	t_env_lst *list;
 
 	prev_fd = -1;
 	if (!st_string->head)
-		return ;
+		return;
 	list = st_string->head;
 	while (list)
 	{
 		args = git_array(&list);
 		if (!args)
-			break ;
+			break;
 		if (list && list->type == PIPE)
 		{
 			if (pipe(pipe_fd) == -1)
 			{
 				perror("pipe");
 				ft_free_split(args);
-				return ;
+				return;
 			}
 			if (!list->next)
 			{
 				perror("minishell: parse error near `|'\n");
-				break ;
+				break;
 			}
 			list = list->next;
 		}
@@ -190,7 +194,7 @@ void	execute_pipeline(t_string *st_string)
 		{
 			perror("fork");
 			ft_free_split(args);
-			return ;
+			return;
 		}
 		if (pid == 0)
 		{

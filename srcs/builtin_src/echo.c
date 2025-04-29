@@ -22,7 +22,6 @@ char	*get_env_value(char *var_name, t_string *st_string)
 	
 	if (var_name[0] == '$')
 		var_name++;
-	
 	len = ft_strlen(var_name);
 	if (len == 0)
 		return (ft_strdup(""));
@@ -45,10 +44,10 @@ void	builtin_echo(char **args, t_string *st_string)
 {
 	int		i;
 	int		n_flag;
-	char	*env_value;
 
 	i = 1;
 	n_flag = 0;
+	(void)st_string;
 	while (args[i] && is_n_flag(args[i]))
 	{
 		n_flag = 1;
@@ -56,17 +55,9 @@ void	builtin_echo(char **args, t_string *st_string)
 	}
 	while (args[i])
 	{
-		if (args[i][0] == '$')
-		{
-			env_value = get_env_value(args[i], st_string);
-			printf("%s", env_value);
-		}
-		else
-		{
-			printf("%s", args[i]);
-		}
-		if (args[i + 1])
-			printf(" ");
+		printf("%s", args[i]);
+		// if (args[i + 1])
+		// 	printf(" ");
 		i++;
 	}
 	if (!n_flag)

@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:48:04 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/27 16:24:51 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/28 09:10:03 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*ft_substring(char *str, int start , int len)
 	ptr[i] = '\0';
 	return (ptr);
 }
-	// edite here
+
 void	ft_spliter(t_env_lst **list, char *line)
 {
 	en_status stats;
