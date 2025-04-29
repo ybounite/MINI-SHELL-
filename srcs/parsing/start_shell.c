@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_shell.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/28 16:48:46 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/29 11:19:47 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	handle_input_syntax(t_string *st_string)
 	if (!head)
 		return (0);
 	st_string->head = head;
-	print_lst_tokens(st_string->head); // Debug print
+	// print_lst_tokens(st_string->head); // Debug print
 	execute_command(st_string);// error valgrid
 	free_list(head);
 	return (1);
