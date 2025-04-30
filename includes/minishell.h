@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/29 10:02:43 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/04/30 08:22:40 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ int								handle_input_syntax(t_string *st_string);
 void							start_shell_session(t_string input);
 
 /* -------------------------------------------------------------------------- */
-/*                              llexer_handlers_word.c                        */
+/*                              lexer_handlers_word.c                         */
 /* -------------------------------------------------------------------------- */
 int								lentword(char *str, int start);
 void							handler_words(t_env_lst **list, char *str,
@@ -192,7 +192,16 @@ void							handler_operator(t_env_lst **list, char *str,
 int								lenofwords_qoutes(char *str, int start);
 void							handler_qoutes(t_env_lst **list, char *str,
 									int *i, en_status state);
+void 							process_quoted_string_with_expansion(t_env_lst **list,
+									char *str, int *i, en_status state);
 
+/* -------------------------------------------------------------------------- */
+/*                              lexer_dollar_handlers.c                       */
+/* -------------------------------------------------------------------------- */
+int								lendollar(char *str, int start);
+char							*handler_expasion(char *var_name);
+void							heandler_dollar(t_env_lst **list, char *str,
+									int *i, en_status state);
 /* -------------------------------------------------------------------------- */
 /*                               EXECUTOR FUNCTIONS                           */
 /* -------------------------------------------------------------------------- */
@@ -204,8 +213,6 @@ void							execute_builtin(char **args,
 int								has_pipe(t_env_lst *list);
 char							**git_array(t_env_lst **list);
 
-void							heandler_dollar(t_env_lst **list, char *str,
-									int *i, en_status state);
 /* -------------------------------------------------------------------------- */
 /*                              REDIRECTION HANDLING                          */
 /* -------------------------------------------------------------------------- */
