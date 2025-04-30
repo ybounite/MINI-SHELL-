@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 07:46:24 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/27 11:15:49 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/30 09:14:21 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 // Error > file Error.c
 void	ft_puterror(char error)
 {
-	ft_putstr_fd("minishell: parse error near ", 2);
+	ft_putstr_fd("minishell: parse error near `", 2);
 	if (error == '\n')
-		ft_putstr_fd("`newline\'", 2);
+		ft_putstr_fd("newline", 2);
 	else
 		write(2, &error, 1);
-	write(2, "\n", 1);
+	write(2, "\'\n", 2);
 	data_struc()->is_error = 1;
 }
 
