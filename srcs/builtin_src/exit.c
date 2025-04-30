@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:29:37 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/04/29 10:30:24 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/04/29 15:01:42 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	builtin_exit(char **args)
 	if (!is_numeric(args[1]))
 	{
 		printf("exit: %s: numeric argument required\n", args[1]);
-		exit(255);
+		exit(2);
 	}
 	if (args[2])
 	{
