@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 10:50:31 by bamezoua          #+#    #+#             */
-/*   Updated: 2024/11/05 18:20:36 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/01 19:10:32 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static char	*ft_strcpy(char const *s, char c)
 	len = 0;
 	while (s[len] && s[len] != c)
 		len++;
-	str = (char *)malloc(sizeof(char) * (len + 1));
+	str = (char *)ft_malloc(sizeof(char) * (len + 1), 1);
 	if (!str)
 		return (NULL);
 	i = 0;
@@ -76,7 +76,7 @@ char	**ft_split(char const *s, char c)
 	if (s == NULL)
 		return (NULL);
 	j = 0;
-	str = (char **)malloc(sizeof(char *) * (word_count(s, c) + 1));
+	str = (char **)ft_malloc(sizeof(char *) * (word_count(s, c) + 1), 1);
 	if (!str)
 		return (NULL);
 	while (*s)
