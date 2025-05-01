@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/30 14:57:37 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/01 18:38:43 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,7 +228,7 @@ char							*get_env_value(char *var_name,
 void							builtin_echo(char **args, t_string *st_string);
 void							builtin_cd(char **args, t_string *st_string);
 void							builtin_pwd(void);
-void							builtin_exit(char **args);
+void							builtin_exit(char **args, t_string *st_string);
 void							builtin_unset(char **args, t_string *st_string);
 void							builtin_export(char **args,
 									t_string *st_string);
