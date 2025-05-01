@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:23:31 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/30 09:11:45 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/01 14:26:21 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,11 @@ void	heandler_dollar(t_env_lst **list, char *str, int *i, en_status state)
 	len = lendollar(str, *i);
 	if (len < 0)
 		return ;
-	ptr = malloc((len + 1) * sizeof(char));
+	ptr = ft_malloc((len + 1) * sizeof(char), 1);
 	if (!ptr)
 		return ;
 	while (index < len && str[*i])
 		ptr[index++] = str[(*i)++];
 	ptr[index] = '\0';
 	ft_add_newtoken(list, handler_expasion(ptr), state);
-	free(ptr);
 }

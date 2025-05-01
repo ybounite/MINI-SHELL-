@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:06:24 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/27 16:07:06 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/01 14:24:34 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,10 @@ int	lentword(char *str, int start)
 	}
 	return (len);
 }
-
+// void	strhandler_expansion(char *str, int i)
+// {
+// 	printf("%c\n", str[i]);
+// }
 void	handler_words(t_env_lst **list, char *str, int *i, en_status state)
 {
 	int		index;
@@ -49,9 +52,7 @@ void	handler_words(t_env_lst **list, char *str, int *i, en_status state)
 	(1) && (index = 0), (len = lentword(str, *i));
 	if (len == 0)
 		return ;
-	ptr = malloc((len + 1) * sizeof(char));
-	if (!ptr)
-		return ;
+	ptr = ft_malloc((len + 1) * sizeof(char), 1);
 	while (str[*i] && str[*i] != SPACE)
 	{
 		if (isquotes(str[*i]))
@@ -65,5 +66,6 @@ void	handler_words(t_env_lst **list, char *str, int *i, en_status state)
 			ptr[index++] = str[(*i)++];
 	}
 	ptr[index] = '\0';
+	// strhandler_expansion(str, *i - index);
 	ft_add_newtoken(list, ptr, state);
 }

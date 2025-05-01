@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 10:49:42 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/30 08:32:00 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/30 18:44:30 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	lenofwords_qoutes(char *str, int start)
 	}
 	return (len);
 }
-void handler_qoutes(t_env_lst **list, char *str, int *i, en_status state)
+void	handler_qoutes(t_env_lst **list, char *str, int *i, en_status state)
 {
 	char	*ptr;
 	char	quotes;
@@ -55,15 +55,13 @@ void handler_qoutes(t_env_lst **list, char *str, int *i, en_status state)
 		return;
 	}
 	// Handle quoted string with $ inside
-	if (str[*i] == DOUBLE_QUOTE && ft_strchr(str + *i, '$'))
+	if (str[*i] == DOUBLE_QUOTE && ft_strchr(str + *i, '$'))// config in leakes
 	{
 		process_quoted_string_with_expansion(list, str, i, state);
 		return ;
 	}
 	// Original code for handling other cases
-	ptr = malloc((len + 1) * sizeof(char));
-	if (!ptr)
-		return;
+	ptr = ft_malloc((len + 1) * sizeof(char), 1);
 	while (str[*i] && index < len)
 	{
 		if (isquotes(str[*i]))

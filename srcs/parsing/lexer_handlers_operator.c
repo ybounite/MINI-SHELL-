@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:07:44 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/29 19:14:35 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/30 18:41:50 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	handler_operator(t_env_lst **list, char *str, int *i, en_status state)
 	char	*ptr;
 
 	index = 0;
-	ptr = malloc(3 * sizeof(char));
+	ptr = ft_malloc(3 * sizeof(char), 1);
 	if (!ptr)
 		return ;
 	while (str[*i] && str[*i] != SPACE)

@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/30 08:32:23 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/01 16:44:06 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	strhandler_quotes(char *ptr, char *str, int *i, int *index)
 
 	if (*i - 1 > 0 && find_space(str[(*i) - 1]))
 		ptr[(*index)++] = SPACE;
-	if (isemtyqoutes(str, *i) && str[2])
+	if (isemtyqoutes(str, *i) && str[(*i) + 2])
 	{
 		(*i) += 2;
 		return ;
@@ -60,9 +60,7 @@ char	*handler_string(char *line, int size)
 	int		i;
 
 	(1) && (i = 0), (index = 0);
-	ptr = malloc(size + 1 * sizeof(char));
-	if (!ptr)
-		return (NULL);
+	ptr = ft_malloc(size + 1 * sizeof(char), 1);
 	while (line[i])
 	{
 		ft_skip_whitespace(line, &i);
@@ -70,6 +68,8 @@ char	*handler_string(char *line, int size)
 			strhandler_quotes(ptr, line, &i, &index);
 		else if (line[i] && is_operator(line[i])) // handler operatoin
 			strhandler_operator(ptr, line, &i, &index);
+		else if (line[i] && line[i] == DOLLAR && isquotes(line[i + 1]))
+			(i)++;
 		else // handler word
 			handlerword(ptr, line, &index, &i);
 	}
@@ -87,14 +87,14 @@ int	handle_input_syntax(t_string *st_string)
 	if (data_struc()->is_error || st_string->size <= 0)
 		return (0);
 	st_string->strcon = handler_string(st_string->line, st_string->size);
-	// printf("%s\n", st_string->strcon);
+	printf("%s\n", st_string->strcon);
 	if (!st_string->strcon)
 		return (0);
 	ft_spliter(&head, st_string->strcon);// problem in spliter 'qoutes'
 	if (!head)
 		return (0);
 	st_string->head = head;
-	// print_lst_tokens(st_string->head); // Debug print
+	print_lst_tokens(st_string->head); // Debug print
 	execute_command(st_string);// error valgrid
 	free_list(head);
 	return (1);
@@ -106,9 +106,5 @@ void	start_shell_session(t_string st_string)
 	{
 		st_string.line = get_line();
 		handle_input_syntax(&st_string);
-		free(st_string.line);
-		free(st_string.strcon);
-		st_string.line = NULL;
-		st_string.strcon = NULL;
 	}
 }

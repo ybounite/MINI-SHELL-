@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:48:04 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/28 09:10:03 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/01 08:42:48 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,10 @@ char	*ft_substring(char *str, int start , int len)
 
 void	ft_spliter(t_env_lst **list, char *line)
 {
-	en_status stats;
-	int i;
-	(i = 0);
+	en_status	stats;
+	int			i;
+
+	i = 0;
 	if (!line)
 		return ;
 	while (line[i])

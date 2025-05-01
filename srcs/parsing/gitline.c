@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:41:09 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/27 16:26:38 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/04/30 16:59:31 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ char	*get_line(void)
 	{
 		printf("exit\n");
 		rl_clear_history();
+		ft_malloc(0, 0);
 		exit(0);
 	}
 	if (line)

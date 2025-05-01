@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 13:26:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/17 14:35:00 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/04/30 19:35:22 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	free_list(t_env_lst *head)
 	{
 		tmp = head;
 		head = head->next;
-		free(tmp->value);
+		// free(tmp->value);
 		free(tmp);
 	}
 }
