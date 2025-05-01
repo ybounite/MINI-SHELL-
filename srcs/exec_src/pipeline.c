@@ -6,14 +6,14 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:36:06 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/01 17:00:19 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/01 19:07:05 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void	handle_parent_process(int *prev_fd, int *pipe_fd, pid_t pid,
-		int *status)
+static void handle_parent_process(int *prev_fd, int *pipe_fd, pid_t pid,
+								  int *status)
 {
 	if (pipe_fd)
 		close(pipe_fd[1]);
@@ -26,12 +26,12 @@ static void	handle_parent_process(int *prev_fd, int *pipe_fd, pid_t pid,
 	waitpid(pid, status, 0);
 }
 
-static int	setup_pipe(int pipe_fd[2], t_env_lst *list, char **args)
+static int setup_pipe(int pipe_fd[2], t_env_lst *list)
 {
 	if (pipe(pipe_fd) == -1)
 	{
 		perror("pipe");
-		ft_free_split(args);
+		// ft_free_split(args);
 		return (0);
 	}
 	if (!list->next)
@@ -42,19 +42,19 @@ static int	setup_pipe(int pipe_fd[2], t_env_lst *list, char **args)
 	return (1);
 }
 
-static int	create_process(pid_t *pid, char **args)
+static int create_process(pid_t *pid)
 {
 	*pid = fork();
 	if (*pid == -1)
 	{
 		perror("fork");
-		ft_free_split(args);
+		// ft_free_split(args);
 		return (0);
 	}
 	return (1);
 }
 
-static void	update_exit_status(int status)
+static void update_exit_status(int status)
 {
 	if (WIFEXITED(status))
 		data_struc()->exit_status = WEXITSTATUS(status);
@@ -64,29 +64,29 @@ static void	update_exit_status(int status)
 		data_struc()->exit_status = 1;
 }
 
-static void	process_command(t_string *st_string, t_env_lst **list, int *prev_fd,
-		int *status)
+static void process_command(t_string *st_string, t_env_lst **list, int *prev_fd,
+							int *status)
 {
-	char	**args;
-	pid_t	pid;
-	int		pipe_fd[2];
-	int		*child_pipe_fd;
-	int		*parent_pipe_fd;
+	char **args;
+	pid_t pid;
+	int pipe_fd[2];
+	int *child_pipe_fd;
+	int *parent_pipe_fd;
 
 	args = git_array(list);
 	if (!args)
-		return ;
+		return;
 	if (*list && (*list)->type == PIPE)
 	{
-		if (!setup_pipe(pipe_fd, *list, args))
+		if (!setup_pipe(pipe_fd, *list))
 		{
-			ft_free_split(args);
-			return ;
+			// ft_free_split(args);
+			return;
 		}
 		*list = (*list)->next;
 	}
-	if (!create_process(&pid, args))
-		return ;
+	if (!create_process(&pid))
+		return;
 	if (pid == 0)
 	{
 		child_pipe_fd = NULL;
@@ -100,26 +100,26 @@ static void	process_command(t_string *st_string, t_env_lst **list, int *prev_fd,
 		if (*list)
 			parent_pipe_fd = pipe_fd;
 		handle_parent_process(prev_fd, parent_pipe_fd, pid, status);
-		ft_free_split(args);
+		// ft_free_split(args);
 	}
 }
 
-void	execute_pipeline(t_string *st_string)
+void execute_pipeline(t_string *st_string)
 {
-	int			prev_fd;
-	t_env_lst	*list;
-	int			status;
+	int prev_fd;
+	t_env_lst *list;
+	int status;
 
 	prev_fd = -1;
 	status = 0;
 	if (!st_string->head)
-		return ;
+		return;
 	list = st_string->head;
 	while (list)
 	{
 		process_command(st_string, &list, &prev_fd, &status);
 		if (!list)
-			break ;
+			break;
 	}
 	if (prev_fd != -1)
 		close(prev_fd);

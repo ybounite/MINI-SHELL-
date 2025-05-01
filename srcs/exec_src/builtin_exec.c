@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:19:31 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/04/29 10:35:27 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/01 18:38:17 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,5 @@ void	execute_builtin(char **args, t_string *st_string)
 	else if (!ft_strcmp(args[0], "env"))
 		builtin_env(st_string);
 	else if (!ft_strcmp(args[0], "exit"))
-		builtin_exit(args);
+		builtin_exit(args, st_string);
 }
