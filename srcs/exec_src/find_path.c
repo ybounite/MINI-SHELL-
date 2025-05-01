@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:22:31 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/04/29 10:37:21 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/01 19:07:45 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,24 @@ static char	*check_direct_path(char *cmd)
 	return (NULL);
 }
 
-static char	*check_path_permissions(char *full_path, char *cmd, char **paths)
+static char	*check_path_permissions(char *full_path, char *cmd)
 {
 	if (access(full_path, F_OK) == 0)
 	{
 		if (access(full_path, X_OK) == 0)
 		{
-			ft_free_split(paths);
+			// ft_free_split(paths);
 			return (full_path);
 		}
 		else
 		{
 			printf("%s: Permission denied\n", cmd);
-			free(full_path);
-			ft_free_split(paths);
+			// free(full_path);
+			// ft_free_split(paths);
 			return (NULL);
 		}
 	}
-	free(full_path);
+	// free(full_path);
 	return (NULL);
 }
 
@@ -54,13 +54,13 @@ static char	*search_in_path(char *cmd, char **paths)
 	while (paths[i])
 	{
 		full_path = ft_strjoin(paths[i], "/");
-		full_path = ft_strjoin_free(full_path, cmd);
-		permission_result = check_path_permissions(full_path, cmd, paths);
+		full_path = ft_strjoin(full_path, cmd);
+		permission_result = check_path_permissions(full_path, cmd);
 		if (permission_result)
 			return (permission_result);
 		i++;
 	}
-	ft_free_split(paths);
+	// ft_free_split(paths);
 	return (NULL);
 }
 

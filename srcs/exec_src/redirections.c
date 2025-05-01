@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:35:37 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/04/29 10:41:17 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/01 19:03:17 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,12 @@ int	handle_heredoc_redirection(char *delimiter)
 		line = readline("> ");
 		if (!line || ft_strcmp(line, delimiter) == 0)
 		{
-			free(line);
+			// free(line);
 			break ;
 		}
 		write(pipe_fd[1], line, ft_strlen(line));
 		write(pipe_fd[1], "\n", 1);
-		free(line);
+		// free(line);
 	}
 	close(pipe_fd[1]);
 	dup2(pipe_fd[0], STDIN_FILENO);

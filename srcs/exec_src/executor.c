@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:38:04 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/01 17:01:48 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/01 19:02:36 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	**git_array(t_env_lst **list)
 	}
 	if (count == 0)
 		return (NULL);
-	args = malloc(sizeof(char *) * (count + 1));
+	args = ft_malloc(sizeof(char *) * (count + 1), 1);
 	if (!args)
 		return (NULL);
 	i = 0;
@@ -58,7 +58,6 @@ static void	handle_builtin_execution(char **args, t_string *st_string,
 		dup2(saved_stdin, STDIN_FILENO);
 		close(saved_stdin);
 	}
-	ft_free_split(args);
 }
 
 void	execute_command(t_string *st_string)
@@ -77,11 +76,7 @@ void	execute_command(t_string *st_string)
 	list = st_string->head;
 	args = git_array(&list);
 	if (!args || !args[0])
-	{
-		if (args)
-			ft_free_split(args);
 		return ;
-	}
 	if (!has_pipe(st_string->head) && is_builtin(args[0]))
 	{
 		saved_stdout = dup(STDOUT_FILENO);
@@ -89,6 +84,6 @@ void	execute_command(t_string *st_string)
 		handle_builtin_execution(args, st_string, saved_stdout, saved_stdin);
 		return ;
 	}
-	ft_free_split(args);
+	// ft_free_split(args);
 	execute_pipeline(st_string);
 }

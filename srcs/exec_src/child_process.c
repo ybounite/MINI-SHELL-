@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:36:25 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/04/30 09:20:16 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/01 19:05:28 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,14 +96,14 @@ static void	handle_command_path(char **args, t_string *st_string)
 
 	if (!args[0] || args[0][0] == '\0')
 	{
-		ft_free_split(args);
+		// ft_free_split(args);
 		exit(127);
 	}
 	cmd_path = find_path(args[0], st_string->g_envp);
 	if (!cmd_path)
 	{
 		exit_code = handle_cmd_not_found(args);
-		ft_free_split(args);
+		// ft_free_split(args);
 		exit(exit_code);
 	}
 	if (execve(cmd_path, args, st_string->g_envp) == -1)
@@ -111,15 +111,15 @@ static void	handle_command_path(char **args, t_string *st_string)
 		if (!closedir(opendir(cmd_path)))
 		{
 			printf("%s: Is a directory\n", args[0]);
-			free(cmd_path);
-			ft_free_split(args);
+			// free(cmd_path);
+			// ft_free_split(args);
 			exit(126);
 		}
 		else
 		{
 			printf("%s: %s\n", args[0], strerror(errno));
-			free(cmd_path);
-			ft_free_split(args);
+			// free(cmd_path);
+			// ft_free_split(args);
 			exit(errno);
 		}
 	}
