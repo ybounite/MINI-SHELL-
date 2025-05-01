@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:33:50 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/04/29 10:34:31 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/01 19:01:59 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static void	update_oldpwd(char *old_pwd, t_string *st_string)
 	{
 		if (ft_strncmp(st_string->g_envp[i], "OLDPWD=", 7) == 0)
 		{
-			free(st_string->g_envp[i]);
 			st_string->g_envp[i] = ft_strjoin("OLDPWD=", old_pwd);
 			return ;
 		}
@@ -57,7 +56,6 @@ static void	update_pwd(t_string *st_string)
 	{
 		if (ft_strncmp(st_string->g_envp[i], "PWD=", 4) == 0)
 		{
-			free(st_string->g_envp[i]);
 			st_string->g_envp[i] = ft_strjoin("PWD=", cwd);
 			return ;
 		}
@@ -78,7 +76,6 @@ static void	update_pwd_env(t_string *st_string)
 			old_pwd = ft_strdup(st_string->g_envp[i] + 4);
 			update_pwd(st_string);
 			update_oldpwd(old_pwd, st_string);
-			free(old_pwd);
 			return ;
 		}
 		i++;
