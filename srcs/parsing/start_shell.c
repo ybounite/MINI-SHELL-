@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/01 16:44:06 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/01 18:30:47 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,14 @@ int	handle_input_syntax(t_string *st_string)
 	if (data_struc()->is_error || st_string->size <= 0)
 		return (0);
 	st_string->strcon = handler_string(st_string->line, st_string->size);
-	printf("%s\n", st_string->strcon);
+	// printf("%s\n", st_string->strcon);
 	if (!st_string->strcon)
 		return (0);
 	ft_spliter(&head, st_string->strcon);// problem in spliter 'qoutes'
 	if (!head)
 		return (0);
 	st_string->head = head;
-	print_lst_tokens(st_string->head); // Debug print
+	// print_lst_tokens(st_string->head); // Debug print
 	execute_command(st_string);// error valgrid
 	free_list(head);
 	return (1);
