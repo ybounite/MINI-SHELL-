@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/01 18:38:43 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/02 09:42:35 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ typedef struct s_string
 	bool						is_heredoc;
 	int							exit_status;
 	char						**g_envp;
+	bool						ischild;
 	t_env_lst					*head;
 }								t_string;
 
@@ -193,7 +194,7 @@ void							handler_operator(t_env_lst **list, char *str,
 int								lenofwords_qoutes(char *str, int start);
 void							handler_qoutes(t_env_lst **list, char *str,
 									int *i, en_status state);
-void 							process_quoted_string_with_expansion(t_env_lst **list,
+void							process_quoted_string_with_expansion(t_env_lst **list,
 									char *str, int *i, en_status state);
 
 /* -------------------------------------------------------------------------- */

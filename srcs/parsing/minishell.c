@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:45:08 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/01 20:05:33 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/02 09:19:29 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ char	**duplicate_envp(char **envp)
 		new_envp[i] = ft_strdup(envp[i]);
 		if (!new_envp[i])
 		{
-			while (i > 0)
-				free(new_envp[--i]);
-			free(new_envp);
+			// while (i > 0)
+			// 	free(new_envp[--i]);
+			// free(new_envp);
 			return (NULL);
 		}
 		i++;

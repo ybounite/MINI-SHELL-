@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:36:25 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/01 19:05:28 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/02 10:14:27 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ static void	setup_redirections(int prev_fd, int *pipe_fd)
 static void	exec_builtin_and_exit(char **args, t_string *st_string)
 {
 	execute_builtin(args, st_string);
+	free_list(st_string->head);
+	ft_malloc(0, 0);
 	exit(0);
 }
 
@@ -96,14 +98,16 @@ static void	handle_command_path(char **args, t_string *st_string)
 
 	if (!args[0] || args[0][0] == '\0')
 	{
-		// ft_free_split(args);
+		free_list(st_string->head);
+		ft_malloc(0, 0);
 		exit(127);
 	}
 	cmd_path = find_path(args[0], st_string->g_envp);
 	if (!cmd_path)
 	{
 		exit_code = handle_cmd_not_found(args);
-		// ft_free_split(args);
+		free_list(st_string->head);
+		ft_malloc(0, 0);
 		exit(exit_code);
 	}
 	if (execve(cmd_path, args, st_string->g_envp) == -1)
@@ -111,15 +115,15 @@ static void	handle_command_path(char **args, t_string *st_string)
 		if (!closedir(opendir(cmd_path)))
 		{
 			printf("%s: Is a directory\n", args[0]);
-			// free(cmd_path);
-			// ft_free_split(args);
+			free_list(st_string->head);
+			ft_malloc(0, 0);
 			exit(126);
 		}
 		else
 		{
 			printf("%s: %s\n", args[0], strerror(errno));
-			// free(cmd_path);
-			// ft_free_split(args);
+			free_list(st_string->head);
+			ft_malloc(0, 0);
 			exit(errno);
 		}
 	}
@@ -129,10 +133,13 @@ void	handle_child_process(char **args, int prev_fd, int *pipe_fd,
 		t_string *st_string)
 {
 	// int	ret;
-
 	setup_redirections(prev_fd, pipe_fd);
 	if (redirections(args) < 0)
+	{
+		free_list(st_string->head);
+		ft_malloc(0, 0);
 		exit(1);
+	}
 	// ret = handle_env_variable_cmd(args, st_string);
 	// if (ret != 0)
 	// 	exit(ret);
