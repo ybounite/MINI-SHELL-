@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 10:46:20 by bamezoua          #+#    #+#             */
-/*   Updated: 2024/11/06 09:41:48 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/02 14:54:16 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*ft_itoa(int n)
 
 	nbr = n;
 	i = len(nbr);
-	str = (char *)malloc(i + 1);
+	str = (char *)ft_malloc(i + 1, 1);
 	if (str == NULL)
 		return (NULL);
 	str[i--] = '\0';

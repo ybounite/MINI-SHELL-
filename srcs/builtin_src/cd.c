@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:33:50 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/01 19:01:59 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:20:20 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,13 @@ static char	*get_path(char **args, t_string *st_string)
 void	builtin_cd(char **args, t_string *st_string)
 {
 	char	*path;
-
+	
+	if(args[2])
+	{
+		printf("minishell: cd: too many arguments\n");
+		data_struc()->exit_status = 1;
+		return ;
+	}
 	if (!args[1])
 		path = handle_home();
 	else if (args[1][0] == '~')
@@ -153,7 +159,10 @@ void	builtin_cd(char **args, t_string *st_string)
 	if (!path)
 		return ;
 	if (chdir(path) != 0)
+	{
+		data_struc()->exit_status = 1;
 		perror("cd");
+	}
 	else
 		update_pwd_env(st_string);
 }

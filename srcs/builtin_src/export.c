@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:33:03 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/01 19:01:27 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:11:52 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,7 @@ static void add_or_update(char *arg, t_string *st_string)
 	if (!is_valid_key(key))
 	{
 		printf("export: `%s`: not a valid identifier\n", arg);
+		data_struc()->exit_status = 1;
 		return;
 	}
 	if (append_mode)

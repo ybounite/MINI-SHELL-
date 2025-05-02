@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:29:37 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/01 18:54:20 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:25:06 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int is_numeric(char *s)
+int	is_numeric(char *s)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!s)
@@ -30,9 +30,9 @@ int is_numeric(char *s)
 	return (1);
 }
 
-void builtin_exit(char **args, t_string *st_string)
+void	builtin_exit(char **args, t_string *st_string)
 {
-	char ar[100];
+	int	exit_code;
 
 	printf("exit\n");
 	if (!args[1])
@@ -51,11 +51,12 @@ void builtin_exit(char **args, t_string *st_string)
 	if (args[2])
 	{
 		printf("exit: too many arguments\n");
-		ft_malloc(0, 0);
-		return;
+		data_struc()->exit_status = 1;
+		return ;
 	}
-	ft_strlcpy(ar, args[1], ft_strlen(args[1]));
+	exit_code = ft_atoi(args[1]);
+	exit_code = (unsigned char)exit_code;
 	free_list(st_string->head);
 	ft_malloc(0, 0);
-	exit(ft_atoi(ar));
+	exit(exit_code);
 }
