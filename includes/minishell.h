@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/03 15:47:50 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/03 15:52:07 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct s_string
 	bool						is_builtin;
 	bool						is_parenthesis;
 	bool						is_heredoc;
+	int							heredoc_fd;
 	int							exit_status;
 	char						**g_envp;
 	bool						ischild;
