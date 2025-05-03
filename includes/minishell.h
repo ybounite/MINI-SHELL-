@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/03 15:47:07 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/03 15:47:50 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,13 @@ int								lendollar(char *str, int start);
 char							*handler_expasion(char *var_name);
 void							heandler_dollar(t_env_lst **list, char *str,
 									int *i, en_status state);
+/* -------------------------------------------------------------------------- */
+/*                              heredoc.c 			                          */
+/* -------------------------------------------------------------------------- */
+bool							is_heredoc(t_env_lst *list);
+int								hase_heredoc_rediraection(t_env_lst *head);
+int								handle_heredoc(char *delimiter, int *heredoc_fd);
+
 /* -------------------------------------------------------------------------- */
 /*                               EXECUTOR FUNCTIONS                           */
 /* -------------------------------------------------------------------------- */
