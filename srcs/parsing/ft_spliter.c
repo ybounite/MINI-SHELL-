@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:48:04 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/01 08:42:48 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/03 15:57:09 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ft_spliter(t_env_lst **list, char *line)
 			handler_qoutes(list, line, &i, stats);
 		else if (stats == PIPE || stats == REDIRECTION)
 			handler_operator(list, line, &i, stats);
-		else if (stats == DOLLAR)
-			heandler_dollar(list, line, &i, stats);
+		// else if (stats == DOLLAR)
+		// 	heandler_dollar(list, line, &i, stats);
 	}
 }
