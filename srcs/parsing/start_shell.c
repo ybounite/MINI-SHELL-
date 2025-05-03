@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/01 18:30:47 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/03 15:59:36 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,9 @@ int	handle_input_syntax(t_string *st_string)
 	if (!head)
 		return (0);
 	st_string->head = head;
+	hase_heredoc_rediraection(head);
 	// print_lst_tokens(st_string->head); // Debug print
-	execute_command(st_string);// error valgrid
+	// execute_command(st_string);// error valgrid
 	free_list(head);
 	return (1);
 }
