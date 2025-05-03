@@ -44,7 +44,8 @@ SRC_PARS = $(PARSING_DIR)/minishell.c \
            $(PARSING_DIR)/ft_node.c \
            $(PARSING_DIR)/ft_free.c \
            $(PARSING_DIR)/manage_signal.c \
-           $(PARSING_DIR)/start_shell.c
+           $(PARSING_DIR)/start_shell.c \
+           $(PARSING_DIR)/heredoc.c 
 
 # Combine all source files
 SRCS += $(SRC_PARS)
