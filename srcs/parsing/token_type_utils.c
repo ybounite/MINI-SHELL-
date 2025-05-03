@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 15:44:19 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/27 15:59:19 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/03 15:58:20 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ en_status	get_token_type_from_char(char c)
 		return (DOUBLE_QUOTE);
 	else if (c == '<' || c == '>')
 		return (REDIRECTION);
-	else if (c == '$')
-		return (DOLLAR);
 	else
 		return (CMD);
+		// else if (c == '$')
+		// 	return (DOLLAR);
 }
