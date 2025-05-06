@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 15:32:42 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/03 15:36:08 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/06 18:38:00 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,51 +23,87 @@ bool	is_heredoc(t_env_lst *list)
 	return (false);
 }
 
-int	handle_heredoc(char *delimiter, int *heredoc_fd)
+void	error_herdoc(char *delimiter)
 {
-	char	*line;
-	int		pipe_fd[2];
+	static int i;
 
-	if (pipe(pipe_fd) == -1)
-	{
-		perror("pipe");
-		return (0);
-	}
-	while (1)
-	{
-		line = readline("> ");
-		if (!line || ft_strcmp(line, delimiter) == 0)
-		{
-			free(line);
-			break;
-		}
-		write(pipe_fd[1], line, strlen(line));
-		write(pipe_fd[1], "\n", 1);
-		free(line);
-	}
-	close(pipe_fd[1]);
-	*heredoc_fd = pipe_fd[0];
-	return (1);
+	i = 1;
+	ft_putstr_fd("minishell : here-document at line", 2);
+	printf(" %d ", i++);
+	printf("delimited by end-of-file (wanted `%s')\n", delimiter);
 }
 
-int	hase_heredoc_rediraection(t_env_lst *head)
+int	read_and_process_heredoc_input(char *delimiter, bool expand)
 {
-	t_env_lst	*current;
-	char		*delimiter;
-	
-	current = head;
-	delimiter = NULL;
-	while (current)
+	char	*line;
+	// char	*str_expand;
+
+	while (true)
 	{
-		if (current->type == HERE_DOCUMENT && current->next)
-		{
-			delimiter = current->next->value;
-			if (!delimiter)
-				return (0);
-			if (!handle_heredoc(delimiter, &data_struc()->heredoc_fd))
-				return (0);
-		}
-		current = current->next;
+		line = readline("> ");
+		if (!line)
+			error_herdoc(delimiter);
+		if (!ft_strcmp(line, delimiter))
+			return (free(line), 1);
+		// if (expand)
+		// {
+		// 	str_expand = ft_expand(line);
+		// 	write(data_struc()->heredoc_fd, str_expand, strlen(str_expand));
+		// }
+		// else
+		(void)expand;
+		write(data_struc()->heredoc_fd, line, strlen(line));
+		write(data_struc()->heredoc_fd, "\n", 1);
+		free(line);
 	}
-	return (1);
+	return (true);
+}
+
+int	handle_forked_process(char *delimiter, bool dolar)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("minishell: fork");
+		return (1);
+	}
+	else if (pid == 0)
+	{
+		// signal(SIGINT, sigint_handler);// handler signal 
+		read_and_process_heredoc_input(delimiter, dolar);
+		close(data_struc()->heredoc_fd);
+		ft_malloc(false, 0);
+		exit(0);
+	}
+	waitpid(pid, &status, 0);
+	// return (handle_child_exit_status(status));
+	return (true);
+}
+
+int	handler_heredoc(t_env_lst	*list)
+{
+	char	*delimiter;
+	int		is_expand;
+
+	printf("heredoc\n");
+	delimiter = NULL;
+	is_expand = 0;
+	ft_clculate_heredoc(list);
+	while (list)
+	{
+		if (list->type == HERE_DOCUMENT && list->next)// handler is not find delimite
+		{
+			list = list->next;// skip heredoc
+			delimiter = find_delimiter(list, &is_expand);
+			data_struc()->heredoc_fd = open_heredoc();
+			if (data_struc()->heredoc_fd < 0)
+				return (data_struc()->exit_status = 2, 0);
+			handle_forked_process(delimiter, is_expand);
+		}
+		list = list->next;
+	}
+	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/03 15:52:57 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:38:58 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,14 @@ typedef struct s_string
 	char						*line;
 	char						*strcon;
 	int							size;
-	char						**command;
+	char						**tokens;
 	bool						is_error;
 	bool						is_pipe;
 	bool						is_redirection;
 	bool						is_builtin;
 	bool						is_parenthesis;
 	bool						is_heredoc;
+	char						*heredoc_file;
 	int							heredoc_fd;
 	int							exit_status;
 	char						**g_envp;
@@ -103,7 +104,7 @@ typedef struct s_string
 	char	*cmd_path;   // Command path
 	char	**cmd_flags; // Command flags
 }								t_exec_cmd;*/
-
+bool	handler_syntax_error(char *line);
 /* -------------------------------------------------------------------------- */
 /*                              GLOBAL FUNCTIONS                              */
 /* -------------------------------------------------------------------------- */
@@ -155,15 +156,23 @@ void							memory_released(t_list **head);
 /*                              get_line.c                                    */
 /* -------------------------------------------------------------------------- */
 char							*get_line(void);
-
 char							*handler_string(char *line, int size);
 void							ft_spliter(t_env_lst **list, char *line);
+/* -------------------------------------------------------------------------- */
+/*                              spliter.c                                     */
+/* -------------------------------------------------------------------------- */
+char							**spliter(char *line);
+int								ft_lenoperator(char *str, int *index);
+void							skip_whiteword(char *str, int *i);
+int								lentcommand(char *line);
 
 /* -------------------------------------------------------------------------- */
-/*                              token_type_utils.c                            */
+/*                              token_utils.c                                 */
 /* -------------------------------------------------------------------------- */
+void							tokenize(char **tokins, t_env_lst **list);
 en_status						get_redirection_type_from_str(char *str);
-en_status						get_token_type_from_char(char c);
+en_status						get_token_type(char *str);
+
 
 /* Token Management */
 t_env_lst						*ft_newnode(char *cmd, en_status state);
@@ -208,9 +217,23 @@ void							heandler_dollar(t_env_lst **list, char *str,
 /* -------------------------------------------------------------------------- */
 /*                              heredoc.c 			                          */
 /* -------------------------------------------------------------------------- */
-bool							is_heredoc(t_env_lst *list);
 int								hase_heredoc_rediraection(t_env_lst *head);
 int								handle_heredoc(char *delimiter, int *heredoc_fd);
+int								handler_heredoc(t_env_lst	*list);
+
+/* -------------------------------------------------------------------------- */
+/*                              heredoc_utlis.c			                      */
+/* -------------------------------------------------------------------------- */
+int								open_heredoc();
+bool							ft_isheredoc(t_env_lst *list);
+bool							is_heredoc(t_env_lst *list);// delet
+char							*find_delimiter(t_env_lst *list, int *is_expand);
+bool							ft_clculate_heredoc(t_env_lst	*list);
+
+/* -------------------------------------------------------------------------- */
+/*                              destroy_allocation.c 			              */
+/* -------------------------------------------------------------------------- */
+void							ft_destroylist(t_env_lst *list);
 
 /* -------------------------------------------------------------------------- */
 /*                               EXECUTOR FUNCTIONS                           */

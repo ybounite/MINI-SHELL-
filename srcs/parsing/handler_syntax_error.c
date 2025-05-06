@@ -1,18 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_lenstr.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/09 07:46:24 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/01 16:42:16 by ybounite         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include    "../../includes/minishell.h"
 
-#include "../../includes/minishell.h"
-
-// Error > file Error.c
 void	ft_puterror(char error)
 {
 	ft_putstr_fd("minishell: parse error near `", 2);
@@ -157,8 +144,6 @@ int	ft_lenword(char *str)
 {
 	int	(quote_len), (len), (i);
 	(1) && (len = 0), (i = 0);
-	if (is_first_operation_pipe(str) || is_last_operation_pipe(str))
-		return (-1);
 	while (str[i])
 	{
 		ft_skip_whitespace(str, &i);
@@ -186,4 +171,12 @@ int	ft_lenword(char *str)
 			break ;
 	}
 	return (len);
+}
+bool	handler_syntax_error(char *line)
+{
+	if (is_first_operation_pipe(line) || is_last_operation_pipe(line))
+		return (true);
+	if (ft_lenword(line) < 0)
+		return (true);
+	return (false);
 }

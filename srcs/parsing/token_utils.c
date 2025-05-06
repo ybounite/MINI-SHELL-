@@ -1,16 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_type_utils.c                                 :+:      :+:    :+:   */
+/*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/27 15:44:19 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/03 15:59:02 by ybounite         ###   ########.fr       */
+/*   Created: 2025/05/06 14:33:57 by ybounite          #+#    #+#             */
+/*   Updated: 2025/05/06 14:34:09 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	tokenize(char **tokins, t_env_lst **list)
+{
+	int			i;
+	en_status	stats;
+
+	i = 0;	
+	while (tokins[i])
+	{
+		stats =  get_token_type(tokins[i]);
+		ft_add_newtoken(list, tokins[i], stats);
+		i++;
+	}
+}
 
 en_status	get_redirection_type_from_str(char *str)
 {
@@ -24,18 +38,24 @@ en_status	get_redirection_type_from_str(char *str)
 		return (OUTPUT_REDIRECTION);
 }
 
-en_status	get_token_type_from_char(char c)
+en_status	get_token_type(char *str)
 {
-	if (c == '|')
+	if (!ft_strcmp(str, "|"))
 		return (PIPE);
-	else if (c == '\'')
+	else if (!ft_strcmp(str, ">>"))
+		return (APPEND_REDIRECTION);
+	else if (!ft_strcmp(str, "<<"))
+		return (HERE_DOCUMENT);
+	else if (!ft_strcmp(str, "<"))
+		return (INPUT_REDIRECTION);
+	else if (!ft_strcmp(str, ">"))
+		return (OUTPUT_REDIRECTION);
+	else if (!ft_strncmp(str, "'", 1))
 		return (SINGLE_QUOTE);
-	else if (c == '\"')
+	else if (!ft_strncmp(str, "\"", 1))
 		return (DOUBLE_QUOTE);
-	else if (c == '<' || c == '>')
-		return (REDIRECTION);
+	else if (is_builtin(str))
+		return (BUILTINS);
 	else
 		return (CMD);
-		// else if (c == '$')
-		// 	return (DOLLAR);
 }

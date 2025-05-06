@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:45:08 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/02 09:19:29 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:25:15 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,7 @@ char	**duplicate_envp(char **envp)
 	{
 		new_envp[i] = ft_strdup(envp[i]);
 		if (!new_envp[i])
-		{
-			// while (i > 0)
-			// 	free(new_envp[--i]);
-			// free(new_envp);
 			return (NULL);
-		}
 		i++;
 	}
 	new_envp[i] = NULL;
@@ -58,7 +53,7 @@ int	main(int argc, char **argv, char **envp)
 	st_string.g_envp = duplicate_envp(envp);
 	data_struc()->g_envp = st_string.g_envp;
 	data_struc()->exit_status = 0; 
-	assign_signals_handler();
+	// assign_signals_handler();
 	start_shell_session(st_string);
 	return (0);
 }

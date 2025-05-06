@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_handlers_word.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:06:24 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/01 14:24:34 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/05 16:34:33 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,7 @@ int	lentword(char *str, int start)
 	}
 	return (len);
 }
-// void	strhandler_expansion(char *str, int i)
-// {
-// 	printf("%c\n", str[i]);
-// }
+
 void	handler_words(t_env_lst **list, char *str, int *i, en_status state)
 {
 	int		index;
@@ -66,6 +63,7 @@ void	handler_words(t_env_lst **list, char *str, int *i, en_status state)
 			ptr[index++] = str[(*i)++];
 	}
 	ptr[index] = '\0';
+	printf("ptr = %s\n", ptr);
 	// strhandler_expansion(str, *i - index);
 	ft_add_newtoken(list, ptr, state);
 }

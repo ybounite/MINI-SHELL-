@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:45:11 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/27 17:04:47 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/06 09:19:04 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,36 @@ void	lstadd_back(t_env_lst **head, t_env_lst *new)
 		ptr = ptr->next;
 	ptr->next = new;
 }
-
+char *string(en_status type)
+{
+	if (type == PIPE)
+		return ("PIPE");
+	else if (type == APPEND_REDIRECTION)
+		return ("APPEND_REDIRECTION");
+	else if (type == HERE_DOCUMENT)
+		return ("HERE_DOCUMENT");
+	else if (type == INPUT_REDIRECTION)
+		return ("INPUT_REDIRECTION");
+	else if (type == OUTPUT_REDIRECTION)
+		return ("OUTPUT_REDIRECTION");
+	else if (type == SINGLE_QUOTE)
+		return ("SINGLE_QUOTE");
+	else if (type == DOUBLE_QUOTE)
+		return ("DOUBLE_QUOTE");
+	else if (type == BUILTINS)
+		return ("BUILTINS");
+	else
+		return ("CMD");
+}
 void print_lst_tokens(t_env_lst *head)
 {
 	int i = 0;
+	// char	*type[10] = {"PIPE", "APPEND_REDIRECTION", "HERE_DOCUMENT",
+	// 					"INPUT_REDIRECTION", "OUTPUT_REDIRECTION",
+	// 					"SINGLE_QUOTE", "DOUBLE_QUOTE", "BUILTINS", "CMD", NULL};
 	while (head)
 	{
-		printf("[Token %d: %s, Type: %d, Cat: %d]\n", i++,head->value, head->type, head->cat);
+		printf("[Token %d]: %s%s\e[0m, Type: \e[1;37m%s%s \e[0m\n", i++, GREEN,head->value, GREEN,string(head->type));
 		head = head->next;
 	}
 }

@@ -5,6 +5,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 # Directories
 SRC_DIR = srcs
 MEMORY_DIR = $(SRC_DIR)/memory
+GETLINE_DIR = libraries/getline
 BUILTIN_DIR = $(SRC_DIR)/builtin_src
 EXEC_DIR = $(SRC_DIR)/exec_src
 PARSING_DIR = $(SRC_DIR)/parsing
@@ -30,34 +31,41 @@ SRCS = $(SRC_DIR)/utilis.c \
 
 SRC_MEM = $(MEMORY_DIR)/allocate_data.c
 
+# Getline source files
+SRC_GETLINE = $(GETLINE_DIR)/get_next_line.c 
+#$(GETLINE_DIR)/get_next_line_utils.c
+
 # Parsing source files
 SRC_PARS = $(PARSING_DIR)/minishell.c \
-           $(PARSING_DIR)/lexer_handler_qoutes.c \
-           $(PARSING_DIR)/lexer_handlers_operator.c \
-           $(PARSING_DIR)/lexer_handlers_word.c \
-           $(PARSING_DIR)/lexer_dollar_handlers.c \
            $(PARSING_DIR)/gitline.c \
-           $(PARSING_DIR)/ft_utlis.c \
-           $(PARSING_DIR)/ft_lenstr.c \
-           $(PARSING_DIR)/ft_spliter.c \
-           $(PARSING_DIR)/token_type_utils.c \
-           $(PARSING_DIR)/ft_node.c \
-           $(PARSING_DIR)/ft_free.c \
-           $(PARSING_DIR)/manage_signal.c \
            $(PARSING_DIR)/start_shell.c \
-           $(PARSING_DIR)/heredoc.c 
+	       $(PARSING_DIR)/ft_utilis.c \
+           $(PARSING_DIR)/token_utils.c\
+	       $(PARSING_DIR)/handler_syntax_error.c \
+	       $(PARSING_DIR)/lexer_handler_qoutes.c \
+	       $(PARSING_DIR)/lexer_handlers_operator.c \
+           $(PARSING_DIR)/lexer_handlers_word.c \
+	       $(PARSING_DIR)/ft_node.c \
+	       $(PARSING_DIR)/spliter.c \
+	       $(PARSING_DIR)/heredoc.c \
+	       $(PARSING_DIR)/heredoc_utlis.c \
+	       $(PARSING_DIR)/destroy_allocation.c \
+           $(PARSING_DIR)/manage_signal.c \
+		   $(PARSING_DIR)/ft_free.c #delet
 
 # Combine all source files
 SRCS += $(SRC_PARS)
 SRCS += $(SRC_MEM)
+SRCS += $(SRC_GETLINE)  # Add getline sources to the compilation
 
-# Object files (replacing the directory path with OBJ_DIR)
-OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
+# Object files
+OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(filter $(SRC_DIR)/%,$(SRCS)))
+OBJS += $(patsubst $(GETLINE_DIR)/%.c,$(OBJ_DIR)/getline/%.o,$(filter $(GETLINE_DIR)/%,$(SRCS)))
 
-CC = cc -Wall -Wextra -Werror
+CC = cc
 RM = rm -rf
-CFLAGS = -g #-Wall -Wextra -Werror 
-INCLUDES = -I$(INC_DIR) -I$(LIBFT_DIR)
+CFLAGS = -g -Wall -Wextra -Werror 
+INCLUDES = -I$(INC_DIR) -I$(LIBFT_DIR) -I$(GETLINE_DIR)
 
 all: $(OBJ_DIR) $(LIBFT) $(NAME)
 
@@ -68,15 +76,22 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)/exec_src
 	@mkdir -p $(OBJ_DIR)/parsing
 	@mkdir -p $(OBJ_DIR)/memory
+	@mkdir -p $(OBJ_DIR)/getline
 
 $(LIBFT):
 	@make --no-print-directory -C $(LIBFT_DIR)
 	@make --no-print-directory -C $(LIBFT_DIR) bonus
 
-# Pattern rule for object files
+# Pattern rule for object files in the main src directory
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+# Correct pattern rule for object files in getline directory
+$(OBJ_DIR)/getline/%.o: $(GETLINE_DIR)/%.c
+	@mkdir -p $(dir $@)  # Ensures the 'getline' directory exists
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
 $(NAME): $(OBJS) $(LIBFT)
 	@$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -lreadline -o $(NAME)
 	@./.script.sh
