@@ -14,20 +14,20 @@ INC_DIR = includes
 
 # Source files
 SRCS = $(SRC_DIR)/utilis.c \
-       $(EXEC_DIR)/executor.c \
-       $(EXEC_DIR)/child_process.c \
-       $(EXEC_DIR)/builtin_exec.c \
-       $(EXEC_DIR)/pipeline.c \
-       $(EXEC_DIR)/find_path.c \
-       $(EXEC_DIR)/utils.c \
-       $(EXEC_DIR)/redirections.c \
-       $(BUILTIN_DIR)/cd.c \
-       $(BUILTIN_DIR)/echo.c \
-       $(BUILTIN_DIR)/pwd.c \
-       $(BUILTIN_DIR)/exit.c \
-       $(BUILTIN_DIR)/env.c \
-       $(BUILTIN_DIR)/unset.c \
-       $(BUILTIN_DIR)/export.c
+	   $(EXEC_DIR)/executor.c \
+	   $(EXEC_DIR)/child_process.c \
+	   $(EXEC_DIR)/builtin_exec.c \
+	   $(EXEC_DIR)/pipeline.c \
+	   $(EXEC_DIR)/find_path.c \
+	   $(EXEC_DIR)/utils.c \
+	   $(EXEC_DIR)/redirections.c \
+	   $(BUILTIN_DIR)/cd.c \
+	   $(BUILTIN_DIR)/echo.c \
+	   $(BUILTIN_DIR)/pwd.c \
+	   $(BUILTIN_DIR)/exit.c \
+	   $(BUILTIN_DIR)/env.c \
+	   $(BUILTIN_DIR)/unset.c \
+	   $(BUILTIN_DIR)/export.c
 
 SRC_MEM = $(MEMORY_DIR)/allocate_data.c
 
@@ -37,21 +37,22 @@ SRC_GETLINE = $(GETLINE_DIR)/get_next_line.c
 
 # Parsing source files
 SRC_PARS = $(PARSING_DIR)/minishell.c \
-           $(PARSING_DIR)/gitline.c \
-           $(PARSING_DIR)/start_shell.c \
-	       $(PARSING_DIR)/ft_utilis.c \
-           $(PARSING_DIR)/token_utils.c\
-	       $(PARSING_DIR)/handler_syntax_error.c \
-	       $(PARSING_DIR)/lexer_handler_qoutes.c \
-	       $(PARSING_DIR)/lexer_handlers_operator.c \
-           $(PARSING_DIR)/lexer_handlers_word.c \
-	       $(PARSING_DIR)/ft_node.c \
-	       $(PARSING_DIR)/spliter.c \
-	       $(PARSING_DIR)/heredoc.c \
-	       $(PARSING_DIR)/heredoc_utlis.c \
-	       $(PARSING_DIR)/destroy_allocation.c \
-           $(PARSING_DIR)/manage_signal.c \
-		   $(PARSING_DIR)/ft_free.c #delet
+		   $(PARSING_DIR)/gitline.c \
+		   $(PARSING_DIR)/start_shell.c \
+		   $(PARSING_DIR)/ft_utilis.c \
+		   $(PARSING_DIR)/token_utils.c\
+		   $(PARSING_DIR)/handler_syntax_error.c \
+		   $(PARSING_DIR)/lexer_handler_qoutes.c \
+		   $(PARSING_DIR)/lexer_handlers_operator.c \
+		   $(PARSING_DIR)/lexer_handlers_word.c \
+		   $(PARSING_DIR)/ft_node.c \
+		   $(PARSING_DIR)/spliter.c \
+		   $(PARSING_DIR)/heredoc.c \
+		   $(PARSING_DIR)/heredoc_utlis.c \
+		   $(PARSING_DIR)/destroy_allocation.c \
+		   $(PARSING_DIR)/manage_signal.c \
+		   $(PARSING_DIR)/expand_variables.c \
+		   $(PARSING_DIR)/ft_free.c 
 
 # Combine all source files
 SRCS += $(SRC_PARS)
@@ -92,6 +93,12 @@ $(OBJ_DIR)/getline/%.o: $(GETLINE_DIR)/%.c
 	@mkdir -p $(dir $@)  # Ensures the 'getline' directory exists
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+# Add to your Makefile
+
+test_expansion: $(OBJS) tests/test_expansion.c
+	$(CC) $(CFLAGS) -o test_expansion $(OBJS) tests/test_expansion.c $(LIBS)
+	./test_expansion
+	
 $(NAME): $(OBJS) $(LIBFT)
 	@$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -lreadline -o $(NAME)
 	@./.script.sh

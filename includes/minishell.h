@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/06 16:38:58 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/07 10:51:53 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ typedef struct s_string
 	char	*cmd_path;   // Command path
 	char	**cmd_flags; // Command flags
 }								t_exec_cmd;*/
-bool	handler_syntax_error(char *line);
+bool							handler_syntax_error(char *line);
 /* -------------------------------------------------------------------------- */
 /*                              GLOBAL FUNCTIONS                              */
 /* -------------------------------------------------------------------------- */
@@ -173,7 +173,6 @@ void							tokenize(char **tokins, t_env_lst **list);
 en_status						get_redirection_type_from_str(char *str);
 en_status						get_token_type(char *str);
 
-
 /* Token Management */
 t_env_lst						*ft_newnode(char *cmd, en_status state);
 void							lstadd_back(t_env_lst **head, t_env_lst *new);
@@ -215,23 +214,25 @@ char							*handler_expasion(char *var_name);
 void							heandler_dollar(t_env_lst **list, char *str,
 									int *i, en_status state);
 /* -------------------------------------------------------------------------- */
-/*                              heredoc.c 			                          */
+/*                              heredoc.c 					                    */
 /* -------------------------------------------------------------------------- */
 int								hase_heredoc_rediraection(t_env_lst *head);
-int								handle_heredoc(char *delimiter, int *heredoc_fd);
-int								handler_heredoc(t_env_lst	*list);
+int								handle_heredoc(char *delimiter,
+									int *heredoc_fd);
+int								handler_heredoc(t_env_lst *list);
 
 /* -------------------------------------------------------------------------- */
-/*                              heredoc_utlis.c			                      */
+/*                              heredoc_utlis.c					                */
 /* -------------------------------------------------------------------------- */
-int								open_heredoc();
+int								open_heredoc(void);
 bool							ft_isheredoc(t_env_lst *list);
-bool							is_heredoc(t_env_lst *list);// delet
-char							*find_delimiter(t_env_lst *list, int *is_expand);
-bool							ft_clculate_heredoc(t_env_lst	*list);
+bool	is_heredoc(t_env_lst *list); // delet
+char							*find_delimiter(t_env_lst *list,
+									int *is_expand);
+bool							ft_clculate_heredoc(t_env_lst *list);
 
 /* -------------------------------------------------------------------------- */
-/*                              destroy_allocation.c 			              */
+/*                              destroy_allocation.c 					        */
 /* -------------------------------------------------------------------------- */
 void							ft_destroylist(t_env_lst *list);
 
@@ -253,6 +254,13 @@ int								redirections(char **args);
 int								handle_output_redirection(char **args, int *i);
 char							*get_env_value(char *var_name,
 									t_string *st_string);
+
+/* -------------------------------------------------------------------------- */
+/*                              VARIABLE EXPANSION                            */
+/* -------------------------------------------------------------------------- */
+void							expand_variables(t_env_lst *list);
+
+char							*ft_strjoin_char(char *str, char c);
 
 /* ************************************************************************** */
 /*                               BUILTIN COMMANDS                              */
