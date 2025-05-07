@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 15:32:42 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/06 18:38:00 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/07 09:47:54 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	handle_forked_process(char *delimiter, bool dolar)
 		read_and_process_heredoc_input(delimiter, dolar);
 		close(data_struc()->heredoc_fd);
 		ft_malloc(false, 0);
+		ft_destroylist(data_struc()->head);
 		exit(0);
 	}
 	waitpid(pid, &status, 0);

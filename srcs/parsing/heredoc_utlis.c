@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:36:52 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/06 17:12:39 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/07 09:58:29 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int	open_heredoc()
 		index_str = ft_itoa(i);// leaks Error
 		if (!index_str)
 			return (-1);
-		heredoc_file = ft_strjoin("/tmp/heredoc_", index_str);
+		
+		heredoc_file = ft_strjoin("/tmp/.heredoc_", index_str);
 		if (!heredoc_file)
 			return (-1);
 		if (access(heredoc_file, F_OK) != 0)
@@ -44,10 +45,12 @@ int	open_heredoc()
 		i++;
 	}
 	fd = open(heredoc_file, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	int fd1 = open(heredoc_file, O_RDONLY);
+	unlink(heredoc_file);// delete in file 
 	data_struc()->heredoc_file = heredoc_file;
 	if (fd < 0)
 		return (-1);
-	return (fd);
+	return (fd1);
 }
 
 bool	is_quotes_thes_str(char *str)
@@ -175,6 +178,6 @@ bool	ft_clculate_heredoc(t_env_lst	*list)
 	}
 	if (size > 16)
 		return (ft_putendl_fd("maximum here-document count exceeded", 2),
-			ft_malloc(0, 0), exit(2), false);// leaks of list
+			ft_malloc(0, 0), ft_destroylist(list), exit(2), false);// leaks of list
 	return (true);
 }
