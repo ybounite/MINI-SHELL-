@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/07 13:21:32 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/07 19:56:11 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,12 @@ static char	*expand_string(const char *str)
 	in_single_quotes = 0;
 	in_double_quotes = 0;
 	result = ft_strdup("");
+	//$1PWD
 	while (str[i])
 	{
-		if (str[i] == '\'' && !in_double_quotes)
+		if(str[i] == '$' && ft_isdigit(str[i+1]))
+			i += 2;
+		else if (str[i] == '\'' && !in_double_quotes)
 		{
 			in_single_quotes = !in_single_quotes;
 			result = ft_strjoin_char(result, str[i]);
@@ -142,6 +145,7 @@ void	expand_variables(t_env_lst *list)
 		if (current->value && ft_strchr(current->value, '$'))
 		{
 			expanded = expand_string(current->value);
+			printf("---------------->Expanded: %s\n", expanded);
 			current->value = expanded;
 		}
 		current = current->next;
