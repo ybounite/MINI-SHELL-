@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/07 20:08:41 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/07 20:56:36 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,13 @@ static char	*get_variable_value(char *var_name)
 	//$1PWD
 	while (str[i])
 	{
-		if(str[i] == '$' && ft_isdigit(str[i+1]))
+		if (str[i] == '$' && ft_isdigit(str[i+1]))
 			i += 2;
+		else if (str[i] == '$' && str[i + 1] == '$')
+		{
+			result = ft_strjoin(result, "$$");
+			i +=2;
+		}
 		else if (str[i] == '\'' && !in_double_quotes)
 		{
 			in_single_quotes = !in_single_quotes;
