@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variables.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/07 13:21:32 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/07 16:56:51 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static char	*get_variable_value(char *var_name)
 	return (ft_strdup(value));
 }
 
-static char	*expand_string(const char *str)
+ char	*expand_string(const char *str)
 {
 	int		i;
 	int		in_single_quotes;

@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 15:32:42 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/07 09:47:54 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/07 18:53:57 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,26 +33,36 @@ void	error_herdoc(char *delimiter)
 	printf("delimited by end-of-file (wanted `%s')\n", delimiter);
 }
 
+
+char	*ft_expand(char *line)
+{
+	// char	*expand;
+	if (*line == '"' && *(line + 1) == '$')
+		return (expand_string(line));
+	if (isquotes(*line == '$'))
+		return (expand_string(line));
+	return (line);
+}
 int	read_and_process_heredoc_input(char *delimiter, bool expand)
 {
 	char	*line;
-	// char	*str_expand;
+	char	*str_expand;
 
 	while (true)
 	{
 		line = readline("> ");
 		if (!line)
-			error_herdoc(delimiter);
+			return (error_herdoc(delimiter), data_struc()->exit_status = 0, 1);
 		if (!ft_strcmp(line, delimiter))
 			return (free(line), 1);
-		// if (expand)
-		// {
-		// 	str_expand = ft_expand(line);
-		// 	write(data_struc()->heredoc_fd, str_expand, strlen(str_expand));
-		// }
-		// else
-		(void)expand;
-		write(data_struc()->heredoc_fd, line, strlen(line));
+		if (expand)
+		{
+			str_expand = ft_expand(line);
+			printf("%s\n", str_expand);
+			write(data_struc()->heredoc_fd, str_expand, ft_strlen(str_expand));
+		}
+		else
+			write(data_struc()->heredoc_fd, line, ft_strlen(line));
 		write(data_struc()->heredoc_fd, "\n", 1);
 		free(line);
 	}
@@ -64,6 +74,8 @@ int	handle_forked_process(char *delimiter, bool dolar)
 	pid_t	pid;
 	int		status;
 
+	(void)delimiter;
+	(void)dolar;
 	pid = fork();
 	if (pid == -1)
 	{
@@ -80,7 +92,6 @@ int	handle_forked_process(char *delimiter, bool dolar)
 		exit(0);
 	}
 	waitpid(pid, &status, 0);
-	// return (handle_child_exit_status(status));
 	return (true);
 }
 
@@ -89,7 +100,6 @@ int	handler_heredoc(t_env_lst	*list)
 	char	*delimiter;
 	int		is_expand;
 
-	printf("heredoc\n");
 	delimiter = NULL;
 	is_expand = 0;
 	ft_clculate_heredoc(list);
@@ -99,10 +109,12 @@ int	handler_heredoc(t_env_lst	*list)
 		{
 			list = list->next;// skip heredoc
 			delimiter = find_delimiter(list, &is_expand);
+			printf("this herdoc\n");
 			data_struc()->heredoc_fd = open_heredoc();
 			if (data_struc()->heredoc_fd < 0)
 				return (data_struc()->exit_status = 2, 0);
 			handle_forked_process(delimiter, is_expand);
+			// free(delimiter);
 		}
 		list = list->next;
 	}

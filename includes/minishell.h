@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/07 14:32:08 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/07 19:21:04 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct s_string
 	char	**cmd_flags; // Command flags
 }								t_exec_cmd;*/
 bool							handler_syntax_error(char *line);
+char	*expand_string(const char *str);
 /* -------------------------------------------------------------------------- */
 /*                              GLOBAL FUNCTIONS                              */
 /* -------------------------------------------------------------------------- */
@@ -214,12 +215,14 @@ char							*handler_expasion(char *var_name);
 void							heandler_dollar(t_env_lst **list, char *str,
 									int *i, en_status state);
 /* -------------------------------------------------------------------------- */
-/*                              heredoc.c 					                    */
+/*                              heredoc.c 					                   */
 /* -------------------------------------------------------------------------- */
 int								hase_heredoc_rediraection(t_env_lst *head);
 int								handle_heredoc(char *delimiter,
 									int *heredoc_fd);
 int								handler_heredoc(t_env_lst *list);
+char							*ft_remove_quotes(char *str);
+bool							is_quotes_thes_str(char *str);
 
 /* -------------------------------------------------------------------------- */
 /*                              heredoc_utlis.c					                */
