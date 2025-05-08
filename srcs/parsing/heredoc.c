@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 15:32:42 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/07 18:53:57 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/08 19:37:22 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,56 @@ void	error_herdoc(char *delimiter)
 	printf("delimited by end-of-file (wanted `%s')\n", delimiter);
 }
 
+char *skip_qoutes(char *str)
+{
+	while (isquotes(*str))
+	{
+		(*str)++;
+	}
+	return (str);
+}
+char	*expand_heredoc(char *str)
+{
+	int 	i;
+	int		original_i;
+	char	*tmp;
+	char	*var_value;
 
+	(1) && (tmp = ft_strdup("")), (i = 0), (original_i = 0);
+	while (str[i])
+	{
+		while (isquotes(str[i]))
+			tmp = ft_strjoin_char(tmp, str[i++]);
+		if (str[i] == '\0')
+			break ;
+		if (str[i] == '$' && ft_isdigit(str[i + 1]))
+			i += 2;
+		else if (str[i] == '$' && str[i + 1] == '$')
+		{
+			tmp = ft_strjoin(tmp, "$$");
+			i +=2;
+		}
+		else if (str[i] == DOLLAR)
+		{
+			var_value = get_variable_value(get_variable_name(str, &i));
+			tmp = ft_strjoin(tmp, var_value);
+			if (original_i == i)
+			{
+				tmp = ft_strjoin_char(tmp, '$');
+				i++;
+			}
+		}
+		else if (str[i])
+			tmp = ft_strjoin_char(tmp, str[i++]);
+	}
+	return (tmp);
+}
 char	*ft_expand(char *line)
 {
-	// char	*expand;
-	if (*line == '"' && *(line + 1) == '$')
-		return (expand_string(line));
-	if (isquotes(*line == '$'))
-		return (expand_string(line));
-	return (line);
+	if (*line == '$' && isquotes((*line + 1)))
+		return (line);
+	else
+		return (expand_heredoc(line));
 }
 int	read_and_process_heredoc_input(char *delimiter, bool expand)
 {
@@ -78,17 +119,13 @@ int	handle_forked_process(char *delimiter, bool dolar)
 	(void)dolar;
 	pid = fork();
 	if (pid == -1)
-	{
-		perror("minishell: fork");
-		return (1);
-	}
+		return (perror("minishell: fork"), 1);
 	else if (pid == 0)
 	{
 		// signal(SIGINT, sigint_handler);// handler signal 
 		read_and_process_heredoc_input(delimiter, dolar);
 		close(data_struc()->heredoc_fd);
 		ft_malloc(false, 0);
-		ft_destroylist(data_struc()->head);
 		exit(0);
 	}
 	waitpid(pid, &status, 0);
@@ -107,6 +144,7 @@ int	handler_heredoc(t_env_lst	*list)
 	{
 		if (list->type == HERE_DOCUMENT && list->next)// handler is not find delimite
 		{
+			list->value = ft_strdup("<");
 			list = list->next;// skip heredoc
 			delimiter = find_delimiter(list, &is_expand);
 			printf("this herdoc\n");
@@ -114,7 +152,7 @@ int	handler_heredoc(t_env_lst	*list)
 			if (data_struc()->heredoc_fd < 0)
 				return (data_struc()->exit_status = 2, 0);
 			handle_forked_process(delimiter, is_expand);
-			// free(delimiter);
+			list->value = data_struc()->heredoc_file;
 		}
 		list = list->next;
 	}

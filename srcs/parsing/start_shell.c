@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_shell.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/08 13:29:43 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/08 19:39:55 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,8 @@ int	handle_input_syntax(t_string *st_string)
 	remove_quotes(list, &head);
 	// printf("\n%s<->      after remove quotes     <->\e[0m\n", GREEN);
 	st_string->head = head;
-	// print_lst_tokens(list);
+	print_lst_tokens(list);
 	execute_command(st_string);
-	ft_destroylist(list);
-	ft_destroylist(head);// delet
 	return (true);
 }
 

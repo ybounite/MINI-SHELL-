@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/08 14:34:14 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/08 18:57:09 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_string
 	bool						is_builtin;
 	bool						is_parenthesis;
 	bool						is_heredoc;
+	char						**expand_args;
 	char						*heredoc_file;
 	int							heredoc_fd;
 	int							exit_status;
@@ -93,18 +94,14 @@ typedef struct s_string
 	t_env_lst					*head;
 }								t_string;
 
-/* Command execution structure */
-/*typedef struct s_exec_cmd
-{
-	char	*full_path;  // Full command path
-	char	*path;       // Command path
-	char	**dirs;      // Directory paths
-	pid_t	pid;        // Process ID
-	char	*cmd_path;   // Command path
-	char	**cmd_flags; // Command flags
-}								t_exec_cmd;*/
+
 bool							handler_syntax_error(char *line);
+/* -------------------------------------------------------------------------- */
+/*                              expand_variables.c                            */
+/* -------------------------------------------------------------------------- */
 char							*expand_string(const char *str);
+char							*get_variable_name(const char *str, int *i);
+char							*get_variable_value(char *var_name);
 void							remove_extra_spaces(char *str);
 /* -------------------------------------------------------------------------- */
 /*                              GLOBAL FUNCTIONS                              */
@@ -216,7 +213,7 @@ void							process_quoted_string_with_expansion(t_env_lst **list,
 /* -------------------------------------------------------------------------- */
 int								lendollar(char *str, int start);
 char							*handler_expasion(char *var_name);
-void							heandler_dollar(t_env_lst **list, char *str,
+void							heandler_dollar(t_env_lst **lexpand_variablesist, char *str,
 									int *i, en_status state);
 /* -------------------------------------------------------------------------- */
 /*                              heredoc.c 									       */

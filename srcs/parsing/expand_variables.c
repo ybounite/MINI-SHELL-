@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variables.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/08 13:09:57 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/08 18:55:23 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static char	*get_variable_name(const char *str, int *i)
+char	*get_variable_name(const char *str, int *i)
 {
 	int		start;
 	int		len;
@@ -37,7 +37,7 @@ static char	*get_variable_name(const char *str, int *i)
 	return (var_name);
 }
 
-static char	*get_variable_value(char *var_name)
+char	*get_variable_value(char *var_name)
 {
 	char	*value;
 	char	*exit_status_str;
@@ -150,7 +150,7 @@ void	expand_variables(t_env_lst *list)
 		if (current->value && ft_strchr(current->value, '$'))
 		{
 			expanded = expand_string(current->value);
-			// printf("expanded: %s\n", expanded);
+			// data_struc()->expand_args = ft_split(expanded, SPACE);
 			current->value = expanded;
 		}
 		current = current->next;

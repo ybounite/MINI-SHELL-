@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:36:52 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/07 17:03:11 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/08 18:28:34 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,61 @@ bool	ft_isheredoc(t_env_lst *list)
 	return (false);
 }
 
+char	*creatr_file_name(int fd)
+{
+	char	*file_name;
+	char	characte[1];
+	int		is_filled;
+	int 	i;
+	
+	i = 0;
+	file_name = ft_malloc(10 *sizeof(char) , true);
+	while (i < 9)
+	{
+		is_filled = read(fd, characte, 1);
+		if (ft_isalpha(characte[0]))
+		{
+			file_name[i] = characte[0];
+			i++;
+		}
+	}
+	file_name[i] = '\0';
+	return (file_name);
+}
+
+char	*create_temp_file()
+{
+	int		fd;
+	char	*file_name;
+
+	fd = open("/dev/random", O_RDONLY);
+	if (fd == -1)
+		return (perror("filled read"), NULL);
+	file_name = creatr_file_name(fd);
+	if (!file_name)
+		return (NULL);
+	close(fd);
+	return (file_name);
+}
+
 int	open_heredoc()
 {
 	int		fd;
+	char	*file_name;
 	char	*heredoc_file;
-	char	*index_str;
-	int		i;
 
-	i = 42;
 	while (true)
 	{
-		index_str = ft_itoa(i);// leaks Error
-		if (!index_str)
+		file_name = create_temp_file();
+		if (!file_name)
 			return (-1);
-		heredoc_file = ft_strjoin("/tmp/herdoc_", index_str);
+		heredoc_file = ft_strjoin("/tmp/", file_name);
 		if (!heredoc_file)
 			return (-1);
 		if (access(heredoc_file, F_OK) != 0)
 			break;
-		i++;
 	}
+	printf("file name herdoc : %s\n", heredoc_file);
 	fd = open(heredoc_file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	data_struc()->heredoc_file = heredoc_file;
 	if (fd < 0)
@@ -176,6 +211,6 @@ bool	ft_clculate_heredoc(t_env_lst	*list)
 	}
 	if (size > 16)
 		return (ft_putendl_fd("maximum here-document count exceeded", 2),
-			ft_malloc(0, 0), ft_destroylist(list), exit(2), false);// leaks of list
+			ft_malloc(0, 0), exit(2), false);// leaks of list
 	return (true);
 }

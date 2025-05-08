@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_node.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:45:11 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/08 14:22:30 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/08 18:23:02 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_env_lst	*ft_newnode(char *cmd, en_status state)
 {
 	t_env_lst *new;
 
-	new = malloc(sizeof(t_env_lst));
+	new = ft_malloc(sizeof(t_env_lst), true);
 	if (!new)
 		return (NULL);
 	new->value = cmd;
