@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:36:06 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/01 19:07:05 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/08 09:44:35 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,7 @@ static void process_command(t_string *st_string, t_env_lst **list, int *prev_fd,
 	if (*list && (*list)->type == PIPE)
 	{
 		if (!setup_pipe(pipe_fd, *list))
-		{
-			// ft_free_split(args);
 			return;
-		}
 		*list = (*list)->next;
 	}
 	if (!create_process(&pid))
@@ -100,7 +97,6 @@ static void process_command(t_string *st_string, t_env_lst **list, int *prev_fd,
 		if (*list)
 			parent_pipe_fd = pipe_fd;
 		handle_parent_process(prev_fd, parent_pipe_fd, pid, status);
-		// ft_free_split(args);
 	}
 }
 

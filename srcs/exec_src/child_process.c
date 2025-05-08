@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:36:25 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/03 16:51:29 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/08 09:45:49 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static int	handle_cmd_not_found(char **args)
 	}
 	else
 	{
-		printf("%s: command not found\n", args[0]);
+		printf("%s: commandxxxxxxxxxxxxxxxxxxxxx not found\n", args[0]);
 		return (127);
 	}
 	return (1);

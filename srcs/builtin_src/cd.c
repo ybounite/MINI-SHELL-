@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:33:50 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/02 15:20:20 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/08 09:38:53 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,12 +137,20 @@ static char	*get_path(char **args, t_string *st_string)
 	else
 		return (args[1]);
 }
+bool	size_cd(char **args)
+{
+	int i;
 
+	i = 0;
+	while (args[i])
+		i++;
+	return (i > 2);
+}
 void	builtin_cd(char **args, t_string *st_string)
 {
 	char	*path;
 	
-	if(args[2])
+	if(size_cd(args))
 	{
 		printf("minishell: cd: too many arguments\n");
 		data_struc()->exit_status = 1;
@@ -151,7 +159,7 @@ void	builtin_cd(char **args, t_string *st_string)
 	if (!args[1])
 		path = handle_home();
 	else if (args[1][0] == '~')
-		path = ft_strjoin(getenv("HOME"), args[1] + 1);
+		path = ft_strjoin(getenv("HOME"), args[1]);
 	else if (args[1][0] == '-')
 		path = handle_dash(st_string);
 	else

@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:38:04 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/08 08:53:10 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/08 09:52:04 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ char	**git_array(t_env_lst **list)
 
 	count = 0;
 	current = *list;
-	if (current->type == PIPE)
-		return (perror("minishell: parse error near `|'\n"), NULL);
 	while (current && current->type != PIPE)
 	{
 		count++;
@@ -74,15 +72,15 @@ void	execute_command(t_string *st_string)
 	if (!st_string->head)
 		return ;
 	list = st_string->head;
-	print_lst_tokens(list);
 	args = git_array(&list);
+	print_lst_tokens(st_string->head);
 	if (!args || !args[0])
 		return ;
-	if (!has_pipe(st_string->head) && is_builtin(args[0]))
+	if (!has_pipe(st_string->head) && st_string->head->type == BUILTINS)
 	{
 		saved_stdout = dup(STDOUT_FILENO);
 		saved_stdin = dup(STDIN_FILENO);
-		handle_builtin_execution(st_string->tokens, st_string, saved_stdout, saved_stdin);
+		handle_builtin_execution(args, st_string, saved_stdout, saved_stdin);
 		return ;
 	}
 	execute_pipeline(st_string);
