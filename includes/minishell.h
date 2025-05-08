@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/07 19:21:04 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/08 08:39:24 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ typedef struct s_environement_list
 typedef struct s_string
 {
 	char						*line;
-	char						*strcon;
 	int							size;
 	char						**tokens;
 	bool						is_error;

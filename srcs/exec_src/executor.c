@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:38:04 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/07 09:59:30 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/08 08:53:10 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	execute_command(t_string *st_string)
 	if (!st_string->head)
 		return ;
 	list = st_string->head;
+	print_lst_tokens(list);
 	args = git_array(&list);
 	if (!args || !args[0])
 		return ;
@@ -84,6 +85,5 @@ void	execute_command(t_string *st_string)
 		handle_builtin_execution(st_string->tokens, st_string, saved_stdout, saved_stdin);
 		return ;
 	}
-	// ft_free_split(args);
 	execute_pipeline(st_string);
 }

@@ -6,35 +6,32 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/07 20:00:00 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/08 08:49:12 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	remove_quotes(char **tokens, t_env_lst 	**head)
+void	remove_quotes(t_env_lst	*list, t_env_lst 	**head)
 {
 	en_status	stats;
 	char		*str;
-	int 		i;
 
-	i = 0;
-	while (tokens[i])
+	while (list)
 	{
-		if (is_quotes_thes_str(tokens[i]))
-			str = ft_remove_quotes(tokens[i]);
+		if (is_quotes_thes_str(list->value))
+			str = ft_remove_quotes(list->value);
 		else
-			str = tokens[i];
-		stats =  get_token_type(tokens[i]);
+			str = list->value;
+		stats =  get_token_type(list->value);
 		ft_add_newtoken(head, str, stats);
-		i++;
+		list = list->next;
 	}
 }
 
 int	handle_input_syntax(t_string *st_string)
 {
 	t_env_lst	*list;
-	// t_env_lst	*original_list;
 
 	list = NULL;
 	if (handler_syntax_error(st_string->line))
@@ -46,13 +43,13 @@ int	handle_input_syntax(t_string *st_string)
 	data_struc()->head = list;
 	if (ft_isheredoc(list))
 		handler_heredoc(list);
-	// original_list = list;
 	expand_variables(list);
 	print_lst_tokens(list); // delet
 	t_env_lst *head = NULL;
-	remove_quotes(st_string->tokens, &head);
+	remove_quotes(list, &head);
 	printf("\n%s<->      after remove quotes     <->\e[0m\n", GREEN);
-	print_lst_tokens(head); // delet
+	st_string->head = head;
+	execute_command(st_string);
 	ft_destroylist(list);
 	ft_destroylist(head);// delet
 	return (true);

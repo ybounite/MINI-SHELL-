@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:18:12 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/06 14:18:58 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/08 08:37:10 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,6 @@ char	**spliter(char *line)
 		}
 	}
 	spliter[index] = NULL;
+	data_struc()->size = index;
 	return spliter;
 }
