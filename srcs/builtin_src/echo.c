@@ -6,38 +6,11 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:29:58 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/08 11:09:57 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/08 14:34:03 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void	remove_extra_spaces(char *str)
-{
-	int	i = 0, j;
-	int	space_found;
-
-	i = 0, j = 0;
-	space_found = 0;
-	while (str[i])
-	{
-		if (!isspace(str[i]))
-		{
-			str[j++] = str[i];
-			space_found = 0;
-		}
-		else if (!space_found)
-		{
-			str[j++] = ' ';
-			space_found = 1;
-		}
-		i++;
-	}
-	// Remove trailing space if any
-	if (j > 0 && str[j - 1] == ' ')
-		j--;
-	str[j] = '\0';
-}
 
 int	is_n_flag(char *s)
 {
@@ -66,38 +39,39 @@ char	*get_env_value(char *var_name, t_string *st_string)
 	len = ft_strlen(name);
 	if (len == 0)
 		return (ft_strdup(""));
-	// Search environment variables
 	i = 0;
 	while (st_string->g_envp[i])
 	{
 		if (ft_strncmp(st_string->g_envp[i], name, len) == 0
 			&& st_string->g_envp[i][len] == '=')
-		{
-			// remove_extra_spaces(st_string->g_envp[i]);e
 			return (ft_strdup(st_string->g_envp[i] + len + 1));
-		}
 		i++;
 	}
 	return (ft_strdup(""));
 }
 
-void	builtin_echo(char **args, t_string *st_string)
+void	builtin_echo(t_env_lst *list)
 {
-	int	i;
-	int	n_flag;
+	t_env_lst	*current;
+	int			n_flag;
 
-	i = 1;
+	if (!list)
+		return ;
+	current = list;
 	n_flag = 0;
-	(void)st_string;
-	while (args[i] && is_n_flag(args[i]))
+	if (current && ft_strcmp(current->value, "echo") == 0)
+		current = current->next;
+	while (current && is_n_flag(current->value))
 	{
 		n_flag = 1;
-		i++;
+		current = current->next;
 	}
-	while (args[i])
+	while (current)
 	{
-		printf("%s", args[i]);
-		i++;
+		printf("%s", current->value);
+		current = current->next;
+		if (current)
+			printf(" ");
 	}
 	if (!n_flag)
 		printf("\n");

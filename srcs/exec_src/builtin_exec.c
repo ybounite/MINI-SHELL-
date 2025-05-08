@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:19:31 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/01 18:38:17 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/08 14:33:42 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	is_builtin(char *cmd)
 void	execute_builtin(char **args, t_string *st_string)
 {
 	if (!ft_strcmp(args[0], "echo"))
-		builtin_echo(args, st_string);
+		builtin_echo(st_string->head);
 	else if (!ft_strcmp(args[0], "cd"))
 		builtin_cd(args, st_string);
 	else if (!ft_strcmp(args[0], "pwd"))

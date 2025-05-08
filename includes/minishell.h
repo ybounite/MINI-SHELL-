@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/08 14:22:44 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/08 14:34:14 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,7 @@ char							*handler_expasion(char *var_name);
 void							heandler_dollar(t_env_lst **list, char *str,
 									int *i, en_status state);
 /* -------------------------------------------------------------------------- */
-/*                              heredoc.c 							             */
+/*                              heredoc.c 									       */
 /* -------------------------------------------------------------------------- */
 int								hase_heredoc_rediraection(t_env_lst *head);
 int								handle_heredoc(char *delimiter,
@@ -229,7 +229,7 @@ char							*ft_remove_quotes(char *str);
 bool							is_quotes_thes_str(char *str);
 
 /* -------------------------------------------------------------------------- */
-/*                              heredoc_utlis.c							          */
+/*                              heredoc_utlis.c									    */
 /* -------------------------------------------------------------------------- */
 int								open_heredoc(void);
 bool							ft_isheredoc(t_env_lst *list);
@@ -239,7 +239,7 @@ char							*find_delimiter(t_env_lst *list,
 bool							ft_clculate_heredoc(t_env_lst *list);
 
 /* -------------------------------------------------------------------------- */
-/*                              destroy_allocation.c 							  */
+/*                              destroy_allocation.c 								*/
 /* -------------------------------------------------------------------------- */
 void							ft_destroylist(t_env_lst *list);
 
@@ -272,7 +272,7 @@ char							*ft_strjoin_char(char *str, char c);
 /* ************************************************************************** */
 /*                               BUILTIN COMMANDS                              */
 /* ************************************************************************** */
-void							builtin_echo(char **args, t_string *st_string);
+void							builtin_echo(t_env_lst *list);
 void							builtin_cd(char **args, t_string *st_string);
 void							builtin_pwd(void);
 void							builtin_exit(char **args, t_string *st_string);
@@ -294,6 +294,5 @@ int								create_process(pid_t *pid);
 void							handle_parent_process(int *prev_fd,
 									int *pipe_fd, pid_t pid, int *status);
 void							update_exit_status(int status);
-
 
 #endif
