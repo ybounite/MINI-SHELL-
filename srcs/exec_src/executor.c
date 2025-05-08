@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:38:04 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/08 09:52:04 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/08 13:01:01 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ static void	handle_builtin_execution(char **args, t_string *st_string,
 		execute_builtin(args, st_string);
 	if (saved_stdout != -1)
 	{
-		dup2(saved_stdout, STDOUT_FILENO);
+		dup2(saved_stdout, STDOUT_FILENO); // Restore original stdout
 		close(saved_stdout);
 	}
 	if (saved_stdin != -1)
 	{
-		dup2(saved_stdin, STDIN_FILENO);
+		dup2(saved_stdin, STDIN_FILENO);// Restore original stdint
 		close(saved_stdin);
 	}
 }
@@ -73,7 +73,6 @@ void	execute_command(t_string *st_string)
 		return ;
 	list = st_string->head;
 	args = git_array(&list);
-	print_lst_tokens(st_string->head);
 	if (!args || !args[0])
 		return ;
 	if (!has_pipe(st_string->head) && st_string->head->type == BUILTINS)

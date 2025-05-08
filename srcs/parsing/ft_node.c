@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_node.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:45:11 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/08 09:40:40 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/08 14:22:30 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,18 @@ t_env_lst	*ft_newnode(char *cmd, en_status state)
 	new->next = NULL;
 	return (new);
 }
+
+// void free_env_lst(t_env_lst *head)
+// {
+//     t_env_lst *tmp;
+
+//     while (head)
+//     {
+//         tmp = head;
+//         head = head->next;
+//         free(tmp);
+//     }
+// }
 
 void	lstadd_back(t_env_lst **head, t_env_lst *new)
 {

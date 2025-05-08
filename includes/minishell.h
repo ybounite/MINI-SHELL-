@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/08 08:39:24 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/08 14:22:44 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@
 # include <stdio.h>
 # include <stdlib.h>
 // # include <string.h>
+# include "../libraries/getline/get_next_line.h"
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include "../libraries/getline/get_next_line.h"
 /* ************************************************************************* */
 /*                                   DEFINES                                 */
 /* ************************************************************************* */
@@ -104,7 +104,8 @@ typedef struct s_string
 	char	**cmd_flags; // Command flags
 }								t_exec_cmd;*/
 bool							handler_syntax_error(char *line);
-char	*expand_string(const char *str);
+char							*expand_string(const char *str);
+void							remove_extra_spaces(char *str);
 /* -------------------------------------------------------------------------- */
 /*                              GLOBAL FUNCTIONS                              */
 /* -------------------------------------------------------------------------- */
@@ -124,6 +125,10 @@ void							ft_free_split(char **split);
 void							assign_signals_handler(void);
 void							setup_signals(void);
 void							handler(int signum);
+void							set_signals_for_execution(void);
+void							set_signals_for_heredoc(void);
+void							reset_signals(void);
+void							handler_heredoc_sig(int signum);
 
 /* -------------------------------------------------------------------------- */
 /*                                STRING UTILITIES                            */
@@ -214,7 +219,7 @@ char							*handler_expasion(char *var_name);
 void							heandler_dollar(t_env_lst **list, char *str,
 									int *i, en_status state);
 /* -------------------------------------------------------------------------- */
-/*                              heredoc.c 					                   */
+/*                              heredoc.c 							             */
 /* -------------------------------------------------------------------------- */
 int								hase_heredoc_rediraection(t_env_lst *head);
 int								handle_heredoc(char *delimiter,
@@ -224,7 +229,7 @@ char							*ft_remove_quotes(char *str);
 bool							is_quotes_thes_str(char *str);
 
 /* -------------------------------------------------------------------------- */
-/*                              heredoc_utlis.c					                */
+/*                              heredoc_utlis.c							          */
 /* -------------------------------------------------------------------------- */
 int								open_heredoc(void);
 bool							ft_isheredoc(t_env_lst *list);
@@ -234,7 +239,7 @@ char							*find_delimiter(t_env_lst *list,
 bool							ft_clculate_heredoc(t_env_lst *list);
 
 /* -------------------------------------------------------------------------- */
-/*                              destroy_allocation.c 					        */
+/*                              destroy_allocation.c 							  */
 /* -------------------------------------------------------------------------- */
 void							ft_destroylist(t_env_lst *list);
 
@@ -279,5 +284,16 @@ void							builtin_env(t_string *st_string);
 void							handle_child_process(char **args, int prev_fd,
 									int *pipe_fd, t_string *st_string);
 char							*find_path(char *cmd, char **envp);
+
+/* ************************************************************************** */
+/*                              PIPELINE_UTILS                              */
+/* ************************************************************************** */
+
+int								setup_pipe(int pipe_fd[2], t_env_lst *list);
+int								create_process(pid_t *pid);
+void							handle_parent_process(int *prev_fd,
+									int *pipe_fd, pid_t pid, int *status);
+void							update_exit_status(int status);
+
 
 #endif

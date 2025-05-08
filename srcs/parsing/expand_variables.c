@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variables.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/08 09:12:30 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/08 13:09:57 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char	*get_variable_value(char *var_name)
 		exit_status_str = ft_itoa(data_struc()->exit_status);
 		return (exit_status_str);
 	}
-	value = getenv(var_name);
+	value = get_env_value(var_name, data_struc());
 	if (!value)
 		return (ft_strdup(""));
 	return (ft_strdup(value));
@@ -150,7 +150,7 @@ void	expand_variables(t_env_lst *list)
 		if (current->value && ft_strchr(current->value, '$'))
 		{
 			expanded = expand_string(current->value);
-			printf("---------------->Expanded: %s\n", expanded);
+			// printf("expanded: %s\n", expanded);
 			current->value = expanded;
 		}
 		current = current->next;

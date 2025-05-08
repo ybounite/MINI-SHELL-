@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:36:25 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/08 09:45:49 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/08 13:19:43 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,6 @@ static void	setup_redirections(int prev_fd, int *pipe_fd)
 		close(pipe_fd[1]);
 	}
 }
-
-// static int	handle_env_variable_cmd(char **args, t_string *st_string)
-// {
-// 	char	*env_value;
-
-// 	if (args[0] && args[0][0] == '$')
-// 	{
-// 		env_value = get_env_value(args[0], st_string);
-// 		if (!env_value || env_value[0] == '\0')
-// 		{
-// 			if (env_value)
-// 				free(env_value);
-// 			ft_free_split(args);
-// 			return (127);
-// 		}
-// 		free(args[0]);
-// 		args[0] = env_value;
-// 	}
-// 	return (0);
-// }
 
 static void	exec_builtin_and_exit(char **args, t_string *st_string)
 {
@@ -85,7 +65,7 @@ static int	handle_cmd_not_found(char **args)
 	}
 	else
 	{
-		printf("%s: commandxxxxxxxxxxxxxxxxxxxxx not found\n", args[0]);
+		printf("%s: command not found\n", args[0]);
 		return (127);
 	}
 	return (1);
@@ -132,7 +112,6 @@ static void	handle_command_path(char **args, t_string *st_string)
 void	handle_child_process(char **args, int prev_fd, int *pipe_fd,
 		t_string *st_string)
 {
-	// int	ret;
 	setup_redirections(prev_fd, pipe_fd);
 	if (redirections(args) < 0)
 	{
@@ -140,9 +119,6 @@ void	handle_child_process(char **args, int prev_fd, int *pipe_fd,
 		ft_malloc(0, 0);
 		exit(1);
 	}
-	// ret = handle_env_variable_cmd(args, st_string);
-	// if (ret != 0)
-	// 	exit(ret);
 	if (is_builtin(args[0]))
 		exec_builtin_and_exit(args, st_string);
 	else

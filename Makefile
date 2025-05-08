@@ -21,6 +21,7 @@ SRCS = $(SRC_DIR)/utilis.c \
 	   $(EXEC_DIR)/find_path.c \
 	   $(EXEC_DIR)/utils.c \
 	   $(EXEC_DIR)/redirections.c \
+	   $(EXEC_DIR)/pipeline_utils.c \
 	   $(BUILTIN_DIR)/cd.c \
 	   $(BUILTIN_DIR)/echo.c \
 	   $(BUILTIN_DIR)/pwd.c \
