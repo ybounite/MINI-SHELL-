@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variables.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/08 18:55:23 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/09 09:18:33 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*get_variable_value(char *var_name)
 	return (ft_strdup(value));
 }
 
- char	*expand_string(const char *str)
+char	*expand_string(const char *str)
 {
 	int		i;
 	int		in_single_quotes;
@@ -73,12 +73,12 @@ char	*get_variable_value(char *var_name)
 	//$1PWD
 	while (str[i])
 	{
-		if (str[i] == '$' && ft_isdigit(str[i+1]))
+		if (str[i] == '$' && ft_isdigit(str[i + 1]))
 			i += 2;
 		else if (str[i] == '$' && str[i + 1] == '$')
 		{
 			result = ft_strjoin(result, "$$");
-			i +=2;
+			i += 2;
 		}
 		else if (str[i] == '\'' && !in_double_quotes)
 		{
@@ -97,6 +97,8 @@ char	*get_variable_value(char *var_name)
 			original_i = i;
 			var_name = get_variable_name(str, &i);
 			var_value = get_variable_value(var_name);
+			if (!in_double_quotes && !in_single_quotes)
+				var_value = collapse_spaces(var_value);
 			temp = result;
 			result = ft_strjoin(result, var_value);
 			if (original_i == i)
@@ -150,7 +152,7 @@ void	expand_variables(t_env_lst *list)
 		if (current->value && ft_strchr(current->value, '$'))
 		{
 			expanded = expand_string(current->value);
-			// data_struc()->expand_args = ft_split(expanded, SPACE);
+			// printf("expanded: %s\n", expanded);
 			current->value = expanded;
 		}
 		current = current->next;

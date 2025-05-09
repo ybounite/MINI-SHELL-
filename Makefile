@@ -53,6 +53,7 @@ SRC_PARS = $(PARSING_DIR)/minishell.c \
 		   $(PARSING_DIR)/destroy_allocation.c \
 		   $(PARSING_DIR)/manage_signal.c \
 		   $(PARSING_DIR)/expand_variables.c \
+		   $(PARSING_DIR)/change_spaces.c \
 		   $(PARSING_DIR)/ft_free.c 
 
 # Combine all source files
