@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:29:37 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/08 19:39:18 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/09 09:31:05 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,15 @@ void	builtin_exit(char **args, t_string *st_string)
 {
 	int	exit_code;
 
+	(void)st_string;
 	printf("exit\n");
 	if (!args[1])
 	{
-		free_list(st_string->head);
 		ft_malloc(0, 0);
 		exit(0);
 	}
 	if (!is_numeric(args[1]))
 	{
-		free_list(st_string->head);
 		printf("exit: %s: numeric argument required\n", args[1]);
 		ft_malloc(0, 0);
 		exit(2);
@@ -56,7 +55,6 @@ void	builtin_exit(char **args, t_string *st_string)
 	}
 	exit_code = ft_atoi(args[1]);
 	exit_code = (unsigned char)exit_code;
-	free_list(st_string->head);
 	ft_malloc(0, 0);
 	exit(exit_code);
 }

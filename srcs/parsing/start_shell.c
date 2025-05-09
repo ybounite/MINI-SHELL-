@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/08 19:39:55 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/09 15:26:05 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ int	handle_input_syntax(t_string *st_string)
 	data_struc()->head = list;
 	if (ft_isheredoc(list))
 		handler_heredoc(list);
+	print_lst_tokens(list); // delet
 	expand_variables(list);
-	// print_lst_tokens(list); // delet
 	t_env_lst *head = NULL;
 	remove_quotes(list, &head);
-	// printf("\n%s<->      after remove quotes     <->\e[0m\n", GREEN);
+	printf("\n%s<->      after remove quotes     <->\e[0m\n", YELLOW);
 	st_string->head = head;
 	print_lst_tokens(list);
 	execute_command(st_string);

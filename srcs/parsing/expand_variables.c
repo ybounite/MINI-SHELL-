@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variables.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/09 09:18:33 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:16:17 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*get_variable_value(char *var_name)
 	return (ft_strdup(value));
 }
 
-char	*expand_string(const char *str)
+char	*expand_string(const char *str, bool *is_spliting)
 {
 	int		i;
 	int		in_single_quotes;
@@ -98,7 +98,7 @@ char	*expand_string(const char *str)
 			var_name = get_variable_name(str, &i);
 			var_value = get_variable_value(var_name);
 			if (!in_double_quotes && !in_single_quotes)
-				var_value = collapse_spaces(var_value);
+				*is_spliting = 1;
 			temp = result;
 			result = ft_strjoin(result, var_value);
 			if (original_i == i)
@@ -140,20 +140,65 @@ char	*ft_strjoin_char(char *str, char c)
 	result[i + 1] = '\0';
 	return (result);
 }
+void ft_add_expand_variable(t_env_lst **node_ptr, char *variable)
+{
+	t_env_lst	*start = *node_ptr;
+	t_env_lst	*next = start->next; // Save the original next
+
+	char		**words = ft_split(variable, ' ');
+	int			i = 0;
+	if (!words || !words[0])
+		return ;
+	start->value = words[i++];
+	start->type = CMD; // or whatever makes sense
+	t_env_lst *prev = start;
+	// Add remaining words as new nodes
+	while (words[i])
+	{
+		t_env_lst *new_node = ft_newnode(words[i++], CMD);
+		prev->next = new_node;
+		prev = new_node;
+	}
+	prev->next = next;
+	*node_ptr = prev;
+}
+
+bool	is_equal(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '=')
+			return (true);
+		i++;
+	}
+	return (false);
+}
 
 void	expand_variables(t_env_lst *list)
 {
 	t_env_lst	*current;
 	char		*expanded;
+	bool		is_spliting;
 
+	is_spliting = 0;
 	current = list;
 	while (current)
 	{
 		if (current->value && ft_strchr(current->value, '$'))
 		{
-			expanded = expand_string(current->value);
-			// printf("expanded: %s\n", expanded);
-			current->value = expanded;
+			expanded = expand_string(current->value, &is_spliting);
+			printf("%sexpand : %s\e[0m\n", YELLOW, expanded);
+			if (is_spliting && !is_equal(expanded))
+			{
+				
+				ft_add_expand_variable(&current, expanded);
+				is_spliting = 0;
+			}
+			else
+				current->value = expanded;
 		}
 		current = current->next;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/09 09:17:37 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/09 09:54:12 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ bool							handler_syntax_error(char *line);
 /* -------------------------------------------------------------------------- */
 /*                              expand_variables.c                            */
 /* -------------------------------------------------------------------------- */
-char							*expand_string(const char *str);
+char							*expand_string(const char *str, bool *is_spliting);
 char							*get_variable_name(const char *str, int *i);
 char							*get_variable_value(char *var_name);
 void							remove_extra_spaces(char *str);
