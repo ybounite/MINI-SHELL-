@@ -43,7 +43,8 @@ SRC_PARS = $(PARSING_DIR)/minishell.c \
 		   $(PARSING_DIR)/ft_utilis.c \
 		   $(PARSING_DIR)/token_utils.c\
 		   $(PARSING_DIR)/handler_syntax_error.c \
-		   $(PARSING_DIR)/lexer_handler_qoutes.c \
+		   $(PARSING_DIR)/syntax_error.c \
+		   $(PARSING_DIR)/ft_skip_whit_string.c \
 		   $(PARSING_DIR)/lexer_handlers_operator.c \
 		   $(PARSING_DIR)/lexer_handlers_word.c \
 		   $(PARSING_DIR)/ft_node.c \
@@ -54,7 +55,6 @@ SRC_PARS = $(PARSING_DIR)/minishell.c \
 		   $(PARSING_DIR)/manage_signal.c \
 		   $(PARSING_DIR)/expand_variables.c \
 		   $(PARSING_DIR)/change_spaces.c \
-		   $(PARSING_DIR)/ft_free.c 
 
 # Combine all source files
 SRCS += $(SRC_PARS)

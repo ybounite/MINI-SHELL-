@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:36:52 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/08 18:28:34 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/09 18:22:26 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,6 @@ int	open_heredoc()
 		return (-1);
 	return (fd);
 }
-// // int fd1 = open(heredoc_file, O_RDONLY);
-// unlink(heredoc_file);// delete in file 
 
 bool	is_quotes_thes_str(char *str)
 {
@@ -100,33 +98,6 @@ bool	is_quotes_thes_str(char *str)
 	}
 	return (false);
 }
-
-// void	handler_words(t_env_lst **list)
-// {
-// 	int		index;
-// 	char	*ptr;
-// 	int		len;
-// 	char	qouts;
-// 	(1) && (index = 0), (len = lentword(str, 0));
-// 	if (len == 0)
-// 		return ;
-// 	ptr = ft_malloc((len + 1) * sizeof(char), 1);
-// 	while (str[*i] && str[*i] != SPACE)
-// 	{
-// 		if (isquotes(str[*i]))
-// 		{
-// 			qouts = str[(*i)++];
-// 			while (str[*i] && str[*i] != qouts)
-// 				ptr[index++] = str[(*i)++];
-// 			(*i)++;
-// 		}
-// 		else
-// 			ptr[index++] = str[(*i)++];
-// 	}
-// 	ptr[index] = '\0';
-// 	// strhandler_expansion(str, *i - index);
-// 	ft_add_newtoken(list, ptr, state);
-// }
 
 int	ft_lenofwords(char *str)
 {
@@ -175,7 +146,8 @@ char	*ft_remove_quotes(char *str)
 			quotes = str[i++];
 			while (str[i] && str[i] != quotes)
 				ptr[index++] = str[i++];
-			i++;
+			if (isquotes(str[i]))
+				i++;
 		}
 		else
 		{

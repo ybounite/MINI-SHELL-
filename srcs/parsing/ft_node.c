@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:45:11 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/08 18:23:02 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/09 19:15:41 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,6 @@ t_env_lst	*ft_newnode(char *cmd, en_status state)
 	new->next = NULL;
 	return (new);
 }
-
-// void free_env_lst(t_env_lst *head)
-// {
-//     t_env_lst *tmp;
-
-//     while (head)
-//     {
-//         tmp = head;
-//         head = head->next;
-//         free(tmp);
-//     }
-// }
 
 void	lstadd_back(t_env_lst **head, t_env_lst *new)
 {
@@ -75,12 +63,10 @@ char *string(en_status type)
 	else
 		return ("CMD");
 }
+
 void print_lst_tokens(t_env_lst *head)
 {
-	int i = 0;
-	// char	*type[10] = {"PIPE", "APPEND_REDIRECTION", "HERE_DOCUMENT",
-	// 					"INPUT_REDIRECTION", "OUTPUT_REDIRECTION",
-	// 					"SINGLE_QUOTE", "DOUBLE_QUOTE", "BUILTINS", "CMD", NULL};
+	int	i = 0;
 	while (head)
 	{
 		printf("[Token %d]: %s%s\e[0m, Type: \e[1;37m%s%s \e[0m\n", i++, GREEN,head->value, GREEN,string(head->type));
@@ -91,6 +77,7 @@ void print_lst_tokens(t_env_lst *head)
 void	ft_add_newtoken(t_env_lst **head, char *token, en_status state)
 {
 	t_env_lst	*new;
+
 	new = ft_newnode(token, state);
 	if (!new)
 		return ;

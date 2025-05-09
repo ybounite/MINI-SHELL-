@@ -6,30 +6,11 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:18:12 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/08 08:37:10 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/09 19:12:31 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void skip_whiteword(char *str, int *i)
-{
-	char qouts;
-	
-	while (str[*i] && !find_space(str[*i]) && !is_operator(str[*i]))
-	{
-		if (isquotes(str[*i]))
-		{
-			qouts = str[(*i)++];
-			while (str[*i] && str[*i] != qouts)
-				(*i)++;
-			if (isquotes(str[*i]))
-				(*i)++;
-		}
-		else
-			(*i)++;
-	}
-}
 
 int	lentcommand(char *line)
 {
@@ -40,13 +21,12 @@ int	lentcommand(char *line)
 	count = 0;
 	while (line[i])
 	{
-
 		ft_skip_whitespace(line, &i);
 		if (line[i] == '\0')
-			break;
+			break ;
 		if (is_operator(line[i]))
 		{
-			while(line[i] && is_operator(line[i]))
+			while (line[i] && is_operator(line[i]))
 				i++;
 			count++;
 		}
@@ -61,7 +41,7 @@ int	lentcommand(char *line)
 
 int	ft_lenoperator(char *str, int *index)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[*index] && is_operator(str[*index]))
@@ -72,37 +52,50 @@ int	ft_lenoperator(char *str, int *index)
 	return (i);
 }
 
+void	handle_operator(char *line, int *i, char **spliter, int *index)
+{
+	int		start;
+	char	*str;
+
+	start = *i;
+	str = ft_malloc(sizeof(char) * ft_lenoperator(line, i) + 1, 1);
+	strncpy(str, line + start, *i - start);
+	str[*i - start] = '\0';
+	spliter[(*index)++] = str;
+}
+
+void	handle_word(char *line, int *i, char **spliter, int *index)
+{
+	int		start;
+	char	*str;
+
+	start = *i;
+	skip_whiteword(line, i);
+	str = ft_malloc(*i - start + 1, 1);
+	strncpy(str, line + start, *i - start);
+	str[*i - start] = '\0';
+	spliter[(*index)++] = str;
+}
+
 char	**spliter(char *line)
 {
-	int		i = 0;
+	int		i;
 	char	**spliter;
-	char	*str = NULL;
-	int		index = 0;
+	int		index;
+
+	(1) && (i = 0), (index = 0);
 	spliter = (char **)ft_malloc(sizeof(char *) * (lentcommand(line) + 1), 1);
 	while (line[i])
 	{
 		ft_skip_whitespace(line, &i);
 		if (line[i] == '\0')
-			break;
+			break ;
 		if (is_operator(line[i]))
-		{
-			int strt = i;
-			str = ft_malloc(sizeof(char) * ft_lenoperator(line, &i) + 1, 1);
-			strncpy(str, line + strt, i - strt);
-			str[i -strt] = '\0';
-			spliter[index++] = str;
-		}
+			handle_operator(line, &i, spliter, &index);
 		else
-		{
-			int start = i;
-			skip_whiteword(line, &i);
-			str = ft_malloc(i - start + 1, 1);
-			strncpy(str, line + start, i - start);
-			str[i - start] = '\0';
-			spliter[index++] = str;
-		}
+			handle_word(line, &i, spliter, &index);
 	}
 	spliter[index] = NULL;
 	data_struc()->size = index;
-	return spliter;
+	return (spliter);
 }

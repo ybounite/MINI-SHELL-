@@ -6,11 +6,35 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/09 15:26:05 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/09 19:16:06 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+bool singel_quote(char *str)
+{
+	int		i;
+	char	quotes;
+
+	i = 0;
+	while (str[i])
+	{
+		if (isquotes(str[i]))
+		{
+			quotes = str[i++];
+			while (str[i] && str[i] != quotes)
+				i++;
+			if (str[i])
+				i++;
+			else
+				return (false);
+		}
+		else
+			i++;
+	}
+	return (true);
+}
 
 void	remove_quotes(t_env_lst	*list, t_env_lst 	**head)
 {
@@ -19,7 +43,7 @@ void	remove_quotes(t_env_lst	*list, t_env_lst 	**head)
 
 	while (list)
 	{
-		if (is_quotes_thes_str(list->value))
+		if (is_quotes_thes_str(list->value) && singel_quote(list->value))
 			str = ft_remove_quotes(list->value);
 		else
 			str = list->value;
@@ -49,8 +73,8 @@ int	handle_input_syntax(t_string *st_string)
 	remove_quotes(list, &head);
 	printf("\n%s<->      after remove quotes     <->\e[0m\n", YELLOW);
 	st_string->head = head;
-	print_lst_tokens(list);
 	execute_command(st_string);
+	print_lst_tokens(head);
 	return (true);
 }
 

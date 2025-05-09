@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/09 09:54:12 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/09 19:12:09 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,30 @@ typedef struct s_string
 	t_env_lst					*head;
 }								t_string;
 
+/* -------------------------------------------------------------------------- */
+/*                             syntax_error.c                                 */
+/* -------------------------------------------------------------------------- */
+void							ft_puterror(char error);
+bool							is_first_operation_pipe(char *str);
+bool							is_last_operation_pipe(char *str);
+int								ft_lenword(char *str);
+
+/* -------------------------------------------------------------------------- */
+/*                            handler_syntax_error.c                          */
+/* -------------------------------------------------------------------------- */
 bool							handler_syntax_error(char *line);
+int								lenqoutes(char *str, int *i);
+int								lenoperator(char *str, int *i);
+
+/* -------------------------------------------------------------------------- */
+/*                            ft_skip_whit_string.c                           */
+/* -------------------------------------------------------------------------- */
+void							skip_whiteword(char *str, int *i);
+char							ft_skip_whitword(char *str, int *index);
+char							ft_skip_whitquotes(char *str, int *index);
+char							ft_skip_whitoperator(char *str, int *index);
+int								skip_strqoutes(char *str, int *inedx, char quotes);
+
 /* -------------------------------------------------------------------------- */
 /*                              expand_variables.c                            */
 /* -------------------------------------------------------------------------- */
@@ -102,6 +125,7 @@ char							*expand_string(const char *str, bool *is_spliting);
 char							*get_variable_name(const char *str, int *i);
 char							*get_variable_value(char *var_name);
 void							remove_extra_spaces(char *str);
+
 /* -------------------------------------------------------------------------- */
 /*                              GLOBAL FUNCTIONS                              */
 /* -------------------------------------------------------------------------- */

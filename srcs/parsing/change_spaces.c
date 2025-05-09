@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   change_spaces.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/09 19:13:41 by ybounite          #+#    #+#             */
+/*   Updated: 2025/05/09 19:14:46 by ybounite         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int	ft_isspace(char c)
@@ -13,12 +25,8 @@ char	*collapse_spaces(const char *str)
 	int		space_flag;
 	char	*result;
 
-	i = 0;
-	j = 0;
-	space_flag = 0;
-	result = ft_malloc(ft_strlen(str) + 1, 1);
-	if (!result)
-		return (NULL);
+	(1) && (i = 0), (j = 0), (space_flag = 0);
+	result = ft_malloc(ft_strlen(str) + 1, true);
 	while (str[i])
 	{
 		if (ft_isspace(str[i]))
