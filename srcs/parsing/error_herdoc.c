@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 09:24:47 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/10 10:07:24 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/10 10:36:37 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	error_herdoc(char *delimiter)
 {
-	static int i;
+	static int	i;
 
 	i = 1;
 	ft_putstr_fd("minishell : here-document at line", 2);
@@ -25,11 +25,11 @@ void	error_herdoc(char *delimiter)
 bool	ft_clculate_heredoc(t_env_lst	*list)
 {
 	int	size;
-	
+
 	size = 0;
-	while(list)
+	while (list)
 	{
-		if(list->type == HERE_DOCUMENT)
+		if (list->type == HERE_DOCUMENT)
 			size++;
 		else if (list->type == PIPE)
 			size = 0;

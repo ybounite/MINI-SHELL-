@@ -6,12 +6,11 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 18:24:12 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/09 18:35:33 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/10 10:30:13 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include    "../../includes/minishell.h"
-
+#include "../../includes/minishell.h"
 
 int	lenqoutes(char *str, int *i)
 {
@@ -31,30 +30,30 @@ int	lenqoutes(char *str, int *i)
 
 int	lenoperator(char *str, int *i)
 {
-    int		counter;
-    char	operator;
+	int		counter;
+	char	operator;
 
-    counter = 0;
-    operator = str[*i];
-    while (str[*i] && str[*i] == operator)
-    {
-        if (str[*i + 1] && ((operator == '>' && str[*i + 1] == '<')
-            || (operator == '<' && str[*i + 1] == '>')))
-            return (ft_puterror(operator), -1337);
-        if (str[*i + 1] && operator == '|' && str[*i + 1] == '|')
-            return (ft_puterror(operator), -1337); // error |> <|
-        counter++;
-        (*i)++;
-        if (counter >= 3)
-            return (ft_puterror(operator), -1337);
-    }
-    counter++;
-    if (str[*i] && !find_space(str[*i]))
-        counter++;
-    ft_skip_whitespace(str, i);
-    if (str[*i] && is_operator(str[*i]))
-        return (ft_puterror(operator), -1337);
-    return (counter);
+	counter = 0;
+	operator = str[*i];
+	while (str[*i] && str[*i] == operator)
+	{
+		if (str[*i + 1] && ((operator == '>' && str[*i + 1] == '<')
+				|| (operator == '<' && str[*i + 1] == '>')))
+			return (ft_puterror(operator), -1337);
+		if (str[*i + 1] && operator == '|' && str[*i + 1] == '|')
+			return (ft_puterror(operator), -1337);
+		counter++;
+		(*i)++;
+		if (counter >= 3)
+			return (ft_puterror(operator), -1337);
+	}
+	counter++;
+	if (str[*i] && !find_space(str[*i]))
+		counter++;
+	ft_skip_whitespace(str, i);
+	if (str[*i] && is_operator(str[*i]))
+		return (ft_puterror(operator), -1337);
+	return (counter);
 }
 
 bool	handler_syntax_error(char *line)

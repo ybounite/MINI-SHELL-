@@ -6,11 +6,11 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 18:23:10 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/09 18:23:13 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/10 10:25:57 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include    "../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 bool	is_operator(char c)
 {

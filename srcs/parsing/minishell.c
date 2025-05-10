@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:45:08 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/08 14:24:28 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/10 10:37:39 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	main(int argc, char **argv, char **envp)
 	ft_bzero(&st_string, sizeof(st_string));
 	st_string.g_envp = duplicate_envp(envp);
 	data_struc()->g_envp = st_string.g_envp;
-	data_struc()->exit_status = 0; 
+	data_struc()->exit_status = 0;
 	assign_signals_handler();
 	start_shell_session(st_string);
 	return (0);

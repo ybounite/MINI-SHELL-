@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_handlers_word.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:06:24 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/05 16:34:33 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/10 10:33:36 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../includes/minishell.h"
 
@@ -46,6 +45,7 @@ void	handler_words(t_env_lst **list, char *str, int *i, en_status state)
 	char	*ptr;
 	int		len;
 	char	qouts;
+
 	(1) && (index = 0), (len = lentword(str, *i));
 	if (len == 0)
 		return ;
@@ -63,7 +63,5 @@ void	handler_words(t_env_lst **list, char *str, int *i, en_status state)
 			ptr[index++] = str[(*i)++];
 	}
 	ptr[index] = '\0';
-	printf("ptr = %s\n", ptr);
-	// strhandler_expansion(str, *i - index);
 	ft_add_newtoken(list, ptr, state);
 }

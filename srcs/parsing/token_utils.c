@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:33:57 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/06 14:34:09 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/10 10:38:26 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void	tokenize(char **tokins, t_env_lst **list)
 	int			i;
 	en_status	stats;
 
-	i = 0;	
+	i = 0;
 	while (tokins[i])
 	{
-		stats =  get_token_type(tokins[i]);
+		stats = get_token_type(tokins[i]);
 		ft_add_newtoken(list, tokins[i], stats);
 		i++;
 	}

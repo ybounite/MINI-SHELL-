@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:14:22 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/07 10:05:27 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/10 10:24:12 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ static char	*chack_if_newline(char *line)
 	line[i + 1] = '\0';
 	if (remainder && remainder[0] == '\0')
 	{
-		// free(remainder);
 		remainder = NULL;
 	}
 	return (remainder);
@@ -63,7 +62,6 @@ static char	*ft_full_buffer_line(int fd, char *buffer, char *remaider)
 			remaider = ft_strdup("");
 		ptr = remaider;
 		remaider = ft_strjoin(ptr, buffer);
-		// free(ptr);
 		ptr = NULL;
 		if (ft_strchar(buffer, '\n'))
 			break ;
@@ -87,13 +85,13 @@ char	*get_next_line(int fd)
 	if (!buffer)
 		return (remainder = NULL, NULL);
 	line = ft_full_buffer_line(fd, buffer, remainder);
-	// free(buffer);
 	buffer = NULL;
 	if (!line)
 		return (ft_malloc(0, 0), NULL);
 	remainder = chack_if_newline(line);
 	return (line);
 }
+
 /*static char	*ft_full_buffer_line(int fd, char *buffer, char *remaider)
 {
 	ssize_t	read_char;
