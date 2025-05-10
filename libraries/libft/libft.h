@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 09:52:58 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/10 10:16:05 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/10 10:20:19 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>
+# include <stdint.h>
 
 typedef struct s_list
 {
@@ -22,6 +23,7 @@ typedef struct s_list
 	struct s_list	*next;
 }				t_list;
 
+int				ft_strcmp(const char *s1, const char *s2);
 int				ft_atoi(const char *nptr);
 void			ft_bzero(void *s, size_t n);
 int				ft_isalpha(int c);

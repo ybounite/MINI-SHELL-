@@ -13,8 +13,7 @@ OBJ_DIR = obj
 INC_DIR = includes
 
 # Source files
-SRCS = $(SRC_DIR)/utilis.c \
-	   $(EXEC_DIR)/executor.c \
+SRCS = $(EXEC_DIR)/executor.c \
 	   $(EXEC_DIR)/child_process.c \
 	   $(EXEC_DIR)/builtin_exec.c \
 	   $(EXEC_DIR)/pipeline.c \

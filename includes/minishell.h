@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/10 10:07:08 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/10 10:19:23 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,6 @@ void							handler_heredoc_sig(int signum);
 /* -------------------------------------------------------------------------- */
 
 char							*ft_strjoin_free(char *s1, char *s2);
-int								ft_strcmp(const char *s1, const char *s2);
 bool							is_operator(char c);
 bool							find_space(char c);
 bool							isquotes(char c);
