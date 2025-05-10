@@ -1,25 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utilis.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/10 09:21:04 by ybounite          #+#    #+#             */
+/*   Updated: 2025/05/10 09:21:14 by ybounite         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
-
-// char	*ft_strjoin_free(char *s1, char *s2)
-// {
-// 	char	*result;
-
-// 	result = ft_strjoin(s1, s2);
-// 	free(s1);
-// 	return (result);
-// }
-
-void	ft_free_split(char **split)
-{
-	int	i;
-
-	i = 0;
-	if (!split)
-		return ;
-	while (split[i])
-		free(split[i++]);
-	free(split);
-}
 
 int	ft_strcmp(const char *s1, const char *s2)
 {

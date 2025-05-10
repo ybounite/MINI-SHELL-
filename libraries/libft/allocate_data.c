@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:07:38 by ybounite          #+#    #+#             */
-/*   Updated: 2025/04/30 15:46:05 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/10 10:10:58 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@ void	memory_released(t_list **head)
 void	*ft_malloc(size_t size, short option)
 {
 	static t_list	*head;
-	t_list			*new = NULL;
+	t_list			*new;
 	void			*ptr;
 
+	new = NULL;
 	if (option == 1)
 	{
 		ptr = malloc(size);

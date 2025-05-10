@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/09 16:16:17 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/10 09:20:14 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,19 +140,20 @@ char	*ft_strjoin_char(char *str, char c)
 	result[i + 1] = '\0';
 	return (result);
 }
+
 void ft_add_expand_variable(t_env_lst **node_ptr, char *variable)
 {
 	t_env_lst	*start = *node_ptr;
-	t_env_lst	*next = start->next; // Save the original next
-
-	char		**words = ft_split(variable, ' ');
+	t_env_lst	*next = start->next;
 	int			i = 0;
+	t_env_lst 	*prev;
+	char		**words = ft_split(variable, ' ');
+
 	if (!words || !words[0])
 		return ;
 	start->value = words[i++];
-	start->type = CMD; // or whatever makes sense
-	t_env_lst *prev = start;
-	// Add remaining words as new nodes
+	start->type = CMD;
+	prev = start;
 	while (words[i])
 	{
 		t_env_lst *new_node = ft_newnode(words[i++], CMD);

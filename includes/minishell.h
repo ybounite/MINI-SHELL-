@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/09 19:12:09 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/10 10:07:08 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 /*                                   INCLUDES                                */
 /* ************************************************************************* */
 # include "../libraries/libft/libft.h"
+# include "../libraries/getline/get_next_line.h"
 // # include "allocation_manager.h"
 # include <dirent.h>
 # include <errno.h>
@@ -29,7 +30,6 @@
 # include <stdio.h>
 # include <stdlib.h>
 // # include <string.h>
-# include "../libraries/getline/get_next_line.h"
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
@@ -46,8 +46,6 @@
 /* -------------------------------------------------------------------------- */
 /*                                 DATA TYPES                                 */
 /* -------------------------------------------------------------------------- */
-
-/* Token types for lexical analysis */
 typedef enum en_type
 {
 	CMD,                // command
@@ -167,11 +165,6 @@ int								ft_lenword(char *str);
 int								is_valid_key(char *s);
 
 /* -------------------------------------------------------------------------- */
-/*                               PARSER FUNCTIONS                             */
-/* -------------------------------------------------------------------------- */
-
-/* Lexical Analysis */
-/* -------------------------------------------------------------------------- */
 /*                               allocate_data.c                              */
 /* -------------------------------------------------------------------------- */
 void							*ft_malloc(size_t size, short option);
@@ -181,8 +174,6 @@ void							memory_released(t_list **head);
 /*                              get_line.c                                    */
 /* -------------------------------------------------------------------------- */
 char							*get_line(void);
-char							*handler_string(char *line, int size);
-void							ft_spliter(t_env_lst **list, char *line);
 /* -------------------------------------------------------------------------- */
 /*                              spliter.c                                     */
 /* -------------------------------------------------------------------------- */
@@ -234,32 +225,50 @@ void							process_quoted_string_with_expansion(t_env_lst **list,
 /* -------------------------------------------------------------------------- */
 /*                              lexer_dollar_handlers.c                       */
 /* -------------------------------------------------------------------------- */
-int								lendollar(char *str, int start);
-char							*handler_expasion(char *var_name);
-void							heandler_dollar(t_env_lst **lexpand_variablesist,
-									char *str, int *i, en_status state);
+
+
+
 /* -------------------------------------------------------------------------- */
-/*                              heredoc.c 										    */
+/*                              heredoc.c 									  */
 /* -------------------------------------------------------------------------- */
-int								hase_heredoc_rediraection(t_env_lst *head);
-int								handle_heredoc(char *delimiter,
-									int *heredoc_fd);
 int								handler_heredoc(t_env_lst *list);
+int								handle_forked_process(char *delimiter, bool dolar);
+int								read_and_process_heredoc_input(char *delimiter, bool expand);
+char							*ft_expand(char *line);
+bool							is_heredoc(t_env_lst *list);
+
+//
 char							*ft_remove_quotes(char *str);
 bool							is_quotes_thes_str(char *str);
 
 /* -------------------------------------------------------------------------- */
-/*                              heredoc_utlis.c										 */
+/*                              heredoc_utlis.c								  */
 /* -------------------------------------------------------------------------- */
 int								open_heredoc(void);
 bool							ft_isheredoc(t_env_lst *list);
-bool	is_heredoc(t_env_lst *list); // delet
 char							*find_delimiter(t_env_lst *list,
 									int *is_expand);
 bool							ft_clculate_heredoc(t_env_lst *list);
 
 /* -------------------------------------------------------------------------- */
-/*                              destroy_allocation.c 								*/
+/*                              expand_heredoc.c       	                      */
+/* -------------------------------------------------------------------------- */
+char							*expand_heredoc(char *str);
+/* -------------------------------------------------------------------------- */
+/*                               error_herdoc.c    	                          */
+/* -------------------------------------------------------------------------- */
+void							error_herdoc(char *delimiter);
+bool							ft_clculate_heredoc(t_env_lst	*list);
+
+/* -------------------------------------------------------------------------- */
+/*                              creatr_file_name.c  	                      */
+/* -------------------------------------------------------------------------- */
+char							*creatr_file_name(int fd);
+char							*create_temp_file();
+int								open_heredoc();
+
+/* -------------------------------------------------------------------------- */
+/*                              destroy_allocation.c 						  */
 /* -------------------------------------------------------------------------- */
 void							ft_destroylist(t_env_lst *list);
 

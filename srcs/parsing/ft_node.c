@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:45:11 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/09 19:15:41 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/10 09:22:50 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	lstadd_back(t_env_lst **head, t_env_lst *new)
 		ptr = ptr->next;
 	ptr->next = new;
 }
+
 char *string(en_status type)
 {
 	if (type == PIPE)

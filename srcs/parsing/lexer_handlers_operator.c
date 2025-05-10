@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_handlers_operator.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:07:44 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/05 16:34:58 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/10 09:22:22 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,3 @@ void	handler_operator(t_env_lst **list, char *str, int *i, en_status state)
 		state = get_redirection_type_from_str(ptr);
 	ft_add_newtoken(list, ptr, state);
 }
-// delet 
-// void	handler_parenthesis(t_env_lst **list, char *str, int *i,
-// 	en_status state)
-// {
-// 	int		index;
-// 	char	charcter;
-// 	char	*ptr;
-
-// 	charcter = str[*i];
-// 	index = 0;
-// 	ptr = malloc(lentword(str, *i) + 1);
-// 	while (str[*i] && str[*i] != ')')
-// 		ptr[index++] = str[(*i)++];
-// 	ptr[index++] = ')';
-// 	ptr[index] = '\0';
-// 	(*i)++;
-// 	ft_add_newtoken(list, ptr, state);
-// }

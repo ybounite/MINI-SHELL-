@@ -51,6 +51,9 @@ SRC_PARS = $(PARSING_DIR)/minishell.c \
 		   $(PARSING_DIR)/spliter.c \
 		   $(PARSING_DIR)/heredoc.c \
 		   $(PARSING_DIR)/heredoc_utlis.c \
+		   $(PARSING_DIR)/expand_heredoc.c \
+		   $(PARSING_DIR)/creatr_file_name.c \
+		   $(PARSING_DIR)/error_herdoc.c \
 		   $(PARSING_DIR)/destroy_allocation.c \
 		   $(PARSING_DIR)/manage_signal.c \
 		   $(PARSING_DIR)/expand_variables.c \
