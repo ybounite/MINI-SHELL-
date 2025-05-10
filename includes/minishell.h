@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/10 10:19:23 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/10 10:46:44 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,13 @@ int								skip_strqoutes(char *str, int *inedx, char quotes);
 /*                              expand_variables.c                            */
 /* -------------------------------------------------------------------------- */
 char							*expand_string(const char *str, bool *is_spliting);
+
+
+/* -------------------------------------------------------------------------- */
+/*                              get_variable.c                                */
+/* -------------------------------------------------------------------------- */
 char							*get_variable_name(const char *str, int *i);
 char							*get_variable_value(char *var_name);
-void							remove_extra_spaces(char *str);
 
 /* -------------------------------------------------------------------------- */
 /*                              GLOBAL FUNCTIONS                              */
