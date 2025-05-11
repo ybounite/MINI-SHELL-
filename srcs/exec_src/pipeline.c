@@ -1,8 +1,8 @@
 #include "../../includes/minishell.h"
 
-static int	count_commands(t_env_lst *list)
+static int count_commands(t_env_lst *list)
 {
-	int	cmd_count;
+	int cmd_count;
 
 	cmd_count = 1;
 	while (list)
@@ -14,9 +14,9 @@ static int	count_commands(t_env_lst *list)
 	return (cmd_count);
 }
 
-static void	initialize_pids(pid_t *pids, int cmd_count)
+static void initialize_pids(pid_t *pids, int cmd_count)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (i < cmd_count)
@@ -26,26 +26,43 @@ static void	initialize_pids(pid_t *pids, int cmd_count)
 	}
 }
 
-static void	setup_child_pipe(int **child_pipe, int *pipe_fd, int i,
-		int cmd_count)
+static void setup_child_pipe(int **child_pipe, int *pipe_fd, int i,
+							 int cmd_count)
 {
 	if (i < cmd_count - 1)
 		*child_pipe = pipe_fd;
 	else
 		*child_pipe = NULL;
 }
-
-static void	wait_for_children(pid_t *pids, int cmd_count)
+void	handler_sigint(int signum)
 {
-	int	i;
-	int	status;
+	(void)signum;
+	printf("\nff");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	exit(130);
+}
+void	hendle_sigquit(int signum)
+{
+	(void)signum;
+	exit(131);
+}
+static void wait_for_children(pid_t *pids, int cmd_count)
+{
+	int i;
+	int status;
 
 	i = 0;
 	while (i < cmd_count)
 	{
 		if (pids[i] > 0)
 		{
+			signal(SIGINT, SIG_IGN);
 			waitpid(pids[i], &status, 0);
+			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+				write(1, "\nQuit (core dumped)\n", 20);
+			assign_signals_handler();
 			if (i == cmd_count - 1)
 				update_exit_status(status);
 		}
@@ -54,11 +71,11 @@ static void	wait_for_children(pid_t *pids, int cmd_count)
 }
 
 static void	process_command(t_string *st_string, t_env_lst **list, int *prev_fd,
-		pid_t *pids, int i, int cmd_count)
+				pid_t *pids, int i, int cmd_count)
 {
-	char	**args;
-	int		pipe_fd[2];
-	int		*child_pipe;
+	char **args;
+	int pipe_fd[2];
+	int *child_pipe;
 
 	args = git_array(list);
 	if (!args)
@@ -78,6 +95,8 @@ static void	process_command(t_string *st_string, t_env_lst **list, int *prev_fd,
 		return ;
 	if (pids[i] == 0)
 	{
+		signal(SIGINT, handler_sigint);
+		signal(SIGQUIT, hendle_sigquit);
 		setup_child_pipe(&child_pipe, pipe_fd, i, cmd_count);
 		handle_child_process(args, *prev_fd, child_pipe, st_string);
 	}
@@ -91,7 +110,7 @@ static void	process_command(t_string *st_string, t_env_lst **list, int *prev_fd,
 		*prev_fd = -1;
 }
 
-void	execute_pipeline(t_string *st_string)
+void execute_pipeline(t_string *st_string)
 {
 	int prev_fd;
 	t_env_lst *list;
@@ -105,7 +124,7 @@ void	execute_pipeline(t_string *st_string)
 	cmd_count = count_commands(st_string->head);
 	pids = ft_malloc(sizeof(pid_t) * cmd_count, 1);
 	if (!pids)
-		return ;
+		return;
 	initialize_pids(pids, cmd_count);
 	i = 0;
 	list = st_string->head;

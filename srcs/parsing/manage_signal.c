@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_signal.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:44:50 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/08 13:10:53 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/10 11:10:38 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	handler(int signum)
 	(void)signum;
 	printf("\n");
 	rl_on_new_line();
+	rl_replace_line("", 0);
 	rl_redisplay();
 }
 

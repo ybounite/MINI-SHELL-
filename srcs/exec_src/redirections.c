@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:35:37 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/04 14:08:41 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/10 17:43:30 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,13 +100,11 @@ int	handle_heredoc_redirection(char *delimiter)
 		line = readline("> ");
 		if (!line || ft_strcmp(line, delimiter) == 0)
 		{
-			// free(line);
 			ft_malloc(0, 0);
 			break ;
 		}
 		write(pipe_fd[1], line, ft_strlen(line));
 		write(pipe_fd[1], "\n", 1);
-		// free(line);
 	}
 	close(pipe_fd[1]);
 	dup2(pipe_fd[0], STDIN_FILENO);

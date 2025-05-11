@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/10 10:44:41 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/11 14:42:35 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*expand_string(const char *str, bool *is_spliting)
 	//$1PWD
 	while (str[i])
 	{
-		if (str[i] == '$' && ft_isdigit(str[i + 1]))
+		if (str[i] == '$' && ft_isdigit(str[i + 1]) &&  !in_single_quotes)
 			i += 2;
 		else if (str[i] == '$' && str[i + 1] == '$')
 		{
@@ -40,7 +40,8 @@ char	*expand_string(const char *str, bool *is_spliting)
 		else if (str[i] == '\'' && !in_double_quotes)
 		{
 			in_single_quotes = !in_single_quotes;
-			result = ft_strjoin_char(result, str[i]);
+			result = ft_strjoin_char(result, str[i]);// '
+			// printf("expand %s\n", re)
 			i++;
 		}
 		else if (str[i] == '\"' && !in_single_quotes)
@@ -148,7 +149,7 @@ void	expand_variables(t_env_lst *list)
 		if (current->value && ft_strchr(current->value, '$'))
 		{
 			expanded = expand_string(current->value, &is_spliting);
-			printf("%sexpand : %s\e[0m\n", YELLOW, expanded);// delet
+			// printf("%sexpand : %s\e[0m\n", YELLOW, expanded);// delet
 			if (is_spliting && !is_equal(expanded))
 			{
 				

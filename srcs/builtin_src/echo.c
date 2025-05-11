@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:29:58 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/08 14:34:03 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/11 15:43:06 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ void	builtin_echo(t_env_lst *list)
 		n_flag = 1;
 		current = current->next;
 	}
-	while (current)
+	while (current && current->type != PIPE)
 	{
 		printf("%s", current->value);
 		current = current->next;
-		if (current)
+		if (current && current->type != PIPE)
 			printf(" ");
 	}
 	if (!n_flag)

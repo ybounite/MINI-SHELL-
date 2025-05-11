@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 15:32:42 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/10 09:43:53 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/10 20:52:48 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ int	read_and_process_heredoc_input(char *delimiter, bool expand)
 	}
 	return (true);
 }
-
+// void	sigint_handler(int signal)
+// {
+	
+// }
 int	handle_forked_process(char *delimiter, bool dolar)
 {
 	pid_t	pid;
