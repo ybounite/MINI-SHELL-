@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/12 09:24:13 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/12 16:32:51 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,9 @@ int	handle_input_syntax(t_string *st_string)
 	data_struc()->head = list;
 	if (ft_isheredoc(list))
 		handler_heredoc(list);
-	// print_lst_tokens(list); // delet
+	if (data_struc()->is_error)
+		return (ft_malloc(false, false), false);
+	print_lst_tokens(list); // delet
 	expand_variables(list);
 	t_env_lst *head = NULL;
 	remove_quotes(list, &head);
@@ -82,6 +84,7 @@ void	start_shell_session(t_string st_string)
 {
 	while (true)
 	{
+		data_struc()->is_error = 0;
 		st_string.line = get_line();
 		handle_input_syntax(&st_string);
 	}
