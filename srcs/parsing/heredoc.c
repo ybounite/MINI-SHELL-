@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 15:32:42 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/10 20:52:48 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/11 19:40:16 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,17 @@ int	read_and_process_heredoc_input(char *delimiter, bool expand)
 	}
 	return (true);
 }
-// void	sigint_handler(int signal)
-// {
-	
-// }
+void	sigint_handler(int signal)
+{
+	if (signal == SIGINT)
+	{
+		close(data_struc()->heredoc_fd);
+		ft_malloc(false, 0);
+		data_struc()->exit_status = 130;
+		exit(130);
+	}
+}
+
 int	handle_forked_process(char *delimiter, bool dolar)
 {
 	pid_t	pid;
@@ -69,13 +76,23 @@ int	handle_forked_process(char *delimiter, bool dolar)
 		return (perror("minishell: fork"), 1);
 	else if (pid == 0)
 	{
-		// signal(SIGINT, sigint_handler);// handler signal 
+		signal(SIGINT, sigint_handler);// handler signal 
 		read_and_process_heredoc_input(delimiter, dolar);
 		close(data_struc()->heredoc_fd);
 		ft_malloc(false, 0);
 		exit(0);
 	}
 	waitpid(pid, &status, 0);
+	if (pid > 0)
+	{
+		if (WIFEXITED(status)){
+			// WTERMSIG(status)
+			printf("\ni send in signal %d\n",  WEXITSTATUS(status));
+			data_struc()->exit_status = 128 + WEXITSTATUS(status);
+		}
+	}
+	// else if (WIFSIGNALED(status))
+	// 	data_struc()->exit_status =  + WTERMSIG(status);
 	return (true);
 }
 

@@ -39,7 +39,8 @@ char	*get_env_value(char *var_name, t_string *st_string)
 	len = ft_strlen(name);
 	if (len == 0)
 		return (ft_strdup(""));
-	i = 0;
+	i = 0; 
+	
 	while (st_string->g_envp[i])
 	{
 		if (ft_strncmp(st_string->g_envp[i], name, len) == 0

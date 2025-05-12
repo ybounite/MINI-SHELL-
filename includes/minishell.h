@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/10 10:46:44 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/11 16:24:20 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
-// # include <string.h>
+# include <termios.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>

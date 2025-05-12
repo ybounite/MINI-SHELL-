@@ -36,8 +36,12 @@ static void setup_child_pipe(int **child_pipe, int *pipe_fd, int i,
 }
 void	handler_sigint(int signum)
 {
+	// struct termios	term;
+
+	// tcgetattr(STDIN_FILENO, &term);
+	// term.c_lflag &= ~ECHOCTL;
 	(void)signum;
-	printf("\nff");
+	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
@@ -61,7 +65,12 @@ static void wait_for_children(pid_t *pids, int cmd_count)
 			signal(SIGINT, SIG_IGN);
 			waitpid(pids[i], &status, 0);
 			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+			{
 				write(1, "\nQuit (core dumped)\n", 20);
+				data_struc()->exit_status = 131;
+			}
+			else if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+				data_struc()->exit_status = 130;	
 			assign_signals_handler();
 			if (i == cmd_count - 1)
 				update_exit_status(status);
