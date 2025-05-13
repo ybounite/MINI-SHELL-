@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:36:25 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 08:52:42 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 16:08:51 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	handle_child_process(char **args, int prev_fd, int *pipe_fd,
 	if (redirections(args) < 0)
 	{
 		ft_malloc(0, 0);
-		exit(1);
+		exit(g_exit_status);
 	}
 	if (is_builtin(args[0]))
 		exec_builtin_and_exit(args, st_string);

@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 08:36:19 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 08:36:22 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 16:05:58 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ void	wait_for_children(pid_t *pids, int cmd_count)
 			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
 			{
 				write(1, "\nQuit (core dumped)\n", 20);
-				data_struc()->exit_status = 131;
+				g_exit_status = 131;
 			}
 			else if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-				data_struc()->exit_status = 130;
+				g_exit_status = 130;
 			assign_signals_handler();
-			if (i == cmd_count - 1)
+			if (i == cmd_count - 1 && WIFEXITED(status))
 				update_exit_status(status);
 		}
 		i++;

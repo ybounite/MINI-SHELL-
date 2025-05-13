@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:33:50 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 09:11:28 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:54:18 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	builtin_cd(char **args, t_string *st_string)
 	if (size_cd(args))
 	{
 		printf("minishell: cd: too many arguments\n");
-		data_struc()->exit_status = 1;
+		g_exit_status = 1;
 		return ;
 	}
 	if (!args[1])
@@ -89,7 +89,7 @@ void	builtin_cd(char **args, t_string *st_string)
 		return ;
 	if (chdir(path) != 0)
 	{
-		data_struc()->exit_status = 1;
+		g_exit_status = 1;
 		perror("cd");
 	}
 	else

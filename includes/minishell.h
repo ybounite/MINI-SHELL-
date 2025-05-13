@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/13 13:09:57 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:17:20 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ typedef struct s_string
 	char						**expand_args;
 	char						*heredoc_file;
 	int							heredoc_fd;
-	int							exit_status;
 	char						**g_envp;
 	bool						ischild;
 	t_env_lst					*head;
@@ -110,6 +109,13 @@ typedef struct s_pipeline_data
 	pid_t						*pids;
 	int							cmd_count;
 }								t_pipeline_data;
+
+
+/* ************************************************************************** */
+/*                               GLOBAL VARIABLE                              */
+/* ************************************************************************** */
+extern int g_exit_status;
+
 
 /* ************************************************************************** */
 /*                               GLOBAL FUNCTIONS                             */

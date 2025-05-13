@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:29:37 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/09 09:31:05 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:14:42 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	builtin_exit(char **args, t_string *st_string)
 	if (!args[1])
 	{
 		ft_malloc(0, 0);
-		exit(0);
+		exit(g_exit_status);
 	}
 	if (!is_numeric(args[1]))
 	{
@@ -50,7 +50,7 @@ void	builtin_exit(char **args, t_string *st_string)
 	if (args[2])
 	{
 		printf("exit: too many arguments\n");
-		data_struc()->exit_status = 1;
+		g_exit_status = 1;
 		return ;
 	}
 	exit_code = ft_atoi(args[1]);

@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 15:32:42 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/13 13:11:19 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:54:18 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	read_and_process_heredoc_input(char *delimiter, bool expand)
 	{
 		line = readline("> ");
 		if (!line)
-			return (error_herdoc(delimiter), data_struc()->exit_status = 0, 1);
+			return (error_herdoc(delimiter), g_exit_status = 0, 1);
 		if (!ft_strcmp(line, delimiter))
 			return (free(line), 1);
 		if (expand)
@@ -73,7 +73,7 @@ void	handle_child_exit_status(int status)
 {
 	if (WEXITSTATUS(status) == 130)
 	{
-		data_struc()->exit_status = WEXITSTATUS(status);
+		g_exit_status = WEXITSTATUS(status);
 		data_struc()->is_error = true;
 	}
 }
@@ -101,15 +101,15 @@ int	handle_forked_process(char *delimiter, bool dolar)
 	{
 		if (WIFEXITED(status))
 		{
-			data_struc()->exit_status = 128 + WEXITSTATUS(status);
-			if (data_struc()->exit_status == 128)
+			g_exit_status = 128 + WEXITSTATUS(status);
+			if (g_exit_status == 128)
 				data_struc()->signals_flag = 2;
-			else if (data_struc()->exit_status == 258)
+			else if (g_exit_status == 258)
 				data_struc()->signals_flag = 1;
 		}
 	}
 	// else if (WIFSIGNALED(status))
-	// 	data_struc()->exit_status =  + WTERMSIG(status);
+	// 	g_exit_status =  + WTERMSIG(status);
 	return (true);
 }
 
@@ -130,7 +130,7 @@ int	handler_heredoc(t_env_lst *list)
 			delimiter = find_delimiter(list, &is_expand);
 			data_struc()->heredoc_fd = open_heredoc();
 			if (data_struc()->heredoc_fd < 0)
-				return (data_struc()->exit_status = 2, 0);
+				return (g_exit_status = 2, 0);
 			handle_forked_process(delimiter, is_expand);
 			list->value = data_struc()->heredoc_file;
 			if (data_struc()->is_error)

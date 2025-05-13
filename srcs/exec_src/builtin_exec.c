@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:19:31 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 08:09:46 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:54:18 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	is_builtin(char *cmd)
 
 void	execute_builtin(char **args, t_string *st_string)
 {
-	data_struc()->exit_status = 0;
+	g_exit_status = 0;
 	if (!ft_strcmp(args[0], "echo"))
 		builtin_echo(args, st_string);
 	else if (!ft_strcmp(args[0], "cd"))

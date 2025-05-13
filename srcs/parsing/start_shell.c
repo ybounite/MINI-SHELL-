@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/13 11:09:55 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:54:18 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	handle_input_syntax(t_string *st_string)
 
 	list = NULL;
 	if (handler_syntax_error(st_string->line))
-		return (data_struc()->exit_status = 2, 0);
+		return (g_exit_status = 2, 0);
 	st_string->tokens = spliter(st_string->line);
 	if (!st_string->tokens)
 		return (false);
@@ -69,9 +69,9 @@ int	handle_input_syntax(t_string *st_string)
 	if (ft_isheredoc(list))
 		handler_heredoc(list);
 	if (expand_variables(&list) == -1)
-		return (data_struc()->exit_status = 1, 1);
+		return (g_exit_status = 1, 1);
 	else
-		data_struc()->exit_status = 0;
+		g_exit_status = 0;
 	// print_lst_tokens(list); // delet
 	head = NULL;
 	remove_quotes(list, &head);

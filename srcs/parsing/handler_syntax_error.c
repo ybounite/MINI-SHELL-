@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handler_syntax_error.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 18:24:12 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/10 10:30:13 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:32:30 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,15 @@ int	lenoperator(char *str, int *i)
 			return (ft_puterror(operator), -1337);
 	}
 	counter++;
-	if (str[*i] && !find_space(str[*i]))
-		counter++;
-	ft_skip_whitespace(str, i);
-	if (str[*i] && is_operator(str[*i]))
+	
+	// Don't check for operators after pipes - they're valid
+	if (operator != '|' && str[*i] && is_operator(str[*i]))
 		return (ft_puterror(operator), -1337);
+		
+	if (str[*i] && !find_space(str[*i]) && !is_operator(str[*i]))
+		counter++;
+		
+	ft_skip_whitespace(str, i);
 	return (counter);
 }
 

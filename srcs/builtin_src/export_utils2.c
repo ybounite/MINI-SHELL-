@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:01:50 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 10:02:33 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:54:18 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	validate_key(char *key, char *arg)
 	if (!is_valid_key(key))
 	{
 		printf("export: `%s`: not a valid identifier\n", arg);
-		data_struc()->exit_status = 1;
+		g_exit_status = 1;
 		return (0);
 	}
 	return (1);
