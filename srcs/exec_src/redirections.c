@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:35:37 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 16:14:29 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:51:55 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,19 @@ static int	handle_input_redirection(char *filename)
 	if (!filename)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected \
-				token `newline'\n", 2);
+				token `newline'\n",
+						2);
 		return (-1);
 	}
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
+		g_exit_status = 1;
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(filename, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
-		g_exit_status = 0;
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
 		return (-1);
 	}
 	if (dup2(fd, STDIN_FILENO) == -1)
@@ -51,7 +54,8 @@ static int	prepare_output_redirection(char **args, int *i, int *flags,
 	if (!*filename)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected \
-            token `newline'\n", 2);
+            token `newline'\n",
+						2);
 		return (-1);
 	}
 	if (append)

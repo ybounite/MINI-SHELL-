@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:36:25 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 16:08:51 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:52:52 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,14 @@ static void	exec_builtin_and_exit(char **args, t_string *st_string)
 void	handle_child_process(char **args, int prev_fd, int *pipe_fd,
 		t_string *st_string)
 {
+	int	redir_result;
+
 	setup_redirections(prev_fd, pipe_fd);
-	if (redirections(args) < 0)
+	redir_result = redirections(args);
+	if (redir_result < 0)
 	{
 		ft_malloc(0, 0);
-		exit(g_exit_status);
+		exit(1);
 	}
 	if (is_builtin(args[0]))
 		exec_builtin_and_exit(args, st_string);
