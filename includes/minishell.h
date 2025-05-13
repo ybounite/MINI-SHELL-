@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/13 10:16:45 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 13:09:57 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ typedef struct s_string
 	char						**g_envp;
 	bool						ischild;
 	t_env_lst					*head;
-	int							flagcd;
+	int							signals_flag;
 }								t_string;
 
 typedef struct s_process_args

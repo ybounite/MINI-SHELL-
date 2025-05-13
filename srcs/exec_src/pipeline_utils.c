@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 08:34:37 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 08:56:26 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 13:10:31 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,14 @@ int	create_process(pid_t *pid)
 
 void	update_exit_status(int status)
 {
-	if (data_struc()->flagcd == 1)
+	if (data_struc()->signals_flag == 1)
 	{
-		data_struc()->flagcd = 0;
+		data_struc()->signals_flag = 0;
 		data_struc()->exit_status = 130;
 	}
-	else if (data_struc()->flagcd == 2)
+	else if (data_struc()->signals_flag == 2)
 	{
-		data_struc()->flagcd = 0;
+		data_struc()->signals_flag = 0;
 		data_struc()->exit_status = 0;
 	}
 	else if (WIFEXITED(status))

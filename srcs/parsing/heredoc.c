@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 15:32:42 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/13 11:05:58 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 13:11:19 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void	sigint_handler(int va_signal)
 {
 	if (va_signal == SIGINT)
 	{
-		
 		rl_free_line_state();
 		rl_cleanup_after_signal();
 		close(data_struc()->heredoc_fd);
@@ -91,7 +90,7 @@ int	handle_forked_process(char *delimiter, bool dolar)
 		return (perror("minishell: fork"), 1);
 	else if (pid == 0)
 	{
-		signal(SIGINT, sigint_handler);// handler signal 
+		signal(SIGINT, sigint_handler); // handler signal
 		read_and_process_heredoc_input(delimiter, dolar);
 		close(data_struc()->heredoc_fd);
 		ft_malloc(false, 0);
@@ -100,10 +99,13 @@ int	handle_forked_process(char *delimiter, bool dolar)
 	waitpid(pid, &status, 0);
 	if (pid > 0)
 	{
-		if (WIFEXITED(status)){
-			// WTERMSIG(status)
-			printf("\ni send in signal %d\n",  WEXITSTATUS(status));
+		if (WIFEXITED(status))
+		{
 			data_struc()->exit_status = 128 + WEXITSTATUS(status);
+			if (data_struc()->exit_status == 128)
+				data_struc()->signals_flag = 2;
+			else if (data_struc()->exit_status == 258)
+				data_struc()->signals_flag = 1;
 		}
 	}
 	// else if (WIFSIGNALED(status))
@@ -136,6 +138,7 @@ int	handler_heredoc(t_env_lst *list)
 		}
 		list = list->next;
 	}
-	// printf("%s<-> is  Error for herdoc %d<->\e[0m\n", YELLOW, data_struc()->is_error);
-	return (true);
+	// printf("%s<-> is  Error for herdoc %d<->\e[0m\n", YELLOW,
+		// data_struc()->is_error());
+		return (true);
 }
