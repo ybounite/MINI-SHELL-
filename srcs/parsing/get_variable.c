@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_variable.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 10:41:28 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/10 10:42:42 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/13 08:00:24 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@ char	*get_variable_value(char *var_name)
 	}
 	value = get_env_value(var_name, data_struc());
 	if (!value)
+	{
+		data_struc()->exit_status = 0;
 		return (ft_strdup(""));
+	}
 	return (ft_strdup(value));
 }

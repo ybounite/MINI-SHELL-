@@ -1,148 +1,52 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipeline.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/13 08:35:42 by bamezoua          #+#    #+#             */
+/*   Updated: 2025/05/13 09:06:17 by bamezoua         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-static int count_commands(t_env_lst *list)
-{
-	int cmd_count;
-
-	cmd_count = 1;
-	while (list)
-	{
-		if (list->type == PIPE)
-			cmd_count++;
-		list = list->next;
-	}
-	return (cmd_count);
-}
-
-static void initialize_pids(pid_t *pids, int cmd_count)
-{
-	int i;
-
-	i = 0;
-	while (i < cmd_count)
-	{
-		pids[i] = -1;
-		i++;
-	}
-}
-
-static void setup_child_pipe(int **child_pipe, int *pipe_fd, int i,
-							 int cmd_count)
+void	setup_child_pipe(int **child_pipe, int *pipe_fd, int i, int cmd_count)
 {
 	if (i < cmd_count - 1)
 		*child_pipe = pipe_fd;
 	else
 		*child_pipe = NULL;
 }
-void	handler_sigint(int signum)
-{
-	// struct termios	term;
 
-	// tcgetattr(STDIN_FILENO, &term);
-	// term.c_lflag &= ~ECHOCTL;
-	(void)signum;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	exit(130);
-}
-void	hendle_sigquit(int signum)
+static void	process_pipeline_commands(t_string *st_string,
+		t_pipeline_data *data)
 {
-	(void)signum;
-	exit(131);
-}
-static void wait_for_children(pid_t *pids, int cmd_count)
-{
-	int i;
-	int status;
+	int				i;
+	t_process_args	proc_args;
 
 	i = 0;
-	while (i < cmd_count)
+	proc_args = (t_process_args){st_string, &data->list, &data->prev_fd,
+		data->pids, 0, data->cmd_count};
+	while (data->list && i < data->cmd_count)
 	{
-		if (pids[i] > 0)
-		{
-			signal(SIGINT, SIG_IGN);
-			waitpid(pids[i], &status, 0);
-			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-			{
-				write(1, "\nQuit (core dumped)\n", 20);
-				data_struc()->exit_status = 131;
-			}
-			else if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-				data_struc()->exit_status = 130;	
-			assign_signals_handler();
-			if (i == cmd_count - 1)
-				update_exit_status(status);
-		}
-		i++;
+		proc_args.i = i++;
+		process_command(&proc_args);
 	}
 }
 
-static void	process_command(t_string *st_string, t_env_lst **list, int *prev_fd,
-				pid_t *pids, int i, int cmd_count)
+void	execute_pipeline(t_string *st_string)
 {
-	char **args;
-	int pipe_fd[2];
-	int *child_pipe;
+	t_pipeline_data	*data;
 
-	args = git_array(list);
-	if (!args)
-		return ;
-	if (i < cmd_count - 1 && *list && (*list)->type == PIPE)
-	{
-		if (!setup_pipe(pipe_fd, *list))
-			return ;
-		*list = (*list)->next;
-	}
-	else
-	{
-		pipe_fd[0] = -1;
-		pipe_fd[1] = -1;
-	}
-	if (!create_process(&pids[i]))
-		return ;
-	if (pids[i] == 0)
-	{
-		signal(SIGINT, handler_sigint);
-		signal(SIGQUIT, hendle_sigquit);
-		setup_child_pipe(&child_pipe, pipe_fd, i, cmd_count);
-		handle_child_process(args, *prev_fd, child_pipe, st_string);
-	}
-	if (i < cmd_count - 1)
-		close(pipe_fd[1]);
-	if (*prev_fd != -1)
-		close(*prev_fd);
-	if (i < cmd_count - 1)
-		*prev_fd = pipe_fd[0];
-	else
-		*prev_fd = -1;
-}
-
-void execute_pipeline(t_string *st_string)
-{
-	int prev_fd;
-	t_env_lst *list;
-	pid_t *pids;
-	int cmd_count;
-	int i;
-
-	prev_fd = -1;
 	if (!st_string->head)
 		return ;
-	cmd_count = count_commands(st_string->head);
-	pids = ft_malloc(sizeof(pid_t) * cmd_count, 1);
-	if (!pids)
-		return;
-	initialize_pids(pids, cmd_count);
-	i = 0;
-	list = st_string->head;
-	while (list && i < cmd_count)
-	{
-		process_command(st_string, &list, &prev_fd, pids, i, cmd_count);
-		i++;
-	}
-	if (prev_fd != -1)
-		close(prev_fd);
-	wait_for_children(pids, cmd_count);
+	data = init_pipeline_data(st_string);
+	if (!data)
+		return ;
+	process_pipeline_commands(st_string, data);
+	if (data->prev_fd != -1)
+		close(data->prev_fd);
+	wait_for_children(data->pids, data->cmd_count);
 }

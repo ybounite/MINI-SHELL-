@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:35:37 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/10 17:43:30 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/13 08:35:08 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,34 @@ static int	handle_input_redirection(char *filename)
 	return (0);
 }
 
+static int	prepare_output_redirection(char **args, int *i, int *flags,
+		char **filename)
+{
+	int	append;
+
+	append = (ft_strcmp(args[*i], ">>") == 0);
+	*filename = args[*i + 1];
+	if (!*filename)
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected \
+            token `newline'\n", 2);
+		return (-1);
+	}
+	if (append)
+		*flags = O_WRONLY | O_CREAT | O_APPEND;
+	else
+		*flags = O_WRONLY | O_CREAT | O_TRUNC;
+	return (0);
+}
+
 int	handle_output_redirection(char **args, int *i)
 {
 	int		fd;
 	int		flags;
-	int		append;
 	char	*filename;
 
-	append = (ft_strcmp(args[*i], ">>") == 0);
-	filename = args[*i + 1];
-	if (!filename)
-	{
-		ft_putstr_fd("minishell: syntax error near unexpected \
-			token `newline'\n", 2);
+	if (prepare_output_redirection(args, i, &flags, &filename) < 0)
 		return (-1);
-	}
-	if (append)
-		flags = O_WRONLY | O_CREAT | O_APPEND;
-	else
-		flags = O_WRONLY | O_CREAT | O_TRUNC;
 	fd = open(filename, flags, 0644);
 	if (fd == -1)
 	{
@@ -77,49 +86,12 @@ int	handle_output_redirection(char **args, int *i)
 	return (0);
 }
 
-int	handle_heredoc_redirection(char *delimiter)
-{
-	char	*line;
-	int		pipe_fd[2];
-	int		saved_stdin;
-
-	if (!delimiter)
-		return (0);
-	saved_stdin = dup(STDIN_FILENO);
-	if (saved_stdin == -1)
-		return (0);
-	if (pipe(pipe_fd) == -1)
-	{
-		close(saved_stdin);
-		perror("pipe");
-		return (0);
-	}
-	signal(SIGINT, SIG_DFL);
-	while (1)
-	{
-		line = readline("> ");
-		if (!line || ft_strcmp(line, delimiter) == 0)
-		{
-			ft_malloc(0, 0);
-			break ;
-		}
-		write(pipe_fd[1], line, ft_strlen(line));
-		write(pipe_fd[1], "\n", 1);
-	}
-	close(pipe_fd[1]);
-	dup2(pipe_fd[0], STDIN_FILENO);
-	close(pipe_fd[0]);
-	assign_signals_handler();
-	return (1);
-}
-
 int	redirections(char **args)
 {
 	int	i;
 	int	j;
 
-	i = 0;
-	j = 0;
+	1 && (i = 0), (j = 0);
 	while (args[i])
 	{
 		if (ft_strcmp(args[i], ">") == 0 || ft_strcmp(args[i], ">>") == 0)
@@ -135,11 +107,7 @@ int	redirections(char **args)
 			i += 2;
 		}
 		else if (ft_strcmp(args[i], "<<") == 0)
-		{
-			// if (handle_heredoc_redirection(args[i + 1]) == 0)
-			// 	return (-1);
 			i += 2;
-		}
 		else
 			args[j++] = args[i++];
 	}

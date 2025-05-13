@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   start_shell.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/12 09:24:13 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/13 07:55:47 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-bool singel_quote(char *str)
+bool	singel_quote(char *str)
 {
 	int		i;
 	char	quotes;
@@ -36,7 +36,7 @@ bool singel_quote(char *str)
 	return (true);
 }
 
-void	remove_quotes(t_env_lst	*list, t_env_lst 	**head)
+void	remove_quotes(t_env_lst *list, t_env_lst **head)
 {
 	en_status	stats;
 	char		*str;
@@ -47,7 +47,7 @@ void	remove_quotes(t_env_lst	*list, t_env_lst 	**head)
 			str = ft_remove_quotes(list->value);
 		else
 			str = list->value;
-		stats =  get_token_type(list->value);
+		stats = get_token_type(list->value);
 		ft_add_newtoken(head, str, stats);
 		list = list->next;
 	}
@@ -56,6 +56,7 @@ void	remove_quotes(t_env_lst	*list, t_env_lst 	**head)
 int	handle_input_syntax(t_string *st_string)
 {
 	t_env_lst	*list;
+	t_env_lst	*head;
 
 	list = NULL;
 	if (handler_syntax_error(st_string->line))
@@ -67,9 +68,12 @@ int	handle_input_syntax(t_string *st_string)
 	data_struc()->head = list;
 	if (ft_isheredoc(list))
 		handler_heredoc(list);
+	if (expand_variables(&list) == -1)
+		return (data_struc()->exit_status = 1, 1);
+	else
+		data_struc()->exit_status = 0;
 	// print_lst_tokens(list); // delet
-	expand_variables(list);
-	t_env_lst *head = NULL;
+	head = NULL;
 	remove_quotes(list, &head);
 	// printf("\n%s<->      after remove quotes     <->\e[0m\n", YELLOW);
 	st_string->head = head;

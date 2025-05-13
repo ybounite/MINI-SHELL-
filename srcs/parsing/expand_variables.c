@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variables.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/11 14:42:35 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/13 08:09:32 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*expand_string(const char *str, bool *is_spliting)
 	//$1PWD
 	while (str[i])
 	{
-		if (str[i] == '$' && ft_isdigit(str[i + 1]) &&  !in_single_quotes)
+		if (str[i] == '$' && ft_isdigit(str[i + 1]) && !in_single_quotes)
 			i += 2;
 		else if (str[i] == '$' && str[i + 1] == '$')
 		{
@@ -40,8 +40,7 @@ char	*expand_string(const char *str, bool *is_spliting)
 		else if (str[i] == '\'' && !in_double_quotes)
 		{
 			in_single_quotes = !in_single_quotes;
-			result = ft_strjoin_char(result, str[i]);// '
-			// printf("expand %s\n", re)
+			result = ft_strjoin_char(result, str[i]); // '
 			i++;
 		}
 		else if (str[i] == '\"' && !in_single_quotes)
@@ -99,14 +98,19 @@ char	*ft_strjoin_char(char *str, char c)
 	return (result);
 }
 
-void ft_add_expand_variable(t_env_lst **node_ptr, char *variable)
+void	ft_add_expand_variable(t_env_lst **node_ptr, char *variable)
 {
-	t_env_lst	*start = *node_ptr;
-	t_env_lst	*next = start->next;
-	int			i = 0;
-	t_env_lst 	*prev;
-	char		**words = ft_split(variable, ' ');
+	t_env_lst	*start;
+	t_env_lst	*next;
+	int			i;
+	t_env_lst	*prev;
+	char		**words;
+	t_env_lst	*new_node;
 
+	start = *node_ptr;
+	next = start->next;
+	i = 0;
+	words = ft_split(variable, ' ');
 	if (!words || !words[0])
 		return ;
 	start->value = words[i++];
@@ -114,7 +118,7 @@ void ft_add_expand_variable(t_env_lst **node_ptr, char *variable)
 	prev = start;
 	while (words[i])
 	{
-		t_env_lst *new_node = ft_newnode(words[i++], CMD);
+		new_node = ft_newnode(words[i++], CMD);
 		prev->next = new_node;
 		prev = new_node;
 	}
@@ -136,29 +140,45 @@ bool	is_equal(char *str)
 	return (false);
 }
 
-void	expand_variables(t_env_lst *list)
+bool	ft_isambiguous(t_env_lst *prev, char *str)
+{
+	return ((prev && (prev->type == INPUT_REDIRECTION
+				|| prev->type == OUTPUT_REDIRECTION
+				|| prev->type == APPEND_REDIRECTION)) && (str == NULL
+			|| str[0] == '\0' || ft_strchr(str, ' ')));
+}
+
+int	expand_variables(t_env_lst **list)
 {
 	t_env_lst	*current;
+	t_env_lst	*prev;
 	char		*expanded;
 	bool		is_spliting;
 
 	is_spliting = 0;
-	current = list;
+	current = *list;
+	prev = NULL;
 	while (current)
 	{
 		if (current->value && ft_strchr(current->value, '$'))
 		{
 			expanded = expand_string(current->value, &is_spliting);
-			// printf("%sexpand : %s\e[0m\n", YELLOW, expanded);// delet
+			if (ft_isambiguous(prev, expanded))
+			{
+				printf("minishell: %s: ambiguous redirect\n", current->value);
+				return (-1);
+			}
+			current->value = "";
 			if (is_spliting && !is_equal(expanded))
 			{
-				
 				ft_add_expand_variable(&current, expanded);
 				is_spliting = 0;
 			}
 			else
 				current->value = expanded;
 		}
+		prev = current;
 		current = current->next;
 	}
+	return (0);
 }

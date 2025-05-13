@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipeline_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/13 08:34:37 by bamezoua          #+#    #+#             */
+/*   Updated: 2025/05/13 08:56:26 by bamezoua         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 void	handle_parent_process(int *prev_fd, int *pipe_fd, pid_t pid,
@@ -42,10 +54,37 @@ int	create_process(pid_t *pid)
 
 void	update_exit_status(int status)
 {
-	if (WIFEXITED(status))
+	if (data_struc()->flagcd == 1)
+	{
+		data_struc()->flagcd = 0;
+		data_struc()->exit_status = 130;
+	}
+	else if (data_struc()->flagcd == 2)
+	{
+		data_struc()->flagcd = 0;
+		data_struc()->exit_status = 0;
+	}
+	else if (WIFEXITED(status))
+	{
 		data_struc()->exit_status = WEXITSTATUS(status);
+	}
 	else if (WIFSIGNALED(status))
+	{
 		data_struc()->exit_status = 128 + WTERMSIG(status);
+	}
+}
+
+void	setup_command_pipe(int *pipe_fd, t_env_lst **list, int i, int cmd_count)
+{
+	if (i < cmd_count - 1 && *list && (*list)->type == PIPE)
+	{
+		if (!setup_pipe(pipe_fd, *list))
+			return ;
+		*list = (*list)->next;
+	}
 	else
-		data_struc()->exit_status = 1;
+	{
+		pipe_fd[0] = -1;
+		pipe_fd[1] = -1;
+	}
 }

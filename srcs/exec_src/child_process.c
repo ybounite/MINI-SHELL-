@@ -3,28 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:36:25 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/09 09:29:26 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/13 08:52:42 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void	setup_redirections(int prev_fd, int *pipe_fd)
+int	handle_permission_error(char **args)
+{
+	printf("%s: Permission denied\n", args[0]);
+	return (126);
+}
+
+int	handle_no_file_error(char **args)
+{
+	printf("%s: No such file or directory\n", args[0]);
+	return (127);
+}
+
+void	setup_redirections(int prev_fd, int *pipe_fd)
 {
 	if (prev_fd != -1)
 	{
-		dup2(prev_fd, STDIN_FILENO);
-		close(prev_fd);
+		if (dup2(prev_fd, STDIN_FILENO) == -1)
+			exit(1);
 	}
-	if (pipe_fd)
+	if (pipe_fd && pipe_fd[1] != -1)
 	{
-		dup2(pipe_fd[1], STDOUT_FILENO);
+		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
+			exit(1);
 		close(pipe_fd[0]);
-		close(pipe_fd[1]);
 	}
+	if (prev_fd != -1)
+		close(prev_fd);
+	if (pipe_fd && pipe_fd[1] != -1)
+		close(pipe_fd[1]);
 }
 
 static void	exec_builtin_and_exit(char **args, t_string *st_string)
@@ -32,76 +48,6 @@ static void	exec_builtin_and_exit(char **args, t_string *st_string)
 	execute_builtin(args, st_string);
 	ft_malloc(0, 0);
 	exit(0);
-}
-
-static int	handle_cmd_not_found(char **args)
-{
-	if (args[0][0] == '/' || args[0][0] == '.')
-	{
-		if (access(args[0], F_OK) == 0)
-		{
-			if (access(args[0], X_OK) == 0)
-			{
-				execve(args[0], args, NULL);
-				perror(args[0]);
-			}
-			else if (opendir(args[0]) != NULL)
-			{
-				printf("%s: Is a directory\n", args[0]);
-				return (126);
-			}
-			else
-			{
-				printf("%s: Permission denied\n", args[0]);
-				return (126);
-			}
-		}
-		else
-		{
-			printf("%s: No such file or directory\n", args[0]);
-			return (127);
-		}
-	}
-	else
-	{
-		printf("%s: command not found\n", args[0]);
-		return (127);
-	}
-	return (1);
-}
-
-static void	handle_command_path(char **args, t_string *st_string)
-{
-	char	*cmd_path;
-	int		exit_code;
-
-	if (!args[0] || args[0][0] == '\0')
-	{
-		ft_malloc(0, 0);
-		exit(127);
-	}
-	cmd_path = find_path(args[0], st_string->g_envp);
-	if (!cmd_path)
-	{
-		exit_code = handle_cmd_not_found(args);
-		ft_malloc(0, 0);
-		exit(exit_code);
-	}
-	if (execve(cmd_path, args, st_string->g_envp) == -1)
-	{
-		if (!closedir(opendir(cmd_path)))
-		{
-			printf("%s: Is a directory\n", args[0]);
-			ft_malloc(0, 0);
-			exit(126);
-		}
-		else
-		{
-			printf("%s: %s\n", args[0], strerror(errno));
-			ft_malloc(0, 0);
-			exit(errno);
-		}
-	}
 }
 
 void	handle_child_process(char **args, int prev_fd, int *pipe_fd,

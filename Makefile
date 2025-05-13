@@ -21,13 +21,20 @@ SRCS = $(EXEC_DIR)/executor.c \
 	   $(EXEC_DIR)/utils.c \
 	   $(EXEC_DIR)/redirections.c \
 	   $(EXEC_DIR)/pipeline_utils.c \
+	   $(EXEC_DIR)/pipeline_utils2.c \
+	   $(EXEC_DIR)/pipeline_commands.c \
+	   $(EXEC_DIR)/command_handling.c \
 	   $(BUILTIN_DIR)/cd.c \
 	   $(BUILTIN_DIR)/echo.c \
 	   $(BUILTIN_DIR)/pwd.c \
 	   $(BUILTIN_DIR)/exit.c \
 	   $(BUILTIN_DIR)/env.c \
 	   $(BUILTIN_DIR)/unset.c \
-	   $(BUILTIN_DIR)/export.c
+	   $(BUILTIN_DIR)/export.c \
+	   $(BUILTIN_DIR)/export_utils.c \
+	   $(BUILTIN_DIR)/export_utils2.c \
+	   $(BUILTIN_DIR)/sort_env.c \
+	   $(BUILTIN_DIR)/cd_utils.c \
 
 SRC_MEM = $(MEMORY_DIR)/allocate_data.c
 
@@ -58,6 +65,7 @@ SRC_PARS = $(PARSING_DIR)/minishell.c \
 		   $(PARSING_DIR)/expand_variables.c \
 		   $(PARSING_DIR)/get_variable.c \
 		   $(PARSING_DIR)/change_spaces.c \
+		#    $(PARSING_DIR)/expand_utils.c 
 
 # Combine all source files
 SRCS += $(SRC_PARS)

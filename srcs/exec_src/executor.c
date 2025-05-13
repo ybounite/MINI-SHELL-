@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:38:04 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/09 15:14:50 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/13 08:35:36 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,16 @@ void	execute_command(t_string *st_string)
 	int			saved_stdin;
 	int			status;
 
-	saved_stdout = -1;
-	saved_stdin = -1;
-	status = 0;
+	1 && (saved_stdin = -1), (saved_stdout = -1), status = 0;
 	if (!st_string->head)
 		return ;
 	list = st_string->head;
 	args = git_array(&list);
-	if (!args || !args[0])
+	if (!args || !args[0] || args[0][0] == '\0')
+	{
+		data_struc()->exit_status = 0;
 		return ;
+	}
 	if (!has_pipe(st_string->head) && st_string->head->type == BUILTINS)
 	{
 		saved_stdout = dup(STDOUT_FILENO);

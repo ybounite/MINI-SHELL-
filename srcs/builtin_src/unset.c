@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:31:43 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/01 19:01:01 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/13 09:41:55 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int is_valid_key(char *s)
+int	is_valid_key(char *s)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!s || (!ft_isalpha(s[0]) && s[0] != '_'))
@@ -28,47 +28,65 @@ int is_valid_key(char *s)
 	return (1);
 }
 
-void unset_var(char *key, t_string *st_string)
+static int	find_env_var(char **envp, char *var)
 {
-	int len;
-	char **new_env;
-	int count;
-	int i;
-	int j;
+	int	i;
+	int	len;
 
-	len = ft_strlen(key);
-	count = 0;
 	i = 0;
-	while (st_string->g_envp[i])
+	len = ft_strlen(var);
+	while (envp[i])
 	{
-		if (!(!ft_strncmp(st_string->g_envp[i], key, len) && st_string->g_envp[i][len] == '='))
-			count++;
+		if (ft_strncmp(envp[i], var, len) == 0 && (envp[i][len] == '='
+			|| envp[i][len] == '\0'))
+			return (i);
 		i++;
 	}
-	new_env = ft_malloc(sizeof(char *) * (count + 1), 1);
-	if (!new_env)
-		return;
-	i = 0;
-	j = 0;
-	while (st_string->g_envp[i])
-	{
-		if (!(!ft_strncmp(st_string->g_envp[i], key, len) && st_string->g_envp[i][len] == '='))
-			new_env[j++] = st_string->g_envp[i];
-		i++;
-	}
-	new_env[j] = NULL;
-	st_string->g_envp = new_env;
+	return (-1);
 }
 
-void builtin_unset(char **args, t_string *st_string)
+static void	remove_env_var(t_string *st_string, int index)
 {
-	int i;
+	int		i;
+	int		env_count;
+	char	**new_env;
+
+	env_count = 0;
+	while (st_string->g_envp[env_count])
+		env_count++;
+	new_env = ft_malloc(sizeof(char *) * env_count, 1);
+	i = 0;
+	env_count = 0;
+	while (st_string->g_envp[i])
+	{
+		if (i != index)
+			new_env[env_count++] = st_string->g_envp[i];
+		i++;
+	}
+	new_env[env_count] = NULL;
+	st_string->g_envp = new_env;
+	data_struc()->g_envp = new_env;
+}
+
+void	builtin_unset(char **args, t_string *st_string)
+{
+	int	i;
+	int	var_index;
 
 	i = 1;
 	while (args[i])
 	{
-		if (is_valid_key(args[i]))
-			unset_var(args[i], st_string);
+		if (!is_valid_key(args[i]))
+		{
+			printf("unset: `%s': not a valid identifier\n", args[i]);
+			data_struc()->exit_status = 1;
+		}
+		else
+		{
+			var_index = find_env_var(st_string->g_envp, args[i]);
+			if (var_index >= 0)
+				remove_env_var(st_string, var_index);
+		}
 		i++;
 	}
 }

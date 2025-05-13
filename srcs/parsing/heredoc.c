@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 15:32:42 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/11 19:40:16 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/12 16:42:19 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	handle_forked_process(char *delimiter, bool dolar)
 		return (perror("minishell: fork"), 1);
 	else if (pid == 0)
 	{
-		signal(SIGINT, sigint_handler);// handler signal 
+		signal(SIGINT, sigint_handler); // handler signal
 		read_and_process_heredoc_input(delimiter, dolar);
 		close(data_struc()->heredoc_fd);
 		ft_malloc(false, 0);
@@ -85,10 +85,16 @@ int	handle_forked_process(char *delimiter, bool dolar)
 	waitpid(pid, &status, 0);
 	if (pid > 0)
 	{
-		if (WIFEXITED(status)){
+		if (WIFEXITED(status))
+		{
 			// WTERMSIG(status)
-			printf("\ni send in signal %d\n",  WEXITSTATUS(status));
+			// printf("\ni send in signal %d\n",  WEXITSTATUS(status));
 			data_struc()->exit_status = 128 + WEXITSTATUS(status);
+			printf("\nexit status %d\n", data_struc()->exit_status);
+			if (data_struc()->exit_status == 128)
+				data_struc()->flagcd = 2;
+			else if (data_struc()->exit_status == 258)
+				data_struc()->flagcd = 1;
 		}
 	}
 	// else if (WIFSIGNALED(status))
@@ -96,7 +102,7 @@ int	handle_forked_process(char *delimiter, bool dolar)
 	return (true);
 }
 
-int	handler_heredoc(t_env_lst	*list)
+int	handler_heredoc(t_env_lst *list)
 {
 	char	*delimiter;
 	int		is_expand;

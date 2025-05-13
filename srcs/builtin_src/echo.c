@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:29:58 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/11 15:43:06 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/13 09:08:37 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ char	*get_env_value(char *var_name, t_string *st_string)
 	len = ft_strlen(name);
 	if (len == 0)
 		return (ft_strdup(""));
-	i = 0; 
-	
+	i = 0;
 	while (st_string->g_envp[i])
 	{
 		if (ft_strncmp(st_string->g_envp[i], name, len) == 0
@@ -51,28 +50,25 @@ char	*get_env_value(char *var_name, t_string *st_string)
 	return (ft_strdup(""));
 }
 
-void	builtin_echo(t_env_lst *list)
+void	builtin_echo(char **args, t_string *st_string)
 {
-	t_env_lst	*current;
-	int			n_flag;
+	int	i;
+	int	n_flag;
 
-	if (!list)
-		return ;
-	current = list;
+	i = 1;
 	n_flag = 0;
-	if (current && ft_strcmp(current->value, "echo") == 0)
-		current = current->next;
-	while (current && is_n_flag(current->value))
+	(void)st_string;
+	while (args[i] && is_n_flag(args[i]))
 	{
 		n_flag = 1;
-		current = current->next;
+		i++;
 	}
-	while (current && current->type != PIPE)
+	while (args[i])
 	{
-		printf("%s", current->value);
-		current = current->next;
-		if (current && current->type != PIPE)
+		printf("%s", args[i]);
+		if (args[i + 1])
 			printf(" ");
+		i++;
 	}
 	if (!n_flag)
 		printf("\n");
