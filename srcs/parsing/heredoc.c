@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 15:32:42 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/12 16:42:19 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 11:05:58 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,27 @@ int	read_and_process_heredoc_input(char *delimiter, bool expand)
 	}
 	return (true);
 }
-void	sigint_handler(int signal)
+
+void	sigint_handler(int va_signal)
 {
-	if (signal == SIGINT)
+	if (va_signal == SIGINT)
 	{
+		
+		rl_free_line_state();
+		rl_cleanup_after_signal();
 		close(data_struc()->heredoc_fd);
-		ft_malloc(false, 0);
-		data_struc()->exit_status = 130;
+		ft_malloc(false, false);
+		signal(SIGINT, SIG_DFL);
 		exit(130);
+	}
+}
+
+void	handle_child_exit_status(int status)
+{
+	if (WEXITSTATUS(status) == 130)
+	{
+		data_struc()->exit_status = WEXITSTATUS(status);
+		data_struc()->is_error = true;
 	}
 }
 
@@ -70,13 +83,15 @@ int	handle_forked_process(char *delimiter, bool dolar)
 {
 	pid_t	pid;
 	int		status;
+	int		signal_number;
 
 	pid = fork();
+	signal_number = 0;
 	if (pid == -1)
 		return (perror("minishell: fork"), 1);
 	else if (pid == 0)
 	{
-		signal(SIGINT, sigint_handler); // handler signal
+		signal(SIGINT, sigint_handler);// handler signal 
 		read_and_process_heredoc_input(delimiter, dolar);
 		close(data_struc()->heredoc_fd);
 		ft_malloc(false, 0);
@@ -85,16 +100,10 @@ int	handle_forked_process(char *delimiter, bool dolar)
 	waitpid(pid, &status, 0);
 	if (pid > 0)
 	{
-		if (WIFEXITED(status))
-		{
+		if (WIFEXITED(status)){
 			// WTERMSIG(status)
-			// printf("\ni send in signal %d\n",  WEXITSTATUS(status));
+			printf("\ni send in signal %d\n",  WEXITSTATUS(status));
 			data_struc()->exit_status = 128 + WEXITSTATUS(status);
-			printf("\nexit status %d\n", data_struc()->exit_status);
-			if (data_struc()->exit_status == 128)
-				data_struc()->flagcd = 2;
-			else if (data_struc()->exit_status == 258)
-				data_struc()->flagcd = 1;
 		}
 	}
 	// else if (WIFSIGNALED(status))
@@ -122,8 +131,11 @@ int	handler_heredoc(t_env_lst *list)
 				return (data_struc()->exit_status = 2, 0);
 			handle_forked_process(delimiter, is_expand);
 			list->value = data_struc()->heredoc_file;
+			if (data_struc()->is_error)
+				break ;
 		}
 		list = list->next;
 	}
+	// printf("%s<-> is  Error for herdoc %d<->\e[0m\n", YELLOW, data_struc()->is_error);
 	return (true);
 }

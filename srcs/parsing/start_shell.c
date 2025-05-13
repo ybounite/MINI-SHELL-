@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/13 07:55:47 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 11:09:55 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	start_shell_session(t_string st_string)
 {
 	while (true)
 	{
+		data_struc()->is_error = 0;
 		st_string.line = get_line();
 		handle_input_syntax(&st_string);
 	}
