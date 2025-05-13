@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:31:43 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 14:54:18 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:59:49 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ void	builtin_unset(char **args, t_string *st_string)
 	{
 		if (!is_valid_key(args[i]))
 		{
-			printf("unset: `%s': not a valid identifier\n", args[i]);
-			g_exit_status = 1;
+			// printf("unset: `%s': not a valid identifier\n", args[i]);
+			g_exit_status = 0;
 		}
 		else
 		{

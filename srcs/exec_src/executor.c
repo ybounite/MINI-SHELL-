@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:38:04 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 14:54:18 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 19:08:49 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	execute_command(t_string *st_string)
 	args = git_array(&list);
 	if (!args || !args[0] || args[0][0] == '\0')
 	{
-		g_exit_status = 0;
+		g_exit_status = 127;
 		return ;
 	}
 	if (!has_pipe(st_string->head) && st_string->head->type == BUILTINS)

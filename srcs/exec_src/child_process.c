@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:36:25 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 18:52:52 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 19:05:16 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,12 @@ void	handle_child_process(char **args, int prev_fd, int *pipe_fd,
 	int	redir_result;
 
 	setup_redirections(prev_fd, pipe_fd);
+	if (!args || !args[0] || args[0][0] == '\0')
+    {
+        ft_putstr_fd("command not found\n", 2);
+        ft_malloc(0, 0);
+        exit(127);
+    }
 	redir_result = redirections(args);
 	if (redir_result < 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:15:42 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 16:19:21 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 19:14:57 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,12 @@ void	handle_command_path(char **args, t_string *st_string)
 	{
 		ft_malloc(0, 0);
 		exit(127);
+	}
+	if (args[0][0] == '/' || (args[0][0] == '.' && args[0][1] == '/'))
+	{
+		exit_code = handle_direct_path(args);
+		ft_malloc(0, 0);
+		exit(exit_code);
 	}
 	cmd_path = find_path(args[0], st_string->g_envp);
 	if (!cmd_path)
