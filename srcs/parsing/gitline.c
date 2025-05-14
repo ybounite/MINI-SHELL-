@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:41:09 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/13 14:54:18 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/14 09:29:15 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ char	*get_line(void)
 {
 	char	*line;
 
-	line = readline(MINISPELL);
+	// line = readline(MINISPELL); 
+	line = readline("MINISHELL");
 	if (!line)
 	{
 		printf("exit\n");

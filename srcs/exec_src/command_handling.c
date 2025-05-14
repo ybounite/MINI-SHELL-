@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:15:42 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 19:14:57 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/14 09:06:17 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,18 @@ int	handle_directory_error(char **args)
 
 static int	handle_direct_path(char **args)
 {
+	DIR	*dir;
+
 	if (access(args[0], F_OK) == 0)
 	{
 		if (access(args[0], X_OK) == 0)
 		{
+			dir = opendir(args[0]);
+			if (dir != NULL)
+			{
+				closedir(dir);
+				return (handle_directory_error(args));
+			}
 			execve(args[0], args, NULL);
 			perror(args[0]);
 		}
@@ -73,16 +81,30 @@ void	handle_command_path(char **args, t_string *st_string)
 	char	*cmd_path;
 	int		exit_code;
 
+	exit_code = 0;
 	if (!args[0] || args[0][0] == '\0')
 	{
 		ft_malloc(0, 0);
 		exit(127);
 	}
-	if (args[0][0] == '/' || (args[0][0] == '.' && args[0][1] == '/'))
+	if (args[0][0] == '.' && args[0][1] == '\0')
+	{
+		printf("minishell : %s: filename argument required\n", args[0]);
+		printf("%s: usage: %s filename [arguments]\n", args[0], args[0]);
+		ft_malloc(0, 0);
+		exit(2);
+	}
+	else if (args[0][0] == '/' || (args[0][0] == '.' && args[0][1] == '/'))
 	{
 		exit_code = handle_direct_path(args);
 		ft_malloc(0, 0);
 		exit(exit_code);
+	}
+	else if (args[0][0] == '.' && args[0][1] == '.')
+	{
+		printf("%s: command not found\n", args[0]);
+		ft_malloc(0, 0);
+		exit(127);
 	}
 	cmd_path = find_path(args[0], st_string->g_envp);
 	if (!cmd_path)

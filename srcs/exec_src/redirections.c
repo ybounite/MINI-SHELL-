@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:35:37 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 18:51:55 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/13 19:19:54 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	handle_output_redirection(char **args, int *i)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(filename, 2);
 		ft_putstr_fd(": Permission denied\n", 2);
-		g_exit_status = 1;
+		g_exit_status = 126;
 		return (-1);
 	}
 	if (dup2(fd, STDOUT_FILENO) == -1)
