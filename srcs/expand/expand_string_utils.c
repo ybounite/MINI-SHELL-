@@ -1,29 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gitline.c                                          :+:      :+:    :+:   */
+/*   expand_string_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/08 19:41:09 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/14 09:39:46 by bamezoua         ###   ########.fr       */
+/*   Created: 2025/05/14 10:13:35 by bamezoua          #+#    #+#             */
+/*   Updated: 2025/05/14 10:58:10 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*get_line(void)
+char	*handle_single_quote(char *result, const char *str, int *i, bool *in_sq)
 {
-	char	*line;
+	char	*temp;
 
-	line = readline(MINISPELL); 
-	if (!line)
-	{
-		printf("exit\n");
-		ft_malloc(0, 0);
-		exit(g_exit_status);
-	}
-	if (line)
-		add_history(line);
-	return (line);
+	*in_sq = !*in_sq;
+	temp = result;
+	result = ft_strjoin_char(result, str[*i]);
+	printf("singles       result : %s\n", result);
+	(*i)++;
+	return (result);
+}
+
+char	*handle_double_quote(char *result, const char *str, int *i, bool *in_dq)
+{
+	char *temp;
+
+	*in_dq = !*in_dq;
+	temp = result;
+	result = ft_strjoin_char(result, str[*i]);
+	(*i)++;
+	return (result);
 }

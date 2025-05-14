@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/13 15:17:20 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/14 10:17:44 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,12 +110,10 @@ typedef struct s_pipeline_data
 	int							cmd_count;
 }								t_pipeline_data;
 
-
 /* ************************************************************************** */
 /*                               GLOBAL VARIABLE                              */
 /* ************************************************************************** */
-extern int g_exit_status;
-
+extern int						g_exit_status;
 
 /* ************************************************************************** */
 /*                               GLOBAL FUNCTIONS                             */
@@ -315,5 +313,12 @@ void							add_or_update(char *arg, t_string *st_string);
 int								update_existing_entry(char *key, int key_len,
 									char *entry, t_string *st_string);
 void							add_new_entry(char *entry, t_string *st_string);
+
+char							*handle_single_quote(char *result,
+									const char *str, int *i, bool *in_sq);
+char							*handle_double_quote(char *result,
+									const char *str, int *i, bool *in_dq);
+char							*expand_string(const char *str,
+									bool *is_spliting);
 
 #endif

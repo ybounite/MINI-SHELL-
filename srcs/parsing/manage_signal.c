@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:44:50 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/14 09:47:41 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/11 16:24:52 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	handler(int signum)
 {
 	(void)signum;
-	g_exit_status = 130;
 	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -24,11 +23,11 @@ void	handler(int signum)
 
 void	assign_signals_handler(void)
 {
-	// struct termios	term;
+	struct termios	term;
 
-	// tcgetattr(STDIN_FILENO, &term);
-	// // term.c_lflag &= ~ECHOCTL;
-	// tcsetattr(STDIN_FILENO, TCSANOW, &term);
+	tcgetattr(STDIN_FILENO, &term);
+	// term.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handler);
 }

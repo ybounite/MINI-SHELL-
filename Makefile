@@ -9,6 +9,7 @@ GETLINE_DIR = libraries/getline
 BUILTIN_DIR = $(SRC_DIR)/builtin_src
 EXEC_DIR = $(SRC_DIR)/exec_src
 PARSING_DIR = $(SRC_DIR)/parsing
+EXPAND_DIR = $(SRC_DIR)/expand
 OBJ_DIR = obj
 INC_DIR = includes
 
@@ -62,9 +63,10 @@ SRC_PARS = $(PARSING_DIR)/minishell.c \
 		   $(PARSING_DIR)/error_herdoc.c \
 		   $(PARSING_DIR)/destroy_allocation.c \
 		   $(PARSING_DIR)/manage_signal.c \
-		   $(PARSING_DIR)/expand_variables.c \
-		   $(PARSING_DIR)/get_variable.c \
-		   $(PARSING_DIR)/change_spaces.c \
+		   $(EXPAND_DIR)/expand_variables.c \
+		   $(EXPAND_DIR)/get_variable.c \
+		   $(EXPAND_DIR)/expand_string_utils.c \
+		   $(EXPAND_DIR)/expand_string.c \
 		#    $(PARSING_DIR)/expand_utils.c 
 
 # Combine all source files

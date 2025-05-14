@@ -6,99 +6,11 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/14 09:28:44 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/14 10:25:15 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-char	*expand_string(const char *str, bool *is_spliting)
-{
-	int		i;
-	int		in_single_quotes;
-	int		in_double_quotes;
-	char	*result;
-	char	*var_name;
-	char	*var_value;
-	char	*temp;
-	int		original_i;
-	int		j;
-	char	*quoted_content;
-
-	i = 0;
-	in_single_quotes = 0;
-	in_double_quotes = 0;
-	result = ft_strdup("");
-	//$1PWD
-	while (str[i])
-	{
-		if (str[i] == '$' && ft_isdigit(str[i + 1]) && !in_single_quotes)
-			i += 2;
-		else if (str[i] == '$' && str[i + 1] == '$')
-		{
-			result = ft_strjoin(result, "$$");
-			i += 2;
-		}
-		else if (str[i] == '\'' && !in_double_quotes)
-		{
-			in_single_quotes = !in_single_quotes;
-			result = ft_strjoin_char(result, str[i]); // '
-			i++;
-		}
-		else if (str[i] == '\"' && !in_single_quotes)
-		{
-			in_double_quotes = !in_double_quotes;
-			result = ft_strjoin_char(result, str[i]);
-			i++;
-		}
-		else if (str[i] == '$' && !in_single_quotes)
-		{
-			original_i = i;
-			if (str[i + 1] == '"')
-			{
-				j = i + 2;
-				while (str[j] && str[j] != '"')
-					j++;
-				quoted_content = ft_substr(str, i + 2, j - (i + 2));
-				temp = result;
-				result = ft_strjoin(result, quoted_content);
-				free(quoted_content);
-				i = (str[j] == '"') ? j + 1 : j;
-			}
-			else
-			{
-				var_name = get_variable_name(str, &i);
-				if (var_name)
-				{
-					var_value = get_variable_value(var_name);
-					if (!in_double_quotes && !in_single_quotes)
-						*is_spliting = 1;
-					temp = result;
-					result = ft_strjoin(result, var_value);
-					if (original_i == i)
-					{
-						temp = result;
-						result = ft_strjoin_char(result, '$');
-						i++;
-					}
-				}
-				else if (str[i + 1] != '"')
-				{
-					temp = result;
-					result = ft_strjoin_char(result, '$');
-					i++;
-				}
-			}
-		}
-		else
-		{
-			temp = result;
-			result = ft_strjoin_char(result, str[i]);
-			i++;
-		}
-	}
-	return (result);
-}
 
 char	*ft_strjoin_char(char *str, char c)
 {
