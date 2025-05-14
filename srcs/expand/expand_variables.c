@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/14 10:25:15 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/14 13:10:15 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,54 +35,35 @@ char	*ft_strjoin_char(char *str, char c)
 	return (result);
 }
 
-void	ft_add_expand_variable(t_env_lst **node_ptr, char *variable)
-{
-	t_env_lst	*start;
-	t_env_lst	*next;
-	int			i;
-	t_env_lst	*prev;
-	char		**words;
-	t_env_lst	*new_node;
-
-	start = *node_ptr;
-	next = start->next;
-	i = 0;
-	words = ft_split(variable, ' ');
-	if (!words || !words[0])
-		return ;
-	start->value = words[i++];
-	start->type = CMD;
-	prev = start;
-	while (words[i])
-	{
-		new_node = ft_newnode(words[i++], CMD);
-		prev->next = new_node;
-		prev = new_node;
-	}
-	prev->next = next;
-	*node_ptr = prev;
-}
-
-bool	is_equal(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '=')
-			return (true);
-		i++;
-	}
-	return (false);
-}
-
 bool	ft_isambiguous(t_env_lst *prev, char *str)
 {
 	return ((prev && (prev->type == INPUT_REDIRECTION
 				|| prev->type == OUTPUT_REDIRECTION
 				|| prev->type == APPEND_REDIRECTION)) && (str == NULL
 			|| str[0] == '\0' || ft_strchr(str, ' ')));
+}
+
+static int	handle_ambiguous_redirect(t_env_lst *prev, char *expanded,
+		const char *value)
+{
+	if (ft_isambiguous(prev, expanded))
+	{
+		printf("minishell: %s: ambiguous redirect\n", value);
+		return (-1);
+	}
+	return (0);
+}
+
+static void	process_expanded_value(t_env_lst **current, char *expanded,
+		bool *is_spliting)
+{
+	if (*is_spliting && !is_equal(expanded))
+	{
+		ft_add_expand_variable(current, expanded);
+		*is_spliting = 0;
+	}
+	else
+		(*current)->value = expanded;
 }
 
 int	expand_variables(t_env_lst **list)
@@ -100,19 +81,10 @@ int	expand_variables(t_env_lst **list)
 		if (current->value && ft_strchr(current->value, '$'))
 		{
 			expanded = expand_string(current->value, &is_spliting);
-			if (ft_isambiguous(prev, expanded))
-			{
-				printf("minishell: %s: ambiguous redirect\n", current->value);
+			if (handle_ambiguous_redirect(prev, expanded, current->value) == -1)
 				return (-1);
-			}
 			current->value = "";
-			if (is_spliting && !is_equal(expanded))
-			{
-				ft_add_expand_variable(&current, expanded);
-				is_spliting = 0;
-			}
-			else
-				current->value = expanded;
+			process_expanded_value(&current, expanded, &is_spliting);
 		}
 		prev = current;
 		current = current->next;

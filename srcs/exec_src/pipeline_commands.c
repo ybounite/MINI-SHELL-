@@ -6,11 +6,17 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:35:42 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 09:06:03 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/14 11:57:53 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	handle_directory_error(char **args)
+{
+	printf("%s: Is a directory\n", args[0]);
+	return (126);
+}
 
 static int	count_commands(t_env_lst *list)
 {

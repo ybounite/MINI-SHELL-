@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/14 10:17:44 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/14 13:11:17 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,14 @@ typedef struct s_pipeline_data
 	pid_t						*pids;
 	int							cmd_count;
 }								t_pipeline_data;
+
+typedef struct s_expand_data
+{
+	bool						quotes[2];
+	bool						*is_spliting;
+	int							*i;
+	char						*result;
+}								t_expand_data;
 
 /* ************************************************************************** */
 /*                               GLOBAL VARIABLE                              */
@@ -320,5 +328,9 @@ char							*handle_double_quote(char *result,
 									const char *str, int *i, bool *in_dq);
 char							*expand_string(const char *str,
 									bool *is_spliting);
-
+int								handle_direct_path(char **args);
+int								handle_cmd_not_found(char **args);
+bool							is_equal(char *str);
+void							ft_add_expand_variable(t_env_lst **node_ptr,
+									char *variable);
 #endif

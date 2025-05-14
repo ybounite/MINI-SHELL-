@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/14 11:02:23 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/14 13:16:38 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ static char	*handle_variable(char *result, const char *str, int *i,
 {
 	char	*var_name;
 	char	*var_value;
-	char	*temp;
 	int		original_i;
 
 	original_i = *i;
@@ -62,30 +61,27 @@ static char	*handle_variable(char *result, const char *str, int *i,
 		var_value = get_variable_value(var_name);
 		if (!is_spliting[0] && !is_spliting[1])
 			*is_spliting = 1;
-		temp = result;
 		result = ft_strjoin(result, var_value);
 		if (original_i == *i)
 		{
-			temp = result;
 			result = ft_strjoin_char(result, '$');
 			(*i)++;
 		}
 	}
 	else if (str[*i + 1] != '"')
 	{
-		temp = result;
 		result = ft_strjoin_char(result, '$');
 		(*i)++;
 	}
 	return (result);
 }
+
 // quotes[0] = 0; // single quotes && quotes[1] = 0; // double quotes
 char	*expand_string(const char *str, bool *is_spliting)
 {
-	int i;
-	bool quotes[2];
-	char *result;
-	char *temp;
+	int		i;
+	bool	quotes[2];
+	char	*result;
 
 	i = 0;
 	quotes[0] = 0;
@@ -111,7 +107,6 @@ char	*expand_string(const char *str, bool *is_spliting)
 		}
 		else
 		{
-			temp = result;
 			result = ft_strjoin_char(result, str[i]);
 			i++;
 		}

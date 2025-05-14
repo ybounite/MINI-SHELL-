@@ -67,6 +67,7 @@ SRC_PARS = $(PARSING_DIR)/minishell.c \
 		   $(EXPAND_DIR)/get_variable.c \
 		   $(EXPAND_DIR)/expand_string_utils.c \
 		   $(EXPAND_DIR)/expand_string.c \
+		   $(EXPAND_DIR)/ft_add_expand_variable.c \
 		#    $(PARSING_DIR)/expand_utils.c 
 
 # Combine all source files

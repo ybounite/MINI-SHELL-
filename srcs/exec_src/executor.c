@@ -6,11 +6,23 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:38:04 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/14 09:49:12 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/14 11:57:44 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	handle_cmd_not_found(char **args)
+{
+	if (args[0][0] == '/' || args[0][0] == '.')
+		return (handle_direct_path(args));
+	else
+	{
+		ft_putstr_fd(args[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
+		return (127);
+	}
+}
 
 char	**git_array(t_env_lst **list)
 {

@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 10:13:35 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/14 10:58:10 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/14 13:05:05 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,13 @@ char	*handle_single_quote(char *result, const char *str, int *i, bool *in_sq)
 	*in_sq = !*in_sq;
 	temp = result;
 	result = ft_strjoin_char(result, str[*i]);
-	printf("singles       result : %s\n", result);
 	(*i)++;
 	return (result);
 }
 
 char	*handle_double_quote(char *result, const char *str, int *i, bool *in_dq)
 {
-	char *temp;
+	char	*temp;
 
 	*in_dq = !*in_dq;
 	temp = result;

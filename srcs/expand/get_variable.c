@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 10:41:28 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/14 09:22:07 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/14 11:59:31 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*get_variable_name(const char *str, int *i)
 	int		len;
 	char	*var_name;
 
-	start = *i + 1; // Skip '$'
+	start = *i + 1;
 	len = 0;
 	if (!str[start])
 		return (NULL);
@@ -30,7 +30,7 @@ char	*get_variable_name(const char *str, int *i)
 		return (ft_strdup("?"));
 	}
 	while (str[start + len] && (ft_isalnum(str[start + len]) || str[start
-			+ len] == '_'))
+				+ len] == '_'))
 		len++;
 	if (len == 0)
 		return (NULL);

@@ -6,19 +6,13 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:15:42 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/14 09:06:17 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/14 11:57:34 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	handle_directory_error(char **args)
-{
-	printf("%s: Is a directory\n", args[0]);
-	return (126);
-}
-
-static int	handle_direct_path(char **args)
+int	handle_direct_path(char **args)
 {
 	DIR	*dir;
 
@@ -45,18 +39,6 @@ static int	handle_direct_path(char **args)
 	return (1);
 }
 
-static int	handle_cmd_not_found(char **args)
-{
-	if (args[0][0] == '/' || args[0][0] == '.')
-		return (handle_direct_path(args));
-	else
-	{
-		ft_putstr_fd(args[0], 2);
-		ft_putstr_fd(": command not found\n", 2);
-		return (127);
-	}
-}
-
 static void	exec_command_path(char *cmd_path, char **args, t_string *st_string)
 {
 	if (execve(cmd_path, args, st_string->g_envp) == -1)
@@ -76,12 +58,8 @@ static void	exec_command_path(char *cmd_path, char **args, t_string *st_string)
 	}
 }
 
-void	handle_command_path(char **args, t_string *st_string)
+static int	handle_special_cases(char **args)
 {
-	char	*cmd_path;
-	int		exit_code;
-
-	exit_code = 0;
 	if (!args[0] || args[0][0] == '\0')
 	{
 		ft_malloc(0, 0);
@@ -94,7 +72,14 @@ void	handle_command_path(char **args, t_string *st_string)
 		ft_malloc(0, 0);
 		exit(2);
 	}
-	else if (args[0][0] == '/' || (args[0][0] == '.' && args[0][1] == '/'))
+	return (0);
+}
+
+static int	handle_path_cases(char **args)
+{
+	int	exit_code;
+
+	if (args[0][0] == '/' || (args[0][0] == '.' && args[0][1] == '/'))
 	{
 		exit_code = handle_direct_path(args);
 		ft_malloc(0, 0);
@@ -106,6 +91,18 @@ void	handle_command_path(char **args, t_string *st_string)
 		ft_malloc(0, 0);
 		exit(127);
 	}
+	return (0);
+}
+
+void	handle_command_path(char **args, t_string *st_string)
+{
+	char	*cmd_path;
+	int		exit_code;
+
+	if (handle_special_cases(args))
+		return ;
+	if (handle_path_cases(args))
+		return ;
 	cmd_path = find_path(args[0], st_string->g_envp);
 	if (!cmd_path)
 	{
