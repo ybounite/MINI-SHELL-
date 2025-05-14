@@ -68,8 +68,10 @@ int	handle_input_syntax(t_string *st_string)
 	data_struc()->head = list;
 	if (ft_isheredoc(list))
 		handler_heredoc(list);
+	if (data_struc()->is_error)
+		return (false);
 	if (expand_variables(&list) == -1)
-		return (g_exit_status = 1, 1);
+		return (g_exit_status = 1, false);
 	else
 		g_exit_status = 0;
 	// print_lst_tokens(list); // delet

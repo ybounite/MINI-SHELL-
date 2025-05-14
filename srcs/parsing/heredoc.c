@@ -64,7 +64,7 @@ void	sigint_handler(int va_signal)
 		rl_cleanup_after_signal();
 		close(data_struc()->heredoc_fd);
 		ft_malloc(false, false);
-		signal(SIGINT, SIG_DFL);
+		// signal(SIGINT, SIG_DFL);
 		exit(130);
 	}
 }
@@ -75,6 +75,14 @@ void	handle_child_exit_status(int status)
 	{
 		g_exit_status = WEXITSTATUS(status);
 		data_struc()->is_error = true;
+	}
+	if (WIFEXITED(status))
+	{
+		g_exit_status = 128 + WEXITSTATUS(status);
+		if (g_exit_status == 128)
+			data_struc()->signals_flag = 2;
+		else if (g_exit_status == 258)
+			data_struc()->signals_flag = 1;
 	}
 }
 
@@ -97,19 +105,7 @@ int	handle_forked_process(char *delimiter, bool dolar)
 		exit(0);
 	}
 	waitpid(pid, &status, 0);
-	if (pid > 0)
-	{
-		if (WIFEXITED(status))
-		{
-			g_exit_status = 128 + WEXITSTATUS(status);
-			if (g_exit_status == 128)
-				data_struc()->signals_flag = 2;
-			else if (g_exit_status == 258)
-				data_struc()->signals_flag = 1;
-		}
-	}
-	// else if (WIFSIGNALED(status))
-	// 	g_exit_status =  + WTERMSIG(status);
+	handle_child_exit_status(status);
 	return (true);
 }
 
