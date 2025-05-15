@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:44:50 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/15 14:23:02 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:48:25 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ void	set_signals_for_heredoc(int va_signal)
 {
 	if (va_signal == SIGINT)
 	{
-		rl_free_line_state();
-		rl_cleanup_after_signal();
+		write (1, "\n", 1);
 		close(data_struc()->heredoc_fd);
 		ft_malloc(false, false);
 		exit(130);
@@ -51,11 +50,6 @@ void	hendle_sigquit(int signum)
 
 void	assign_signals_handler(void)
 {
-	// struct termios	term;
-
-	// tcgetattr(STDIN_FILENO, &term);
-	// // term.c_lflag &= ~ECHOCTL;
-	// tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handler);
 }
