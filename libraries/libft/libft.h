@@ -71,5 +71,6 @@ t_list			*ft_lstmap(t_list *lst, void *(*f)(void *),
 void			ft_lstdelone(t_list *lst, void (*del)(void *));
 void			*ft_malloc(size_t size, short option);
 void			memory_released(t_list **head);
+char			*ft_strncpy(char *dest, char const *src, size_t n);
 
 #endif
