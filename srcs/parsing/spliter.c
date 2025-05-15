@@ -24,9 +24,21 @@ int	lentcommand(char *line)
 		ft_skip_whitespace(line, &i);
 		if (line[i] == '\0')
 			break ;
-		if (is_operator(line[i]))
+		if (line[i] == PIPE)
 		{
-			while (line[i] && is_operator(line[i]))
+			while (line[i] && line[i] == PIPE)
+				i++;
+			count++;
+		}
+		else if (line[i] == '<')
+		{
+			while (line[i] && line[i] == '<')
+				i++;
+			count++;
+		}
+		else if (line[i] == '>')
+		{
+			while (line[i] && line[i] == '>')
 				i++;
 			count++;
 		}
@@ -42,9 +54,12 @@ int	lentcommand(char *line)
 int	ft_lenoperator(char *str, int *index)
 {
 	int	i;
+	char	operator;
+
 
 	i = 0;
-	while (str[*index] && is_operator(str[*index]))
+	operator = str[*index];
+	while (str[*index] && str[*index] == operator)
 	{
 		(*index)++;
 		i++;
@@ -59,7 +74,7 @@ void	handle_operator(char *line, int *i, char **spliter, int *index)
 
 	start = *i;
 	str = ft_malloc(sizeof(char) * ft_lenoperator(line, i) + 1, 1);
-	strncpy(str, line + start, *i - start);
+	ft_strncpy(str, line + start, *i - start);
 	str[*i - start] = '\0';
 	spliter[(*index)++] = str;
 }
@@ -72,7 +87,7 @@ void	handle_word(char *line, int *i, char **spliter, int *index)
 	start = *i;
 	skip_whiteword(line, i);
 	str = ft_malloc(*i - start + 1, 1);
-	strncpy(str, line + start, *i - start);
+	ft_strncpy(str, line + start, *i - start);
 	str[*i - start] = '\0';
 	spliter[(*index)++] = str;
 }
