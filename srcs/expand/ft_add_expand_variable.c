@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_add_expand_variable.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:09:39 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/15 17:09:50 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:38:24 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+char	*handle_dollar_digit(char *result, int *i)
+{
+	*i += 2;
+	return (result);
+}
 
 bool	is_equal(char *str)
 {
@@ -52,7 +58,7 @@ void	ft_add_expand_variable(t_env_lst **node_ptr, char *variable)
 	start = *node_ptr;
 	next = start->next;
 	i = 0;
-	words = ft_split_quotes(variable, ' ');
+	words = ft_split(variable, ' ');
 	if (!words || !words[0])
 		return ;
 	start->value = words[i++];

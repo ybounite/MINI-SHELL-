@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:29:58 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 09:08:37 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:35:49 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*get_env_value(char *var_name, t_string *st_string)
 	char	*name;
 
 	if (!var_name || !st_string || !st_string->g_envp)
-		return (ft_strdup(""));
+		return (data_struc()->is_empty = 1, ft_strdup(NULL));
 	if (var_name[0] == '$')
 		name = var_name + 1;
 	else
@@ -47,6 +47,7 @@ char	*get_env_value(char *var_name, t_string *st_string)
 			return (ft_strdup(st_string->g_envp[i] + len + 1));
 		i++;
 	}
+	data_struc()->is_empty = 1;
 	return (ft_strdup(""));
 }
 

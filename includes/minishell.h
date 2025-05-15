@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/15 17:09:50 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:39:35 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,13 @@ typedef struct s_environement_list
 	struct s_environement_list	*next;
 }							t_env_lst;
 
+typedef struct s_expand_context
+{
+	char						*result;
+	bool						quotes[2];
+	bool						*is_spliting;
+}								t_expand_context;
+
 typedef struct s_string
 {
 	char					*line;
@@ -77,6 +84,7 @@ typedef struct s_string
 	bool					ischild;
 	t_env_lst				*head;
 	int						signals_flag;
+	int						is_empty;
 }							t_string;
 
 typedef struct s_process_args
@@ -392,6 +400,8 @@ void						sort_env(char **env);
 bool						is_equal(char *str);
 void						ft_add_expand_variable(t_env_lst **node_ptr,
 								char *variable);
+char						*handle_dollar_digit(char *result, int *i);
+
 /* -------------------------------------------------------------------------- */
 /*                             expand_string.c            	                  */
 /* -------------------------------------------------------------------------- */
