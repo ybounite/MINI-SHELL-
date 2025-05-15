@@ -67,6 +67,7 @@ SRC_PARS = $(PARSING_DIR)/minishell.c \
 		   $(EXPAND_DIR)/expand_string_utils.c \
 		   $(EXPAND_DIR)/expand_string.c \
 		   $(EXPAND_DIR)/ft_add_expand_variable.c \
+		   $(EXPAND_DIR)/ft_split_quotes.c\
 		   $(PARSING_DIR)/spliter_utils.c \
 		   $(PARSING_DIR)/remove_quotes.c \
 		   $(PARSING_DIR)/ft_puterror.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_add_expand_variable.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:09:39 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/14 13:10:22 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:09:50 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_add_expand_variable(t_env_lst **node_ptr, char *variable)
 	start = *node_ptr;
 	next = start->next;
 	i = 0;
-	words = ft_split(variable, ' ');
+	words = ft_split_quotes(variable, ' ');
 	if (!words || !words[0])
 		return ;
 	start->value = words[i++];
