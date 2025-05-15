@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 15:41:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/15 15:41:52 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:54:01 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_puterror(char error)
 	data_struc()->is_error = 1;
 }
 
-void	ft_error(en_status type)
+void	ft_error(t_status type)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 	ft_putstr_fd(get_token_symbol(type), 2);

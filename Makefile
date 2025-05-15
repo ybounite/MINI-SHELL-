@@ -52,8 +52,6 @@ SRC_PARS = $(PARSING_DIR)/minishell.c \
 		   $(PARSING_DIR)/handler_syntax_error.c \
 		   $(PARSING_DIR)/syntax_error.c \
 		   $(PARSING_DIR)/ft_skip_whit_string.c \
-		   $(PARSING_DIR)/lexer_handlers_operator.c \
-		   $(PARSING_DIR)/lexer_handlers_word.c \
 		   $(PARSING_DIR)/ft_node.c \
 		   $(PARSING_DIR)/spliter.c \
 		   $(PARSING_DIR)/heredoc.c \

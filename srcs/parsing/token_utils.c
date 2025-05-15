@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:33:57 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/10 10:38:26 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:54:01 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	tokenize(char **tokins, t_env_lst **list)
 {
 	int			i;
-	en_status	stats;
+	t_status	stats;
 
 	i = 0;
 	while (tokins[i])
@@ -26,7 +26,7 @@ void	tokenize(char **tokins, t_env_lst **list)
 	}
 }
 
-en_status	get_redirection_type_from_str(char *str)
+t_status	get_redirection_type_from_str(char *str)
 {
 	if (!ft_strcmp(str, ">>"))
 		return (APPEND_REDIRECTION);
@@ -38,7 +38,7 @@ en_status	get_redirection_type_from_str(char *str)
 		return (OUTPUT_REDIRECTION);
 }
 
-en_status	get_token_type(char *str)
+t_status	get_token_type(char *str)
 {
 	if (!ft_strcmp(str, "|"))
 		return (PIPE);

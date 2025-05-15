@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:19:05 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/15 14:20:15 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:56:39 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool	singel_quote(char *str)
 
 void	remove_quotes(t_env_lst *list, t_env_lst **head)
 {
-	en_status	stats;
+	t_status	stats;
 	char		*str;
 
 	while (list)
