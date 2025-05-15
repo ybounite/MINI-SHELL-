@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 15:32:42 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/13 14:54:18 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:50:15 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,82 +31,23 @@ char	*ft_expand(char *line)
 		return (expand_heredoc(line));
 }
 
-int	read_and_process_heredoc_input(char *delimiter, bool expand)
+bool	is_invalid_heredoc_syntax(t_env_lst *list)
 {
-	char	*line;
-	char	*str_expand;
-
-	while (true)
+	if (!list->next || list->next->type != CMD)
 	{
-		line = readline("> ");
-		if (!line)
-			return (error_herdoc(delimiter), g_exit_status = 0, 1);
-		if (!ft_strcmp(line, delimiter))
-			return (free(line), 1);
-		if (expand)
-		{
-			str_expand = ft_expand(line);
-			write(data_struc()->heredoc_fd, str_expand, ft_strlen(str_expand));
-		}
+		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+		if (!list->next)
+			ft_putendl_fd("newline'", 2);
 		else
-			write(data_struc()->heredoc_fd, line, ft_strlen(line));
-		write(data_struc()->heredoc_fd, "\n", 1);
-		free(line);
-	}
-	return (true);
-}
-
-void	sigint_handler(int va_signal)
-{
-	if (va_signal == SIGINT)
-	{
-		rl_free_line_state();
-		rl_cleanup_after_signal();
-		close(data_struc()->heredoc_fd);
-		ft_malloc(false, false);
-		// signal(SIGINT, SIG_DFL);
-		exit(130);
-	}
-}
-
-void	handle_child_exit_status(int status)
-{
-	if (WEXITSTATUS(status) == 130)
-	{
-		g_exit_status = WEXITSTATUS(status);
+		{
+			ft_putstr_fd(get_token_symbol(list->next->type), 2);
+			ft_putendl_fd("'", 2);
+		}
+		g_exit_status = 2;
 		data_struc()->is_error = true;
+		return (true);
 	}
-	if (WIFEXITED(status))
-	{
-		g_exit_status = 128 + WEXITSTATUS(status);
-		if (g_exit_status == 128)
-			data_struc()->signals_flag = 2;
-		else if (g_exit_status == 258)
-			data_struc()->signals_flag = 1;
-	}
-}
-
-int	handle_forked_process(char *delimiter, bool dolar)
-{
-	pid_t	pid;
-	int		status;
-	int		signal_number;
-
-	pid = fork();
-	signal_number = 0;
-	if (pid == -1)
-		return (perror("minishell: fork"), 1);
-	else if (pid == 0)
-	{
-		signal(SIGINT, sigint_handler); // handler signal
-		read_and_process_heredoc_input(delimiter, dolar);
-		close(data_struc()->heredoc_fd);
-		ft_malloc(false, 0);
-		exit(0);
-	}
-	waitpid(pid, &status, 0);
-	handle_child_exit_status(status);
-	return (true);
+	return (false);
 }
 
 int	handler_heredoc(t_env_lst *list)
@@ -114,13 +55,14 @@ int	handler_heredoc(t_env_lst *list)
 	char	*delimiter;
 	int		is_expand;
 
-	delimiter = NULL;
-	is_expand = 0;
+	(1) && (delimiter = NULL), (is_expand = 0);
 	ft_clculate_heredoc(list);
 	while (list)
 	{
-		if (list->type == HERE_DOCUMENT && list->next)
+		if (list->type == HERE_DOCUMENT)
 		{
+			if (is_invalid_heredoc_syntax(list))
+				return (false);
 			list->value = ft_strdup("<");
 			list = list->next;
 			delimiter = find_delimiter(list, &is_expand);
@@ -134,7 +76,5 @@ int	handler_heredoc(t_env_lst *list)
 		}
 		list = list->next;
 	}
-	// printf("%s<-> is  Error for herdoc %d<->\e[0m\n", YELLOW,
-		// data_struc()->is_error());
-		return (true);
+	return (true);
 }
