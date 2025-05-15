@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handler_syntax_error.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 18:24:12 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/13 15:32:30 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/15 13:46:07 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,43 +28,54 @@ int	lenqoutes(char *str, int *i)
 	return (counter);
 }
 
-int	lenoperator(char *str, int *i)
+bool	redirection_target_error(t_env_lst *curr)
 {
-	int		counter;
-	char	operator;
+	if (!curr->next)
+		ft_error(1);
+	else
+		ft_error(curr->next->type);
+	return (false);
+}
 
-	counter = 0;
-	operator = str[*i];
-	while (str[*i] && str[*i] == operator)
+bool	is_redirection(int type)
+{
+	return (type == INPUT_REDIRECTION || type == OUTPUT_REDIRECTION
+		|| type == APPEND_REDIRECTION);
+}
+
+bool	check_syntax_errors(t_env_lst *tokens)
+{
+	t_env_lst	*curr;
+	t_env_lst	*prev;
+
+	(1) && (curr = tokens), (prev = NULL);
+	while (curr)
 	{
-		if (str[*i + 1] && ((operator == '>' && str[*i + 1] == '<')
-				|| (operator == '<' && str[*i + 1] == '>')))
-			return (ft_puterror(operator), -1337);
-		if (str[*i + 1] && operator == '|' && str[*i + 1] == '|')
-			return (ft_puterror(operator), -1337);
-		counter++;
-		(*i)++;
-		if (counter >= 3)
-			return (ft_puterror(operator), -1337);
+		if (is_redirection(curr->type) && curr->next
+			&& is_redirection(curr->next->type))
+		{
+			ft_error(curr->next->type);
+			return (false);
+		}
+		if (curr->type == PIPE)
+		{
+			if (!curr->next || curr->next->type == PIPE)
+				return (ft_error(PIPE), false);
+		}
+		if (is_redirection(curr->type) && (!curr->next
+				|| (curr->next->type != CMD
+					&& curr->next->type != HERE_DOCUMENT)))
+			return (redirection_target_error(curr));
+		prev = curr;
+		curr = curr->next;
 	}
-	counter++;
-	
-	// Don't check for operators after pipes - they're valid
-	if (operator != '|' && str[*i] && is_operator(str[*i]))
-		return (ft_puterror(operator), -1337);
-		
-	if (str[*i] && !find_space(str[*i]) && !is_operator(str[*i]))
-		counter++;
-		
-	ft_skip_whitespace(str, i);
-	return (counter);
+	return (true);
 }
 
 bool	handler_syntax_error(char *line)
 {
-	if (is_first_operation_pipe(line) || is_last_operation_pipe(line))
-		return (true);
-	if (ft_lenword(line) < 0)
+	if (is_first_operation_pipe(line)
+		|| ft_lenword(line) < 0)
 		return (true);
 	return (false);
 }
