@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:45:11 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/10 09:22:50 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:45:19 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_env_lst	*ft_newnode(char *cmd, en_status state)
 {
-	t_env_lst *new;
+	t_env_lst	*new;
 
 	new = ft_malloc(sizeof(t_env_lst), true);
 	if (!new)
@@ -43,7 +43,27 @@ void	lstadd_back(t_env_lst **head, t_env_lst *new)
 	ptr->next = new;
 }
 
-char *string(en_status type)
+void	ft_add_newtoken(t_env_lst **head, char *token, en_status state)
+{
+	t_env_lst	*new;
+
+	new = ft_newnode(token, state);
+	if (!new)
+		return ;
+	lstadd_back(head, new);
+}
+
+/*void print_lst_tokens(t_env_lst *head)
+{
+	int	i = 0;
+	while (head)
+	{
+		printf("[Token %d]: %s%s\e[0m, Type: \e[1;37m%s%s \e[0m\n", i++,
+		GREEN,head->value, GREEN,string(head->type));
+		head = head->next;
+	}
+}
+char	*string(en_status type)
 {
 	if (type == PIPE)
 		return ("PIPE");
@@ -63,24 +83,4 @@ char *string(en_status type)
 		return ("BUILTINS");
 	else
 		return ("CMD");
-}
-
-void print_lst_tokens(t_env_lst *head)
-{
-	int	i = 0;
-	while (head)
-	{
-		printf("[Token %d]: %s%s\e[0m, Type: \e[1;37m%s%s \e[0m\n", i++, GREEN,head->value, GREEN,string(head->type));
-		head = head->next;
-	}
-}
-
-void	ft_add_newtoken(t_env_lst **head, char *token, en_status state)
-{
-	t_env_lst	*new;
-
-	new = ft_newnode(token, state);
-	if (!new)
-		return ;
-	lstadd_back(head, new);
-}
+}*/

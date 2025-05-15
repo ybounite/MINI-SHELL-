@@ -3,30 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 08:36:19 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 16:05:58 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:23:01 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void	handler_sigint(int signum)
-{
-	(void)signum;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	exit(130);
-}
-
-void	hendle_sigquit(int signum)
-{
-	(void)signum;
-	exit(131);
-}
 
 void	wait_for_children(pid_t *pids, int cmd_count)
 {

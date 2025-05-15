@@ -3,68 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   start_shell.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/13 14:54:18 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:46:21 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-bool	singel_quote(char *str)
+bool	has_invalid_redirection_sequence(t_env_lst *list)
 {
-	int		i;
-	char	quotes;
-
-	i = 0;
-	while (str[i])
+	while (list)
 	{
-		if (isquotes(str[i]))
+		if (list->type == CMD && (ft_strchr(list->value, '<')
+				|| ft_strchr(list->value, '>')))
 		{
-			quotes = str[i++];
-			while (str[i] && str[i] != quotes)
-				i++;
-			if (str[i])
-				i++;
+			if (ft_strchr(list->value, '<'))
+				ft_error(HERE_DOCUMENT);
 			else
-				return (false);
+				ft_error(APPEND_REDIRECTION);
+			return (false);
 		}
-		else
-			i++;
+		list = list->next;
 	}
 	return (true);
 }
 
-void	remove_quotes(t_env_lst *list, t_env_lst **head)
-{
-	en_status	stats;
-	char		*str;
-
-	while (list)
-	{
-		if (is_quotes_thes_str(list->value) && singel_quote(list->value))
-			str = ft_remove_quotes(list->value);
-		else
-			str = list->value;
-		stats = get_token_type(list->value);
-		ft_add_newtoken(head, str, stats);
-		list = list->next;
-	}
-}
-
 int	handle_input_syntax(t_string *st_string)
 {
-	t_env_lst	*list;
-	t_env_lst	*head;
-
-	list = NULL;
-	if (handler_syntax_error(st_string->line))
-		return (g_exit_status = 2, 0);
+	t_env_lst (*list);
+	t_env_lst (*head);
+	(1) && (list = NULL), (head = NULL);
 	st_string->tokens = spliter(st_string->line);
 	if (!st_string->tokens)
 		return (false);
 	tokenize(st_string->tokens, &list);
+	if (!list)
+		return (true);
+	if (!has_invalid_redirection_sequence(list) || !check_syntax_errors(list))
+		return (ft_malloc(false, false), g_exit_status = 2, false);
 	data_struc()->head = list;
 	if (ft_isheredoc(list))
 		handler_heredoc(list);
@@ -74,15 +52,12 @@ int	handle_input_syntax(t_string *st_string)
 		return (g_exit_status = 1, false);
 	else
 		g_exit_status = 0;
-	// print_lst_tokens(list); // delet
-	head = NULL;
 	remove_quotes(list, &head);
-	// printf("\n%s<->      after remove quotes     <->\e[0m\n", YELLOW);
 	st_string->head = head;
 	execute_command(st_string);
-	// print_lst_tokens(head);
 	return (true);
 }
+/*printf("\n%s<->      after remove quotes     <->\e[0m\n", YELLOW);*/
 
 void	start_shell_session(t_string st_string)
 {
@@ -90,6 +65,11 @@ void	start_shell_session(t_string st_string)
 	{
 		data_struc()->is_error = 0;
 		st_string.line = get_line();
+		if (handler_syntax_error(st_string.line))
+		{
+			g_exit_status = 1;
+			continue ;
+		}
 		handle_input_syntax(&st_string);
 	}
 }

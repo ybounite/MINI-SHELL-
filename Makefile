@@ -58,6 +58,7 @@ SRC_PARS = $(PARSING_DIR)/minishell.c \
 		   $(PARSING_DIR)/spliter.c \
 		   $(PARSING_DIR)/heredoc.c \
 		   $(PARSING_DIR)/heredoc_utlis.c \
+		   $(PARSING_DIR)/heredoc_input.c \
 		   $(PARSING_DIR)/expand_heredoc.c \
 		   $(PARSING_DIR)/creatr_file_name.c \
 		   $(PARSING_DIR)/error_herdoc.c \
@@ -68,7 +69,10 @@ SRC_PARS = $(PARSING_DIR)/minishell.c \
 		   $(EXPAND_DIR)/expand_string_utils.c \
 		   $(EXPAND_DIR)/expand_string.c \
 		   $(EXPAND_DIR)/ft_add_expand_variable.c \
-		   $(PARSING_DIR)/spliter_utils.c 
+		   $(PARSING_DIR)/spliter_utils.c \
+		   $(PARSING_DIR)/remove_quotes.c \
+		   $(PARSING_DIR)/ft_puterror.c \
+		   $(PARSING_DIR)/data_struc.c
 
 # Combine all source files
 SRCS += $(SRC_PARS)

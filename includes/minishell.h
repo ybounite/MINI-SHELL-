@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/15 12:48:14 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:18:53 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,66 +123,62 @@ extern int						g_exit_status;
 /*                             syntax_error.c                                 */
 /* -------------------------------------------------------------------------- */
 void							ft_puterror(char error);
+char							*get_token_symbol(int type);
+void							ft_error(en_status type);
 bool							is_first_operation_pipe(char *str);
-bool							is_last_operation_pipe(char *str);
 int								ft_lenword(char *str);
-
 /* -------------------------------------------------------------------------- */
 /*                            handler_syntax_error.c                          */
 /* -------------------------------------------------------------------------- */
 bool							handler_syntax_error(char *line);
 int								lenqoutes(char *str, int *i);
 bool							check_syntax_errors(t_env_lst *tokens);
-void							ft_error(en_status type);
 bool							is_redirection(int type);
-char							*get_token_symbol(int type);
 bool							redirection_target_error(t_env_lst *curr);
-
-
 /* -------------------------------------------------------------------------- */
 /*                            ft_skip_whit_string.c                           */
 /* -------------------------------------------------------------------------- */
 void							skip_whiteword(char *str, int *i);
-char							ft_skip_whitword(char *str, int *index);
-char							ft_skip_whitquotes(char *str, int *index);
-char							ft_skip_whitoperator(char *str, int *index);
-int								skip_strqoutes(char *str, int *inedx, char quotes);
+int								skip_strqoutes(char *str, int *inedx,
+									char quotes);
+void							ft_skip_qutes(char *str, int *start, int *len);
 
 /* -------------------------------------------------------------------------- */
 /*                              expand_variables.c                            */
 /* -------------------------------------------------------------------------- */
-char							*expand_string(const char *str, bool *is_spliting);
-
-
+char							*expand_string(const char *str,
+									bool *is_spliting);
 /* -------------------------------------------------------------------------- */
 /*                              get_variable.c                                */
 /* -------------------------------------------------------------------------- */
 char							*get_variable_name(const char *str, int *i);
 char							*get_variable_value(char *var_name);
-
 /* -------------------------------------------------------------------------- */
-/*                              GLOBAL FUNCTIONS                              */
+/*                              data_struc.c                                  */
 /* -------------------------------------------------------------------------- */
-
 struct s_string					*data_struc(void);
-
 /* -------------------------------------------------------------------------- */
 /*                              MEMORY MANAGEMENT                             */
 /* -------------------------------------------------------------------------- */
 void							free_list(t_env_lst *head);
-void							ft_free_split(char **split);
 
 /* -------------------------------------------------------------------------- */
-/*                                SIGNAL HANDLING                             */
+/*                                 manage_signal.c                            */
 /* -------------------------------------------------------------------------- */
-
 void							assign_signals_handler(void);
-void							setup_signals(void);
 void							handler(int signum);
-void							set_signals_for_execution(void);
-void							set_signals_for_heredoc(void);
-void							reset_signals(void);
-void							handler_heredoc_sig(int signum);
+void							set_signals_for_heredoc(int va_signal);
+void							hendle_sigquit(int signum);
+void							handler_sigint(int signum);
+
+/* -------------------------------------------------------------------------- */
+/*                                 remove_quotes.c                             */
+/* -------------------------------------------------------------------------- */
+bool							singel_quote(char *str);
+void							remove_quotes(t_env_lst *list, t_env_lst **head);
+
+
+// void							set_signals_for_execution(void);
 
 /* -------------------------------------------------------------------------- */
 /*                                STRING UTILITIES                            */
@@ -214,9 +210,14 @@ char							*get_line(void);
 /* -------------------------------------------------------------------------- */
 char							**spliter(char *line);
 int								ft_lenoperator(char *str, int *index);
-void							skip_whiteword(char *str, int *i);
+void							handle_word(char *line, int *i, char **spliter,
+									int *index);
+void							handle_operator(char *line, int *i, char **spliter,
+									int *index);
+
+void							skip_whiteword(char *str, int *i);//
 /* -------------------------------------------------------------------------- */
-/*                              spliter_utils.c                                      */
+/*                              spliter_utils.c                               */
 /* -------------------------------------------------------------------------- */
 void							ft_count_whitchar(char *line, int *index,
 								int *count, char c);
@@ -264,32 +265,28 @@ void							process_quoted_string_with_expansion(t_env_lst **list,
 									char *str, int *i, en_status state);
 
 /* -------------------------------------------------------------------------- */
-/*                              lexer_dollar_handlers.c                       */
-/* -------------------------------------------------------------------------- */
-
-
-
-/* -------------------------------------------------------------------------- */
 /*                              heredoc.c 									  */
 /* -------------------------------------------------------------------------- */
 int								handler_heredoc(t_env_lst *list);
 int								handle_forked_process(char *delimiter, bool dolar);
-int								read_and_process_heredoc_input(char *delimiter, bool expand);
+int								read_and_process_heredoc_input(char *delimiter,
+									bool expand);
 char							*ft_expand(char *line);
 bool							is_heredoc(t_env_lst *list);
-
-//
+/* -------------------------------------------------------------------------- */
+/*                              heredoc_utlis.c						     	  */
+/* -------------------------------------------------------------------------- */
 char							*ft_remove_quotes(char *str);
 bool							is_quotes_thes_str(char *str);
+char							*find_delimiter(t_env_lst *list, int *is_expand);
+bool							ft_isheredoc(t_env_lst *list);
 
 /* -------------------------------------------------------------------------- */
-/*                              heredoc_utlis.c								  */
+/*                              creatr_file_name.c								  */
 /* -------------------------------------------------------------------------- */
 int								open_heredoc(void);
-bool							ft_isheredoc(t_env_lst *list);
-char							*find_delimiter(t_env_lst *list,
-									int *is_expand);
-bool							ft_clculate_heredoc(t_env_lst *list);
+char							*creatr_file_name(int fd);
+char							*create_temp_file(void);
 
 /* -------------------------------------------------------------------------- */
 /*                              expand_heredoc.c       	                      */
@@ -307,6 +304,15 @@ bool							ft_clculate_heredoc(t_env_lst	*list);
 char							*creatr_file_name(int fd);
 char							*create_temp_file();
 int								open_heredoc();
+/* -------------------------------------------------------------------------- */
+/*                              heredoc_input.c 	                          */
+/* -------------------------------------------------------------------------- */
+int								read_and_process_heredoc_input(char *delimiter,
+									bool expand);
+void							handle_child_exit_status(int status);
+int								handle_forked_process(char *delimiter,
+									bool dolar);
+
 
 /* -------------------------------------------------------------------------- */
 /*                              destroy_allocation.c 						  */

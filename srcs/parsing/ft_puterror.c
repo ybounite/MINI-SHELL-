@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gitline.c                                          :+:      :+:    :+:   */
+/*   ft_puterror.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/08 19:41:09 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/15 15:45:50 by ybounite         ###   ########.fr       */
+/*   Created: 2025/05/15 15:41:25 by ybounite          #+#    #+#             */
+/*   Updated: 2025/05/15 15:41:52 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*get_line(void)
+void	ft_puterror(char error)
 {
-	char	*line;
+	ft_putstr_fd("minishell: parse error near `", 2);
+	if (error == '\n')
+		ft_putstr_fd("newline", 2);
+	else
+		write(2, &error, 1);
+	write(2, "\'\n", 2);
+	data_struc()->is_error = 1;
+}
 
-	line = readline(MINISPELL);
-	if (!line)
-	{
-		printf("exit\n");
-		ft_malloc(0, 0);
-		exit(g_exit_status);
-	}
-	if (line)
-		add_history(line);
-	return (line);
+void	ft_error(en_status type)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	ft_putstr_fd(get_token_symbol(type), 2);
+	ft_putendl_fd("'", 2);
 }

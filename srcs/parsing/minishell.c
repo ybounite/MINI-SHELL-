@@ -3,24 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:45:08 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/13 14:55:40 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:10:42 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-
 int	g_exit_status = 0;
-
-struct s_string	*data_struc(void)
-{
-	static struct s_string	data_struc = {0};
-
-	return (&data_struc);
-}
 
 char	**duplicate_envp(char **envp)
 {

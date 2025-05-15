@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 15:32:42 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/15 14:50:15 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:14:58 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ char	*ft_expand(char *line)
 
 bool	is_invalid_heredoc_syntax(t_env_lst *list)
 {
-	if (!list->next || list->next->type != CMD)
+	if (!list->next || (list->next->type != CMD
+			&& list->next->type != DOUBLE_QUOTE
+			&& list->next->type != SINGLE_QUOTE))
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 		if (!list->next)

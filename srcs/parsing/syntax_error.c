@@ -3,24 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 18:24:47 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/13 15:32:22 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:41:52 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	ft_puterror(char error)
+int	lenqoutes(char *str, int *i)
 {
-	ft_putstr_fd("minishell: parse error near `", 2);
-	if (error == '\n')
-		ft_putstr_fd("newline", 2);
-	else
-		write(2, &error, 1);
-	write(2, "\'\n", 2);
-	data_struc()->is_error = 1;
+	char	quotes;
+	int		counter;
+	int		start;
+
+	counter = 0;
+	if (*i - 1 > 0 && find_space(str[*i - 1]))
+		counter++;
+	quotes = str[(*i)++];
+	start = *i;
+	counter += skip_strqoutes(str, &start, quotes) + 1;
+	*i = start;
+	return (counter);
 }
 
 bool	is_first_operation_pipe(char *str)
@@ -34,61 +39,36 @@ bool	is_first_operation_pipe(char *str)
 	return (str[i] == '|');
 }
 
-bool	is_last_operation_pipe(char *str)
+char	*get_token_symbol(int type)
 {
-    int		i;
-    char	last_token_type;
-    bool	has_next_token;
-    
-    (1) && (i = 0), (last_token_type = 0), (has_next_token = false);
-    while (str[i])
-    {
-        ft_skip_whitespace(str, &i);
-        if (!str[i])
-            break;
-        if (isquotes(str[i]))
-            last_token_type = ft_skip_whitquotes(str, &i);
-        else if (str[i] == PIPE)
-        {
-            i++;
-            last_token_type = '|';
-            
-            // Check if there's any non-whitespace token after the pipe
-            int temp_i = i;
-            ft_skip_whitespace(str, &temp_i);
-            has_next_token = (str[temp_i] != '\0');
-        }
-        else if (is_operator(str[i]))
-            last_token_type = ft_skip_whitoperator(str, &i);
-        else
-            last_token_type = ft_skip_whitword(str, &i);
-    }
-    
-    // Only error if pipe is at the end with nothing following it
-    if (last_token_type == '|' && !has_next_token)
-        ft_puterror('|');
-    if (last_token_type == 'O')
-        ft_puterror('\n');
-        
-    return ((last_token_type == '|' && !has_next_token) || last_token_type == 'O');
+	if (type == INPUT_REDIRECTION)
+		return ("<");
+	else if (type == OUTPUT_REDIRECTION)
+		return (">");
+	else if (type == APPEND_REDIRECTION)
+		return (">>");
+	else if (type == HERE_DOCUMENT)
+		return ("<<");
+	else if (type == PIPE)
+		return ("|");
+	else
+		return ("newline");
 }
 
 int	ft_lenword(char *str)
 {
-	int(quote_len), (len), (i);
+	int (len), (i);
 	(1) && (len = 0), (i = 0);
 	while (str[i])
 	{
 		ft_skip_whitespace(str, &i);
 		if (str[i] && isquotes(str[i]))
 		{
-			quote_len = lenqoutes(str, &i);
-			if (quote_len < 0)
+			if (lenqoutes(str, &i) < 0)
 				return (-1);
-			len += quote_len;
 		}
 		else if (str[i] && is_operator(str[i]))
-			len += lenoperator(str, &i);
+			i++;
 		else
 		{
 			while (str[i] && !is_operator(str[i]) && !isquotes(str[i])
@@ -100,8 +80,6 @@ int	ft_lenword(char *str)
 				len++;
 			}
 		}
-		if (len < 0)
-			break ;
 	}
 	return (len);
 }

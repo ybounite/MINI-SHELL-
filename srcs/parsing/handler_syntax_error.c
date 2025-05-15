@@ -6,27 +6,11 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 18:24:12 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/15 13:46:07 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:40:45 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-int	lenqoutes(char *str, int *i)
-{
-	char	quotes;
-	int		counter;
-	int		start;
-
-	counter = 0;
-	if (*i - 1 > 0 && find_space(str[*i - 1]))
-		counter++;
-	quotes = str[(*i)++];
-	start = *i;
-	counter += skip_strqoutes(str, &start, quotes) + 1;
-	*i = start;
-	return (counter);
-}
 
 bool	redirection_target_error(t_env_lst *curr)
 {
@@ -41,6 +25,12 @@ bool	is_redirection(int type)
 {
 	return (type == INPUT_REDIRECTION || type == OUTPUT_REDIRECTION
 		|| type == APPEND_REDIRECTION);
+}
+
+bool	is_invalid_cmd_type(t_env_lst *token)
+{
+	return (token->type != CMD && token->type != HERE_DOCUMENT
+		&& token->type != DOUBLE_QUOTE && token->type != SINGLE_QUOTE);
 }
 
 bool	check_syntax_errors(t_env_lst *tokens)
@@ -63,8 +53,7 @@ bool	check_syntax_errors(t_env_lst *tokens)
 				return (ft_error(PIPE), false);
 		}
 		if (is_redirection(curr->type) && (!curr->next
-				|| (curr->next->type != CMD
-					&& curr->next->type != HERE_DOCUMENT)))
+				|| is_invalid_cmd_type(curr->next)))
 			return (redirection_target_error(curr));
 		prev = curr;
 		curr = curr->next;
