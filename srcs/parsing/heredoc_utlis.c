@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:36:52 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/10 10:09:30 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:20:33 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,30 +39,18 @@ bool	is_quotes_thes_str(char *str)
 
 int	ft_lenofwords(char *str)
 {
-	char	qoutes;
-	int		len;
-	int		start;
-
-	len = 0;
-	start = 0;
+	int (len), (start);
+	(1) && (len = 0), (start = 0);
 	while (str[start] && str[start] != SPACE)
 	{
 		if (isquotes(str[start]))
-		{
-			qoutes = str[start++];
-			while (str[start] && str[start] != qoutes)
-			{
-				start++;
-				len++;
-			}
-			start++;
-		}
+			ft_skip_qutes(str, &start, &len);
 		else
 		{
 			while (str[start] && !isquotes(str[start]) && str[start] != SPACE)
 			{
 				start++;
-				len++;	
+				len++;
 			}
 		}
 	}
@@ -76,7 +64,7 @@ char	*ft_remove_quotes(char *str)
 	int		index;
 	int		i;
 
-	(1) && (i = 0) , (index = 0);
+	(1) && (i = 0), (index = 0);
 	ptr = ft_malloc(ft_lenofwords(str) + 1, 1);
 	while (str[i] && index < ft_lenofwords(str))
 	{
@@ -101,6 +89,7 @@ char	*ft_remove_quotes(char *str)
 char	*find_delimiter(t_env_lst *list, int *is_expand)
 {
 	char	*delimiter;
+
 	if (!is_quotes_thes_str(list->value))
 		*is_expand = 1;
 	delimiter = ft_remove_quotes(list->value);
