@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/15 09:43:34 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/15 12:48:14 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,12 @@ int								ft_lenword(char *str);
 /* -------------------------------------------------------------------------- */
 bool							handler_syntax_error(char *line);
 int								lenqoutes(char *str, int *i);
-int								lenoperator(char *str, int *i);
+bool							check_syntax_errors(t_env_lst *tokens);
+void							ft_error(en_status type);
+bool							is_redirection(int type);
+char							*get_token_symbol(int type);
+bool							redirection_target_error(t_env_lst *curr);
+
 
 /* -------------------------------------------------------------------------- */
 /*                            ft_skip_whit_string.c                           */
@@ -229,10 +234,12 @@ void							lstadd_back(t_env_lst **head, t_env_lst *new);
 void							ft_add_newtoken(t_env_lst **head, char *token,
 									en_status state);
 void							print_lst_tokens(t_env_lst *head);
-
-/* Command Processing */
+/* -------------------------------------------------------------------------- */
+/*                              start_shell.c                                */
+/* -------------------------------------------------------------------------- */
 int								handle_input_syntax(t_string *st_string);
 void							start_shell_session(t_string input);
+bool							has_invalid_redirection_sequence(t_env_lst *list);
 
 /* -------------------------------------------------------------------------- */
 /*                              lexer_handlers_word.c                         */
@@ -322,8 +329,8 @@ char							**git_array(t_env_lst **list);
 /* -------------------------------------------------------------------------- */
 int								redirections(char **args);
 int								handle_output_redirection(char **args, int *i);
-char							*get_env_value(char *var_name,
-									t_string *st_string);
+// char							*get_env_value(char *var_name,
+// 									t_string *st_string);
 
 /* -------------------------------------------------------------------------- */
 /*                              VARIABLE EXPANSION                            */
@@ -334,7 +341,53 @@ char							*ft_strjoin_char(char *str, char c);
 /* ************************************************************************** */
 /*                               BUILTIN COMMANDS                              */
 /* ************************************************************************** */
-void							builtin_echo(t_env_lst *list);
+/* -------------------------------------------------------------------------- */
+/*                              cbuiltin_exec.c                               */
+/* -------------------------------------------------------------------------- */
+void							builtin_echo(char **args, t_string *st_string);
+char							*get_env_value(char *var_name, t_string *st_string);
+int								is_n_flag(char *s);
+
+/* -------------------------------------------------------------------------- */
+/*                             pipeline.c                                     */
+/* -------------------------------------------------------------------------- */
+void							setup_child_pipe(int **child_pipe, int *pipe_fd, int i, int cmd_count);
+void							execute_pipeline(t_string *st_string);
+
+
+
+/* -------------------------------------------------------------------------- */
+/*                              pipeline_commands.c                           */
+/* -------------------------------------------------------------------------- */
+void						process_command(t_process_args *args);
+t_pipeline_data				*init_pipeline_data(t_string *st_string);
+int							handle_directory_error(char **args);
+int	handle_directory_error(char **args);
+/* -------------------------------------------------------------------------- */
+/*                             pipeline_utils2.c                              */
+/* -------------------------------------------------------------------------- */
+void						wait_for_children(pid_t *pids, int cmd_count);
+void						handler_sigint(int signum);
+void						manage_child_process(t_string *st_string, int prev_fd,
+								int *child_pipe, char **args);
+void						handle_pipe_fds(int *pipe_fd, int *prev_fd, int i,
+								int cmd_count);
+/* -------------------------------------------------------------------------- */
+/*                             pipeline_utils.c                              */
+/* -------------------------------------------------------------------------- */
+void						setup_command_pipe(int *pipe_fd, t_env_lst **list,
+								int i, int cmd_count);
+void						update_exit_status(int status);
+int							setup_pipe(int pipe_fd[2], t_env_lst *list);
+void						handle_parent_process(int *prev_fd, int *pipe_fd,
+								pid_t pid, int *status);
+//  child_process.c 
+int	handle_permission_error(char **args);
+int	handle_no_file_error(char **args);
+void	setup_redirections(int prev_fd, int *pipe_fd);
+
+int	handle_cmd_not_found(char **args);
+
 void							builtin_cd(char **args, t_string *st_string);
 void							builtin_pwd(void);
 void							builtin_exit(char **args, t_string *st_string);
@@ -357,5 +410,68 @@ void							handle_parent_process(int *prev_fd,
 									int *pipe_fd, pid_t pid, int *status);
 void							update_exit_status(int status);
 char							*collapse_spaces(const char *str);
+/* -------------------------------------------------------------------------- */
+/*                              command_handling.c                          */
+/* -------------------------------------------------------------------------- */
+int								handle_direct_path(char **args);
+void							handle_command_path(char **args,
+									t_string *st_string);
+
+
+/* -------------------------------------------------------------------------- */
+/*                              cd.c        				                  */
+/* -------------------------------------------------------------------------- */
+bool	size_cd(char **args);
+void	builtin_cd(char **args, t_string *st_string);
+/* -------------------------------------------------------------------------- */
+/*                              cd_utils.c        				              */
+/* -------------------------------------------------------------------------- */
+void	update_oldpwd(char *old_pwd, t_string *st_string);
+void	update_pwd(t_string *st_string);
+void	update_pwd_env(t_string *st_string);
+char	*handle_home(void);
+char	*get_oldpwd(t_string *st_string);
+/* -------------------------------------------------------------------------- */
+/*                              cd_utils.c        				              */
+/* -------------------------------------------------------------------------- */
+int	env_len(t_string *st_string);
+int	update_existing_entry(char *key, int key_len, char *entry,
+	t_string *st_string);
+void	add_new_entry(char *entry, t_string *st_string);
+void	builtin_export(char **args, t_string *st_string);
+/* -------------------------------------------------------------------------- */
+/*                              export_utils.c       				          */
+/* -------------------------------------------------------------------------- */
+char	**create_env_copy(t_string *st_string);
+void	print_env_entry(char *entry);
+void	print_export(t_string *st_string);
+char	*extract_key(char *arg, int *key_len);
+char	*create_entry(char *arg, int key_len);
+
+/* -------------------------------------------------------------------------- */
+/*                              export_utils2.c       				          */
+/* -------------------------------------------------------------------------- */
+void	add_or_update(char *arg, t_string *st_string);
+/* -------------------------------------------------------------------------- */
+/*                             sort_env.c            				          */
+/* -------------------------------------------------------------------------- */
+void	sort_env(char **env);
+/* -------------------------------------------------------------------------- */
+/*                             ft_add_expand_variable.c           	          */
+/* -------------------------------------------------------------------------- */
+bool	is_equal(char *str);
+void	ft_add_expand_variable(t_env_lst **node_ptr, char *variable);
+/* -------------------------------------------------------------------------- */
+/*                             expand_string.c            	                  */
+/* -------------------------------------------------------------------------- */
+char	*expand_string(const char *str, bool *is_spliting);
+/* -------------------------------------------------------------------------- */
+/*                             expand_string_utils.c           	              */
+/* -------------------------------------------------------------------------- */
+char	*handle_single_quote(char *result, const char *str, int *i, bool *in_sq);
+char	*handle_double_quote(char *result, const char *str, int *i, bool *in_dq);
+
+
+
 
 #endif
