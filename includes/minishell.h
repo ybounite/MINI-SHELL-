@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/14 13:11:17 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/15 09:37:24 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,32 +117,58 @@ typedef struct s_expand_data
 	int							*i;
 	char						*result;
 }								t_expand_data;
+/* -------------------------------------------------------------------------- */
+/*                             syntax_error.c                                 */
+/* -------------------------------------------------------------------------- */
+void							ft_puterror(char error);
+bool							is_first_operation_pipe(char *str);
+bool							is_last_operation_pipe(char *str);
+int								ft_lenword(char *str);
 
-/* ************************************************************************** */
-/*                               GLOBAL VARIABLE                              */
-/* ************************************************************************** */
-extern int						g_exit_status;
+/* -------------------------------------------------------------------------- */
+/*                            handler_syntax_error.c                          */
+/* -------------------------------------------------------------------------- */
+bool							handler_syntax_error(char *line);
+int								lenqoutes(char *str, int *i);
+int								lenoperator(char *str, int *i);
 
-/* ************************************************************************** */
-/*                               GLOBAL FUNCTIONS                             */
-/* ************************************************************************** */
+/* -------------------------------------------------------------------------- */
+/*                            ft_skip_whit_string.c                           */
+/* -------------------------------------------------------------------------- */
+void							skip_whiteword(char *str, int *i);
+char							ft_skip_whitword(char *str, int *index);
+char							ft_skip_whitquotes(char *str, int *index);
+char							ft_skip_whitoperator(char *str, int *index);
+int								skip_strqoutes(char *str, int *inedx, char quotes);
+
+/* -------------------------------------------------------------------------- */
+/*                              expand_variables.c                            */
+/* -------------------------------------------------------------------------- */
+char							*expand_string(const char *str, bool *is_spliting);
+
+
+/* -------------------------------------------------------------------------- */
+/*                              get_variable.c                                */
+/* -------------------------------------------------------------------------- */
+char							*get_variable_name(const char *str, int *i);
+char							*get_variable_value(char *var_name);
+
+/* -------------------------------------------------------------------------- */
+/*                              GLOBAL FUNCTIONS                              */
+/* -------------------------------------------------------------------------- */
+
 struct s_string					*data_struc(void);
-char							*get_line(void);
-int								handle_input_syntax(t_string *st_string);
-void							start_shell_session(t_string input);
 
-/* ************************************************************************** */
+/* -------------------------------------------------------------------------- */
 /*                              MEMORY MANAGEMENT                             */
-/* ************************************************************************** */
-void							*ft_malloc(size_t size, short option);
-void							memory_released(t_list **head);
+/* -------------------------------------------------------------------------- */
 void							free_list(t_env_lst *head);
 void							ft_free_split(char **split);
-void							ft_destroylist(t_env_lst *list);
 
-/* ************************************************************************** */
-/*                               SIGNAL HANDLING                              */
-/* ************************************************************************** */
+/* -------------------------------------------------------------------------- */
+/*                                SIGNAL HANDLING                             */
+/* -------------------------------------------------------------------------- */
+
 void							assign_signals_handler(void);
 void							setup_signals(void);
 void							handler(int signum);
@@ -151,10 +177,11 @@ void							set_signals_for_heredoc(void);
 void							reset_signals(void);
 void							handler_heredoc_sig(int signum);
 
-/* ************************************************************************** */
-/*                               STRING UTILITIES                             */
-/* ************************************************************************** */
-char							*ft_strjoin_char(char *str, char c);
+/* -------------------------------------------------------------------------- */
+/*                                STRING UTILITIES                            */
+/* -------------------------------------------------------------------------- */
+
+char							*ft_strjoin_free(char *s1, char *s2);
 bool							is_operator(char c);
 bool							find_space(char c);
 bool							isquotes(char c);
@@ -163,92 +190,123 @@ void							ft_skip_whitespace(char *str, int *index);
 int								skip_strqoutes(char *str, int *inedx,
 									char quotes);
 int								ft_lenword(char *str);
-char							*ft_remove_quotes(char *str);
-bool							is_quotes_thes_str(char *str);
-char							*collapse_spaces(const char *str);
+int								is_valid_key(char *s);
 
-/* ************************************************************************** */
-/*                               SYNTAX CHECKING                              */
-/* ************************************************************************** */
-void							ft_puterror(char error);
-bool							is_first_operation_pipe(char *str);
-bool							is_last_operation_pipe(char *str);
-bool							handler_syntax_error(char *line);
-int								lenqoutes(char *str, int *i);
-int								lenoperator(char *str, int *i);
+/* -------------------------------------------------------------------------- */
+/*                               allocate_data.c                              */
+/* -------------------------------------------------------------------------- */
+void							*ft_malloc(size_t size, short option);
+void							memory_released(t_list **head);
 
-/* ************************************************************************** */
-/*                                 LEXER/PARSER                               */
-/* ************************************************************************** */
-/* Splitter Functions */
+/* -------------------------------------------------------------------------- */
+/*                              get_line.c                                    */
+/* -------------------------------------------------------------------------- */
+char							*get_line(void);
+/* -------------------------------------------------------------------------- */
+/*                              spliter.c                                     */
+/* -------------------------------------------------------------------------- */
 char							**spliter(char *line);
 int								ft_lenoperator(char *str, int *index);
 void							skip_whiteword(char *str, int *i);
+/* -------------------------------------------------------------------------- */
+/*                              spliter_utils.c                                      */
+/* -------------------------------------------------------------------------- */
+void							ft_count_whitchar(char *line, int *index,
+								int *count, char c);
 int								lentcommand(char *line);
-char							ft_skip_whitword(char *str, int *index);
-char							ft_skip_whitquotes(char *str, int *index);
-char							ft_skip_whitoperator(char *str, int *index);
-
-/* Token Functions */
+/* -------------------------------------------------------------------------- */
+/*                              token_utils.c                                 */
+/* -------------------------------------------------------------------------- */
 void							tokenize(char **tokins, t_env_lst **list);
 en_status						get_redirection_type_from_str(char *str);
 en_status						get_token_type(char *str);
+
+/* Token Management */
 t_env_lst						*ft_newnode(char *cmd, en_status state);
 void							lstadd_back(t_env_lst **head, t_env_lst *new);
 void							ft_add_newtoken(t_env_lst **head, char *token,
 									en_status state);
 void							print_lst_tokens(t_env_lst *head);
 
-/* Handler Functions */
+/* Command Processing */
+int								handle_input_syntax(t_string *st_string);
+void							start_shell_session(t_string input);
+
+/* -------------------------------------------------------------------------- */
+/*                              lexer_handlers_word.c                         */
+/* -------------------------------------------------------------------------- */
 int								lentword(char *str, int start);
 void							handler_words(t_env_lst **list, char *str,
 									int *i, en_status state);
+
+/* -------------------------------------------------------------------------- */
+/*                              lexer_handler_qoutes.c                        */
+/* -------------------------------------------------------------------------- */
 void							handler_operator(t_env_lst **list, char *str,
 									int *i, en_status state);
+
+/* -------------------------------------------------------------------------- */
+/*                              lexer_handler_qoutes.c                        */
+/* -------------------------------------------------------------------------- */
 int								lenofwords_qoutes(char *str, int start);
 void							handler_qoutes(t_env_lst **list, char *str,
 									int *i, en_status state);
 void							process_quoted_string_with_expansion(t_env_lst **list,
 									char *str, int *i, en_status state);
 
-/* ************************************************************************** */
-/*                               VARIABLE EXPANSION                           */
-/* ************************************************************************** */
-char							*expand_string(const char *str,
-									bool *is_spliting);
-char							*get_variable_name(const char *str, int *i);
-char							*get_variable_value(char *var_name);
-int								expand_variables(t_env_lst **list);
-char							*get_env_value(char *var_name,
-									t_string *st_string);
-int								is_valid_key(char *s);
+/* -------------------------------------------------------------------------- */
+/*                              lexer_dollar_handlers.c                       */
+/* -------------------------------------------------------------------------- */
 
-/* ************************************************************************** */
-/*                                  HEREDOC                                   */
-/* ************************************************************************** */
+
+
+/* -------------------------------------------------------------------------- */
+/*                              heredoc.c 									  */
+/* -------------------------------------------------------------------------- */
 int								handler_heredoc(t_env_lst *list);
-int								handle_forked_process(char *delimiter,
-									bool dolar);
-int								read_and_process_heredoc_input(char *delimiter,
-									bool expand);
+int								handle_forked_process(char *delimiter, bool dolar);
+int								read_and_process_heredoc_input(char *delimiter, bool expand);
 char							*ft_expand(char *line);
 bool							is_heredoc(t_env_lst *list);
 
-/* Heredoc Utils */
+//
+char							*ft_remove_quotes(char *str);
+bool							is_quotes_thes_str(char *str);
+
+/* -------------------------------------------------------------------------- */
+/*                              heredoc_utlis.c								  */
+/* -------------------------------------------------------------------------- */
 int								open_heredoc(void);
 bool							ft_isheredoc(t_env_lst *list);
 char							*find_delimiter(t_env_lst *list,
 									int *is_expand);
 bool							ft_clculate_heredoc(t_env_lst *list);
-char							*expand_heredoc(char *str);
-void							error_herdoc(char *delimiter);
-char							*creatr_file_name(int fd);
-char							*create_temp_file(void);
 
-/* ************************************************************************** */
-/*                                  EXECUTION                                 */
-/* ************************************************************************** */
-/* Command Execution */
+/* -------------------------------------------------------------------------- */
+/*                              expand_heredoc.c       	                      */
+/* -------------------------------------------------------------------------- */
+char							*expand_heredoc(char *str);
+/* -------------------------------------------------------------------------- */
+/*                               error_herdoc.c    	                          */
+/* -------------------------------------------------------------------------- */
+void							error_herdoc(char *delimiter);
+bool							ft_clculate_heredoc(t_env_lst	*list);
+
+/* -------------------------------------------------------------------------- */
+/*                              creatr_file_name.c  	                      */
+/* -------------------------------------------------------------------------- */
+char							*creatr_file_name(int fd);
+char							*create_temp_file();
+int								open_heredoc();
+
+/* -------------------------------------------------------------------------- */
+/*                              destroy_allocation.c 						  */
+/* -------------------------------------------------------------------------- */
+void							ft_destroylist(t_env_lst *list);
+
+/* -------------------------------------------------------------------------- */
+/*                               EXECUTOR FUNCTIONS                           */
+/* -------------------------------------------------------------------------- */
 void							execute_command(t_string *st_string);
 void							execute_pipeline(t_string *st_string);
 int								is_builtin(char *cmd);
@@ -257,42 +315,25 @@ void							execute_builtin(char **args,
 int								has_pipe(t_env_lst *list);
 char							**git_array(t_env_lst **list);
 
-/* Redirection Handling */
+/* -------------------------------------------------------------------------- */
+/*                              REDIRECTION HANDLING                          */
+/* -------------------------------------------------------------------------- */
 int								redirections(char **args);
 int								handle_output_redirection(char **args, int *i);
-
-/* Pipeline Utilities */
-t_pipeline_data					*init_pipeline_data(t_string *st_string);
-void							process_command(t_process_args *args);
-int								setup_pipe(int pipe_fd[2], t_env_lst *list);
-int								create_process(pid_t *pid);
-void							handle_parent_process(int *prev_fd,
-									int *pipe_fd, pid_t pid, int *status);
-void							update_exit_status(int status);
-void							wait_for_children(pid_t *pids, int cmd_count);
-void							setup_command_pipe(int *pipe_fd,
-									t_env_lst **list, int i, int cmd_count);
-void							manage_child_process(t_string *st_string,
-									int prev_fd, int *child_pipe, char **args);
-void							handle_pipe_fds(int *pipe_fd, int *prev_fd,
-									int i, int cmd_count);
-void							setup_child_pipe(int **child_pipe, int *pipe_fd,
-									int i, int cmd_count);
-
-/* Child Process Handling */
-void							handle_child_process(char **args, int prev_fd,
-									int *pipe_fd, t_string *st_string);
-void							handle_command_path(char **args,
+char							*get_env_value(char *var_name,
 									t_string *st_string);
-char							*find_path(char *cmd, char **envp);
-int								handle_directory_error(char **args);
-int								handle_permission_error(char **args);
-int								handle_no_file_error(char **args);
+
+/* -------------------------------------------------------------------------- */
+/*                              VARIABLE EXPANSION                            */
+/* -------------------------------------------------------------------------- */
+void							expand_variables(t_env_lst *list);
+
+char							*ft_strjoin_char(char *str, char c);
 
 /* ************************************************************************** */
-/*                               BUILTIN COMMANDS                             */
+/*                               BUILTIN COMMANDS                              */
 /* ************************************************************************** */
-void							builtin_echo(char **args, t_string *st_string);
+void							builtin_echo(t_env_lst *list);
 void							builtin_cd(char **args, t_string *st_string);
 void							builtin_pwd(void);
 void							builtin_exit(char **args, t_string *st_string);
@@ -301,36 +342,19 @@ void							builtin_export(char **args,
 									t_string *st_string);
 void							builtin_env(t_string *st_string);
 
-/* CD Utilities */
-char							*get_oldpwd(t_string *st_string);
-void							update_oldpwd(char *old_pwd,
-									t_string *st_string);
-void							update_pwd(t_string *st_string);
-void							update_pwd_env(t_string *st_string);
-char							*handle_home(void);
+void							handle_child_process(char **args, int prev_fd,
+									int *pipe_fd, t_string *st_string);
+char							*find_path(char *cmd, char **envp);
 
-/* Export Utilities */
-char							**create_env_copy(t_string *st_string);
-void							print_env_entry(char *entry);
-void							print_export(t_string *st_string);
-char							*extract_key(char *arg, int *key_len);
-char							*create_entry(char *arg, int key_len);
-void							sort_env(char **env);
-int								env_len(t_string *st_string);
-void							add_or_update(char *arg, t_string *st_string);
-int								update_existing_entry(char *key, int key_len,
-									char *entry, t_string *st_string);
-void							add_new_entry(char *entry, t_string *st_string);
+/* ************************************************************************** */
+/*                              PIPELINE_UTILS                              */
+/* ************************************************************************** */
 
-char							*handle_single_quote(char *result,
-									const char *str, int *i, bool *in_sq);
-char							*handle_double_quote(char *result,
-									const char *str, int *i, bool *in_dq);
-char							*expand_string(const char *str,
-									bool *is_spliting);
-int								handle_direct_path(char **args);
-int								handle_cmd_not_found(char **args);
-bool							is_equal(char *str);
-void							ft_add_expand_variable(t_env_lst **node_ptr,
-									char *variable);
+int								setup_pipe(int pipe_fd[2], t_env_lst *list);
+int								create_process(pid_t *pid);
+void							handle_parent_process(int *prev_fd,
+									int *pipe_fd, pid_t pid, int *status);
+void							update_exit_status(int status);
+char							*collapse_spaces(const char *str);
+
 #endif
