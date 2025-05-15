@@ -6,30 +6,31 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:13:26 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/15 17:13:41 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/15 18:09:45 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
 
 static bool	is_quote(char c)
 {
 	return (c == '\'' || c == '"');
 }
 
-static int	skip_word(const char *s, char sep)
+static int	skip_word(const char *str, char sep)
 {
-	int i = 0;
-	char quote = 0;
+	int		i;
+	char	quote;
 
-	while (s[i] && (s[i] != sep || quote))
+	i = 0;
+	quote = 0;
+	while (str[i] && (str[i] != sep || quote))
 	{
-		if (is_quote(s[i]))
+		if (is_quote(str[i]))
 		{
 			if (!quote)
-				quote = s[i];
-			else if (quote == s[i])
+				quote = str[i];
+			else if (quote == str[i])
 				quote = 0;
 		}
 		i++;
@@ -39,8 +40,8 @@ static int	skip_word(const char *s, char sep)
 
 static int	count_words(const char *s, char sep)
 {
-	int count = 0, i = 0, len;
-
+	int (count), (i), (len);
+	(1) && (count = 0), (i = 0), (len = 0);
 	while (s[i])
 	{
 		while (s[i] && s[i] == sep)
@@ -57,32 +58,42 @@ static int	count_words(const char *s, char sep)
 
 static char	*copy_word(const char *s, int len)
 {
-	char *res = ft_malloc(len + 1, 1);
-	for (int i = 0; i < len; i++)
+	char	*res;
+	int		i;
+
+	i = 0;
+	res = ft_malloc(len + 1, 1);
+	while (i < len)
+	{
 		res[i] = s[i];
+		i++;
+	}
 	res[len] = '\0';
 	return (res);
 }
 
-char	**ft_split_quotes(const char *s, char sep)
+char	**ft_split_quotes(const char *str, char sep)
 {
-	int i = 0, w = 0, len;
-	char **res;
+	int		i;
+	int		len;
+	int		index;
+	char	**res;
 
-	if (!s)
+	(1) && (i = 0), (index = 0);
+	if (!str)
 		return (NULL);
-	res = ft_malloc(sizeof(char *) * (count_words(s, sep) + 1), 1);
-	while (s[i])
+	res = ft_malloc(sizeof(char *) * (count_words(str, sep) + 1), 1);
+	while (str[i])
 	{
-		while (s[i] && s[i] == sep)
+		while (str[i] && str[i] == sep)
 			i++;
-		if (s[i])
+		if (str[i])
 		{
-			len = skip_word(&s[i], sep);
-			res[w++] = copy_word(&s[i], len);
+			len = skip_word(&str[i], sep);
+			res[index++] = copy_word(&str[i], len);
 			i += len;
 		}
 	}
-	res[w] = NULL;
+	res[index] = NULL;
 	return (res);
 }
