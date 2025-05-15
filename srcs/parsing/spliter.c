@@ -3,59 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   spliter.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:18:12 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/13 15:21:15 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:25:55 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	lentcommand(char *line)
-{
-	int		i;
-	int		count;
-
-	i = 0;
-	count = 0;
-	while (line[i])
-	{
-		ft_skip_whitespace(line, &i);
-		if (line[i] == '\0')
-			break ;
-		if (line[i] == PIPE)
-		{
-			while (line[i] && line[i] == PIPE)
-				i++;
-			count++;
-		}
-		else if (line[i] == '<')
-		{
-			while (line[i] && line[i] == '<')
-				i++;
-			count++;
-		}
-		else if (line[i] == '>')
-		{
-			while (line[i] && line[i] == '>')
-				i++;
-			count++;
-		}
-		else
-		{
-			skip_whiteword(line, &i);
-			count++;
-		}
-	}
-	return (count);
-}
-
 int	ft_lenoperator(char *str, int *index)
 {
-	int	i;
+	int		i;
 	char	operator;
-
 
 	i = 0;
 	operator = str[*index];
