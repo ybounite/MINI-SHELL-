@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:36:53 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/16 11:36:04 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/16 14:57:22 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,9 @@ int	lstsize(t_env_lst *lst)
 
 void	shift_empty_args(char **args)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	if (args && args[0] && args[0][0] == '\0' && args[1] != NULL)
 	{
 		while (args[i + 1])
