@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_string.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/15 22:38:07 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/16 09:20:41 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static char	*handle_variable(char *result, const char *str, int *i,
 	if (var_name)
 	{
 		var_value = get_variable_value(var_name);
-		if (!is_spliting[0] && !is_spliting[1])
+		if (!*is_spliting)
 			*is_spliting = 1;
 		result = ft_strjoin(result, var_value);
 		if (original_i == *i)
@@ -70,7 +70,6 @@ static char	*handle_variable(char *result, const char *str, int *i,
 	return (result);
 }
 
-// quotes[0] = 0; // single quotes && quotes[1] = 0; // double quotes
 static char	*process_character(const char *str, int *i, t_expand_context *ctx)
 {
 	if (str[*i] == '$' && ft_isdigit(str[*i + 1]) && !ctx->quotes[0])

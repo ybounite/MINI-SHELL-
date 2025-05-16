@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:45:11 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/15 15:55:41 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/16 09:20:37 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,7 @@ void	ft_add_newtoken(t_env_lst **head, char *token, t_status state)
 	lstadd_back(head, new);
 }
 
-/*void print_lst_tokens(t_env_lst *head)
-{
-	int	i = 0;
-	while (head)
-	{
-		printf("[Token %d]: %s%s\e[0m, Type: \e[1;37m%s%s \e[0m\n", i++,
-		GREEN,head->value, GREEN,string(head->type));
-		head = head->next;
-	}
-}
-char	*string(en_status type)
+/*char	*string(t_status type)
 {
 	if (type == PIPE)
 		return ("PIPE");
@@ -83,4 +73,15 @@ char	*string(en_status type)
 		return ("BUILTINS");
 	else
 		return ("CMD");
+}
+printf("\n%s<->      after remove quotes     <->\e[0m\n", YELLOW);
+void print_lst_tokens(t_env_lst *head)
+{
+	int	i = 0;
+	while (head)
+	{
+		printf("[Token %d]: %s%s\e[0m, Type: \e[1;37m%s%s \e[0m\n", i++,
+		GREEN,head->value, GREEN,string(head->type));
+		head = head->next;
+	}
 }*/
