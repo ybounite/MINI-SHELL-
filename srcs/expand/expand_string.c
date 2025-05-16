@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_string.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/16 09:20:41 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/16 11:50:05 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static char	*handle_variable(char *result, const char *str, int *i,
 			(*i)++;
 		}
 	}
-	else if (str[*i + 1] != '"')
+	else
 	{
 		result = ft_strjoin_char(result, '$');
 		(*i)++;
@@ -82,7 +82,7 @@ static char	*process_character(const char *str, int *i, t_expand_context *ctx)
 		ctx->result = handle_double_quote(ctx->result, str, i, &ctx->quotes[1]);
 	else if (str[*i] == '$' && !ctx->quotes[0])
 	{
-		if (str[*i + 1] == '"')
+		if (str[*i + 1] == '"' && !ctx->quotes[1])
 			ctx->result = handle_quoted_dollar(ctx->result, str, i);
 		else
 			ctx->result = handle_variable(ctx->result, str, i,

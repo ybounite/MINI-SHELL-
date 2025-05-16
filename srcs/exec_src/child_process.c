@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:36:25 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/15 22:36:45 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/16 11:33:41 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	handle_child_process(char **args, int prev_fd, int *pipe_fd,
 		ft_malloc(0, 0);
 		exit(127);
 	}
+	shift_empty_args(args);
 	redir_result = redirections(args);
 	if (redir_result < 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:36:53 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/04/29 10:36:55 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/16 11:36:04 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,19 @@ int	lstsize(t_env_lst *lst)
 		lst = lst->next;
 	}
 	return (count);
+}
+
+void	shift_empty_args(char **args)
+{
+	int i = 0;
+
+	if (args && args[0] && args[0][0] == '\0' && args[1] != NULL)
+	{
+		while (args[i + 1])
+		{
+			args[i] = args[i + 1];
+			i++;
+		}
+		args[i] = NULL;
+	}
 }

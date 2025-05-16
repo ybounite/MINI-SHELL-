@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:38:04 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/15 22:37:21 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/16 11:18:54 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	execute_command(t_string *st_string)
 	list = st_string->head;
 	args = git_array(&list);
 	if (!args || !args[0] || (args[0][0] == '\0'
-		&& data_struc()->is_empty == 1))
+		&& data_struc()->is_empty == 1 && args[1] == NULL))
 	{
 		g_exit_status = 0;
 		return ;

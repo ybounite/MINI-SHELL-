@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/16 10:49:03 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/16 11:32:30 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -420,5 +420,6 @@ char						*handle_single_quote(char *result,
 char						*handle_double_quote(char *result,
 								const char *str, int *i, bool *in_dq);
 char						**ft_split_quotes(const char *s, char sep);
+void						shift_empty_args(char **args);
 
 #endif
