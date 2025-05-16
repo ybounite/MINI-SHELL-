@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/16 14:46:41 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:30:20 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,6 +277,7 @@ void						ft_destroylist(t_env_lst *list);
 /* -------------------------------------------------------------------------- */
 void						execute_command(t_string *st_string);
 void						execute_pipeline(t_string *st_string);
+void						handle_signal_status(int status);
 int							is_builtin(char *cmd);
 void						execute_builtin(char **args, t_string *st_string);
 int							has_pipe(t_env_lst *list);

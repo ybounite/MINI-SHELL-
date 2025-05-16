@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_shell.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/16 14:44:16 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:29:37 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	handle_input_syntax(t_string *st_string)
 		return (false);
 	tokenize(st_string->tokens, &list);
 	if (!list)
-		return (true);
+		return (false);
 	if (!has_invalid_redirection_sequence(list) || !check_syntax_errors(list))
 		return (g_exit_status = 2, false);
 	data_struc()->head = list;

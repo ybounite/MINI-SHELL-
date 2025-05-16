@@ -6,11 +6,25 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 08:36:19 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/15 14:23:01 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:24:54 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	handle_signal_status(int status)
+{
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+	{
+		write(2, "Quit (core dumped)\n", 19);
+		g_exit_status = 131;
+	}
+	else if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	{
+		write(2, "\n", 1);
+		g_exit_status = 130;
+	}
+}
 
 void	wait_for_children(pid_t *pids, int cmd_count)
 {
@@ -24,13 +38,7 @@ void	wait_for_children(pid_t *pids, int cmd_count)
 		{
 			signal(SIGINT, SIG_IGN);
 			waitpid(pids[i], &status, 0);
-			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-			{
-				write(1, "\nQuit (core dumped)\n", 20);
-				g_exit_status = 131;
-			}
-			else if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-				g_exit_status = 130;
+			handle_signal_status(status);
 			assign_signals_handler();
 			if (i == cmd_count - 1 && WIFEXITED(status))
 				update_exit_status(status);
