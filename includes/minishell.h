@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/15 22:39:35 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/16 10:49:03 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,19 +114,24 @@ typedef struct s_expand_data
 }							t_expand_data;
 
 extern int					g_exit_status;
+ 
 /* -------------------------------------------------------------------------- */
 /*                             syntax_error.c                                 */
 /* -------------------------------------------------------------------------- */
-void						ft_puterror(char error);
 char						*get_token_symbol(int type);
-void						ft_error(t_status type);
 bool						is_first_operation_pipe(char *str);
 int							ft_lenword(char *str);
+int							lenqoutes(char *str, int *i);
+/* -------------------------------------------------------------------------- */
+/*                             ft_puterror.c                                */
+/* -------------------------------------------------------------------------- */
+void						ft_puterror(char error);
+void						ft_error(t_status type);
+int							ft_iserror(char *str, char c);
 /* -------------------------------------------------------------------------- */
 /*                            handler_syntax_error.c                          */
 /* -------------------------------------------------------------------------- */
 bool						handler_syntax_error(char *line);
-int							lenqoutes(char *str, int *i);
 bool						check_syntax_errors(t_env_lst *tokens);
 bool						is_redirection(int type);
 bool						redirection_target_error(t_env_lst *curr);

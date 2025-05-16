@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 15:41:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/15 15:54:01 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/16 10:49:05 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,14 @@ void	ft_error(t_status type)
 	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 	ft_putstr_fd(get_token_symbol(type), 2);
 	ft_putendl_fd("'", 2);
+}
+
+int	ft_iserror(char *str, char c)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && str[i] == c)
+		i++;
+	return (i != 0);
 }

@@ -6,11 +6,29 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/16 09:21:57 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/16 10:49:06 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+bool	has_invalid_redirection_sequence(t_env_lst *list)
+{
+	while (list)
+	{
+		if (list->type == CMD && (ft_strchr(list->value, '<')
+				|| ft_strchr(list->value, '>')))
+		{
+			if (ft_iserror(list->value, '<'))
+				return (ft_error(HERE_DOCUMENT), false);
+			if (ft_iserror(list->value, '>'))
+				return (ft_error(APPEND_REDIRECTION), false);
+			return (true);
+		}
+		list = list->next;
+	}
+	return (true);
+}
 
 int	handle_input_syntax(t_string *st_string)
 {
@@ -23,7 +41,7 @@ int	handle_input_syntax(t_string *st_string)
 	tokenize(st_string->tokens, &list);
 	if (!list)
 		return (true);
-	if (!check_syntax_errors(list))
+	if (!has_invalid_redirection_sequence(list) || !check_syntax_errors(list))
 		return (g_exit_status = 2, false);
 	data_struc()->head = list;
 	if (ft_isheredoc(list))
