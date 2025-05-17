@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_shell.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 19:46:25 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/16 16:29:37 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/17 20:23:33 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ bool	has_invalid_redirection_sequence(t_env_lst *list)
 
 int	handle_input_syntax(t_string *st_string)
 {
-	t_env_lst (*list);
-	t_env_lst (*head);
+	t_env_lst(*list);
+	t_env_lst(*head);
 	(1) && (list = NULL), (head = NULL);
 	st_string->tokens = spliter(st_string->line);
 	if (!st_string->tokens)

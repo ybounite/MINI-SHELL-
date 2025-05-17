@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:35:37 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/14 09:56:12 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/17 20:16:16 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static int	handle_input_redirection(char *filename)
 	if (!filename)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected \
-				token `newline'\n", 2);
+				token `newline'\n",
+						2);
 		return (-1);
 	}
 	fd = open(filename, O_RDONLY);
@@ -49,7 +50,8 @@ static int	prepare_output_redirection(char **args, int *i, int *flags,
 	if (!*filename)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected \
-            token `newline'\n", 2);
+            token `newline'\n",
+						2);
 		return (-1);
 	}
 	if (append)
@@ -70,6 +72,8 @@ int	handle_output_redirection(char **args, int *i)
 	fd = open(filename, flags, 0644);
 	if (fd == -1)
 	{
+		if (!filename || filename[0] == '\0')
+			return (-1);
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(filename, 2);
 		ft_putstr_fd(": Permission denied\n", 2);

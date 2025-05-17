@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/14 13:10:15 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/17 20:21:27 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,7 @@ static int	handle_ambiguous_redirect(t_env_lst *prev, char *expanded,
 		const char *value)
 {
 	if (ft_isambiguous(prev, expanded))
-	{
 		printf("minishell: %s: ambiguous redirect\n", value);
-		return (-1);
-	}
 	return (0);
 }
 

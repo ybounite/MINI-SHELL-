@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:22:31 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/08 10:28:47 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/17 16:12:43 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*find_path(char *cmd, char **envp)
 	direct_path = check_direct_path(cmd);
 	if (direct_path)
 		return (direct_path);
-	path_env = getenv("PATH");
+	path_env = get_env_value("PATH", data_struc());
 	if (!path_env)
 		return (NULL);
 	paths = ft_split(path_env, ':');
