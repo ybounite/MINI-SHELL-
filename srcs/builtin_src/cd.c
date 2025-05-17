@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:33:50 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/17 08:55:11 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/17 09:18:03 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	builtin_cd(char **args, t_string *st_string)
 	if (!args[1])
 		path = handle_home();
 	else if (args[1][0] == '~')
-		path = getenv("HOME");
+		path = handle_home();
 	else if (args[1][0] == '-')
 		path = handle_dash(st_string);
 	else
