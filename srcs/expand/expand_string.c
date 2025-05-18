@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/16 11:50:05 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/18 20:01:39 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,7 @@ char	*expand_string(const char *str, bool *is_spliting)
 	ctx.result = ft_strdup("");
 	while (str[i])
 		ctx.result = process_character(str, &i, &ctx);
+	if (ft_strchr(ctx.result, '|') && is_spliting)
+		*is_spliting = false;
 	return (ctx.result);
 }

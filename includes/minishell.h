@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/17 20:10:42 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/18 20:03:49 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct s_string
 	bool					is_builtin;
 	bool					is_parenthesis;
 	bool					is_heredoc;
+	bool					is_spliter;
 	char					**expand_args;
 	char					*heredoc_file;
 	int						heredoc_fd;
@@ -422,5 +423,6 @@ char						*handle_double_quote(char *result,
 								const char *str, int *i, bool *in_dq);
 char						**ft_split_quotes(const char *s, char sep);
 void						shift_empty_args(char **args);
+int							lstsize(t_env_lst *lst);
 
 #endif

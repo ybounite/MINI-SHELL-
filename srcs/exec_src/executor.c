@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 10:38:04 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/16 11:18:54 by bamezoua         ###   ########.fr       */
+/*   Created: 2025/05/18 20:25:32 by bamezoua          #+#    #+#             */
+/*   Updated: 2025/05/18 20:26:30 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,30 @@ int	handle_cmd_not_found(char **args)
 	}
 }
 
+char	**env_list_to_array(char **args, t_env_lst *current)
+{
+	int	i;
+
+	i = 0;
+	args = ft_malloc(sizeof(char *) * (lstsize(current) + 1), true);
+	while (current)
+	{
+		args[i++] = ft_strdup(current->value);
+		current = current->next;
+	}
+	args[i] = NULL;
+	return (args);
+}
+
 char	**git_array(t_env_lst **list)
 {
 	char		**args;
 	t_env_lst	*current;
-	int			i;
-	int			count;
 
-	count = 0;
-	current = *list;
+	int (i), (count);
+	1 && (args = NULL), (count = 0), (i = 0), (current = *list);
+	if (data_struc()->is_spliter)
+		return (env_list_to_array(args, current));
 	while (current && current->type != PIPE)
 	{
 		count++;
@@ -83,8 +98,8 @@ void	execute_command(t_string *st_string)
 		return ;
 	list = st_string->head;
 	args = git_array(&list);
-	if (!args || !args[0] || (args[0][0] == '\0'
-		&& data_struc()->is_empty == 1 && args[1] == NULL))
+	if (!args || !args[0] || (args[0][0] == '\0' && data_struc()->is_empty == 1
+		&& args[1] == NULL))
 	{
 		g_exit_status = 0;
 		return ;
