@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 08:35:42 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/19 17:06:20 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/19 17:15:21 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	process_pipeline_commands(t_string *st_string,
 	i = 0;
 	proc_args = (t_process_args){st_string, &data->list, &data->prev_fd,
 		data->pids, 0, data->cmd_count};
-	if(data_struc()->is_spliter)
+	if (data_struc()->is_spliter)
 	{
 		process_command(&proc_args);
 		return ;

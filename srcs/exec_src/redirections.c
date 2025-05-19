@@ -6,7 +6,7 @@
 /*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:35:37 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/19 16:59:18 by ybounite         ###   ########.fr       */
+/*   Updated: 2025/05/19 17:14:12 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ int	redirections(char **args)
 {
 	int (i), (j);
 	1 && (i = 0), (j = 0);
-	printf("%d\n", data_struc()->is_spliter);
 	if (data_struc()->is_spliter)
 		return (false);
 	while (args[i])
