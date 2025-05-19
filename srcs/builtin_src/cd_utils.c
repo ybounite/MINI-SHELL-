@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:10:59 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 09:11:43 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:04:48 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ char	*handle_home(void)
 {
 	char	*path;
 
-	path = getenv("HOME");
+	path = get_env_value("HOME", data_struc());
 	if (!path)
 		printf("cd: HOME not set\n");
 	return (path);

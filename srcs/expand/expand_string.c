@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/19 09:52:22 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:17:15 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ static char	*handle_quoted_dollar(char *result, const char *str, int *i)
 	char	*quoted_content;
 	char	*temp;
 
-	j = *i + 2;
-	while (str[j] && str[j] != '"')
+	j = *i + 1;
+	while (str[j])
 		j++;
-	quoted_content = ft_substr(str, *i + 2, j - (*i + 2));
+	quoted_content = ft_substr(str, *i + 1, j - (*i + 1));
 	temp = result;
 	result = ft_strjoin(result, quoted_content);
-	if (str[j] == '"')
+	if (str[j] == '"' || str[j] == '\'')
 		*i = j + 1;
 	else
 		*i = j;
@@ -82,7 +82,8 @@ static char	*process_character(const char *str, int *i, t_expand_context *ctx)
 		ctx->result = handle_double_quote(ctx->result, str, i, &ctx->quotes[1]);
 	else if (str[*i] == '$' && !ctx->quotes[0])
 	{
-		if (str[*i + 1] == '"' && !ctx->quotes[1])
+		if ((str[*i + 1] == '"' && !ctx->quotes[1]) || (str[*i + 1] == '\''
+				&& !ctx->quotes[0]))
 			ctx->result = handle_quoted_dollar(ctx->result, str, i);
 		else
 			ctx->result = handle_variable(ctx->result, str, i,
