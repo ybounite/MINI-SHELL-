@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   expand_string.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/19 15:17:15 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/19 16:48:00 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static char	*handle_double_dollar(char *result, int *i)
+static char *handle_double_dollar(char *result, int *i)
 {
-	char	*temp;
+	char *temp;
 
 	temp = result;
 	result = ft_strjoin(result, "$$");
@@ -22,11 +22,11 @@ static char	*handle_double_dollar(char *result, int *i)
 	return (result);
 }
 
-static char	*handle_quoted_dollar(char *result, const char *str, int *i)
+static char *handle_quoted_dollar(char *result, const char *str, int *i)
 {
-	int		j;
-	char	*quoted_content;
-	char	*temp;
+	int j;
+	char *quoted_content;
+	char *temp;
 
 	j = *i + 1;
 	while (str[j])
@@ -41,12 +41,12 @@ static char	*handle_quoted_dollar(char *result, const char *str, int *i)
 	return (result);
 }
 
-static char	*handle_variable(char *result, const char *str, int *i,
-		bool *is_spliting)
+static char *handle_variable(char *result, const char *str, int *i,
+							 bool *is_spliting)
 {
-	char	*var_name;
-	char	*var_value;
-	int		original_i;
+	char *var_name;
+	char *var_value;
+	int original_i;
 
 	original_i = *i;
 	var_name = get_variable_name(str, i);
@@ -70,7 +70,7 @@ static char	*handle_variable(char *result, const char *str, int *i,
 	return (result);
 }
 
-static char	*process_character(const char *str, int *i, t_expand_context *ctx)
+static char *process_character(const char *str, int *i, t_expand_context *ctx)
 {
 	if (str[*i] == '$' && ft_isdigit(str[*i + 1]) && !ctx->quotes[0])
 		ctx->result = handle_dollar_digit(ctx->result, i);
@@ -82,12 +82,11 @@ static char	*process_character(const char *str, int *i, t_expand_context *ctx)
 		ctx->result = handle_double_quote(ctx->result, str, i, &ctx->quotes[1]);
 	else if (str[*i] == '$' && !ctx->quotes[0])
 	{
-		if ((str[*i + 1] == '"' && !ctx->quotes[1]) || (str[*i + 1] == '\''
-				&& !ctx->quotes[0]))
+		if ((str[*i + 1] == '"' && !ctx->quotes[1]) || (str[*i + 1] == '\'' && !ctx->quotes[0]))
 			ctx->result = handle_quoted_dollar(ctx->result, str, i);
 		else
 			ctx->result = handle_variable(ctx->result, str, i,
-					ctx->is_spliting);
+										  ctx->is_spliting);
 	}
 	else
 	{
@@ -99,10 +98,10 @@ static char	*process_character(const char *str, int *i, t_expand_context *ctx)
 
 // ctx.quotes[0] = 0; // single quote
 // ctx.quotes[1] = 0; // double quote
-char	*expand_string(const char *str, bool *is_spliting)
+char *expand_string(const char *str, bool *is_spliting)
 {
-	int					i;
-	t_expand_context	ctx;
+	int i;
+	t_expand_context ctx;
 
 	i = 0;
 	ctx.quotes[0] = 0;
@@ -111,7 +110,7 @@ char	*expand_string(const char *str, bool *is_spliting)
 	ctx.result = ft_strdup("");
 	while (str[i])
 		ctx.result = process_character(str, &i, &ctx);
-	if (ft_strchr(ctx.result, '|') && is_spliting)
-		*is_spliting = false;
+	// if (ft_strchr(ctx.result, '|') && is_spliting)
+	// *is_spliting = false;
 	return (ctx.result);
 }

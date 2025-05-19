@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_add_expand_variable.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybounite <ybounite@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:09:39 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/17 16:14:02 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/19 17:00:47 by ybounite         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static void	ft_create_nodes_from_words(t_env_lst *start, char **words, int i,
 	while (words[i])
 	{
 		new_node = ft_newnode(words[i++], CMD);
+		data_struc()->is_spliter = 1;
 		prev->next = new_node;
 		prev = new_node;
 	}
