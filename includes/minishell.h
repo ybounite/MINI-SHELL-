@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 09:10:58 by ybounite          #+#    #+#             */
-/*   Updated: 2025/05/18 20:03:49 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/19 11:20:59 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct s_string
 	t_env_lst				*head;
 	int						signals_flag;
 	int						is_empty;
+	int						found;
 }							t_string;
 
 typedef struct s_process_args
@@ -393,6 +394,8 @@ void						print_env_entry(char *entry);
 void						print_export(t_string *st_string);
 char						*extract_key(char *arg, int *key_len);
 char						*create_entry(char *arg, int key_len);
+void						append_and_not_found(char *new_value, char *key,
+								char *equals_pos, t_string *st_string);
 /* -------------------------------------------------------------------------- */
 /*                              export_utils2.c       				          */
 /* -------------------------------------------------------------------------- */

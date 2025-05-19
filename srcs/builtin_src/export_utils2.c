@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:01:50 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 14:54:18 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/19 11:18:32 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static void	append_value(char *key, int key_len, char *equals_pos,
 	char	*key_equals;
 
 	i = 0;
+	st_string->found = 0;
 	while (st_string->g_envp[i])
 	{
 		if (ft_strncmp(st_string->g_envp[i], key, key_len) == 0
@@ -69,12 +70,14 @@ static void	append_value(char *key, int key_len, char *equals_pos,
 			new_value = equals_pos + 1;
 			combined = ft_strjoin(existing_value, new_value);
 			key_equals = ft_strjoin(key, "=");
-			free(st_string->g_envp[i]);
 			st_string->g_envp[i] = ft_strjoin(key_equals, combined);
-			return ;
+			st_string->found = 1;
+			break ;
 		}
 		i++;
 	}
+	if (!st_string->found)
+		append_and_not_found(new_value, key, equals_pos, st_string);
 }
 
 static char	*create_clean_entry(char *arg, int append_mode)

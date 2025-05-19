@@ -6,11 +6,24 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:33:03 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/13 10:05:42 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/19 11:21:21 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	append_and_not_found(char *new_value, char *key, char *equals_pos,
+		t_string *st_string)
+{
+	char	*key_equals;
+	char	*combined;
+
+	st_string->found = 1;
+	new_value = equals_pos + 1;
+	key_equals = ft_strjoin(key, "=");
+	combined = ft_strjoin(key_equals, new_value);
+	add_new_entry(combined, st_string);
+}
 
 int	env_len(t_string *st_string)
 {
