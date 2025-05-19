@@ -6,7 +6,7 @@
 /*   By: bamezoua <bamezoua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 10:15:12 by bamezoua          #+#    #+#             */
-/*   Updated: 2025/05/18 20:01:39 by bamezoua         ###   ########.fr       */
+/*   Updated: 2025/05/19 09:51:16 by bamezoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ static char	*process_character(const char *str, int *i, t_expand_context *ctx)
 	return (ctx->result);
 }
 
+// ctx.quotes[0] = 0; // single quote
+// ctx.quotes[1] = 0; // double quote
 char	*expand_string(const char *str, bool *is_spliting)
 {
 	int					i;
