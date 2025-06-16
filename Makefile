@@ -2,7 +2,10 @@ NAME = minishell
 LIBFT_DIR = libraries/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-# Directories
+CC = cc
+RM = rm -rf
+CFLAGS = -Wall -Wextra -Werror
+
 SRC_DIR = srcs
 MEMORY_DIR = $(SRC_DIR)/memory
 GETLINE_DIR = libraries/getline
@@ -13,7 +16,6 @@ EXPAND_DIR = $(SRC_DIR)/expand
 OBJ_DIR = obj
 INC_DIR = includes
 
-# Source files
 SRCS = $(EXEC_DIR)/executor.c \
 	   $(EXEC_DIR)/child_process.c \
 	   $(EXEC_DIR)/builtin_exec.c \
@@ -39,11 +41,8 @@ SRCS = $(EXEC_DIR)/executor.c \
 
 SRC_MEM = $(MEMORY_DIR)/allocate_data.c
 
-# Getline source files
 SRC_GETLINE = $(GETLINE_DIR)/get_next_line.c 
-#$(GETLINE_DIR)/get_next_line_utils.c
 
-# Parsing source files
 SRC_PARS = $(PARSING_DIR)/minishell.c \
 		   $(PARSING_DIR)/gitline.c \
 		   $(PARSING_DIR)/start_shell.c \
@@ -73,23 +72,17 @@ SRC_PARS = $(PARSING_DIR)/minishell.c \
 		   $(PARSING_DIR)/ft_puterror.c \
 		   $(PARSING_DIR)/data_struc.c
 
-# Combine all source files
 SRCS += $(SRC_PARS)
 SRCS += $(SRC_MEM)
-SRCS += $(SRC_GETLINE)  # Add getline sources to the compilation
+SRCS += $(SRC_GETLINE)
 
-# Object files
 OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(filter $(SRC_DIR)/%,$(SRCS)))
 OBJS += $(patsubst $(GETLINE_DIR)/%.c,$(OBJ_DIR)/getline/%.o,$(filter $(GETLINE_DIR)/%,$(SRCS)))
 
-CC = cc
-RM = rm -rf
-CFLAGS = -g -Wall -Wextra -Werror 
 INCLUDES = -I$(INC_DIR) -I$(LIBFT_DIR) -I$(GETLINE_DIR)
 
 all: $(OBJ_DIR) $(LIBFT) $(NAME)
 
-# Create obj directories if they don't exist
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(OBJ_DIR)/builtin_src
@@ -102,22 +95,14 @@ $(LIBFT):
 	@make --no-print-directory -C $(LIBFT_DIR)
 	@make --no-print-directory -C $(LIBFT_DIR) bonus
 
-# Pattern rule for object files in the main src directory
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-# Correct pattern rule for object files in getline directory
 $(OBJ_DIR)/getline/%.o: $(GETLINE_DIR)/%.c
-	@mkdir -p $(dir $@)  # Ensures the 'getline' directory exists
+	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-# Add to your Makefile
-
-test_expansion: $(OBJS) tests/test_expansion.c
-	$(CC) $(CFLAGS) -o test_expansion $(OBJS) tests/test_expansion.c $(LIBS)
-	./test_expansion
-	
 $(NAME): $(OBJS) $(LIBFT)
 	@$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -lreadline -o $(NAME)
 	@./.script.sh
